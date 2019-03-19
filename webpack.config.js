@@ -8,7 +8,7 @@ const environment = process.env.NODE_ENV || 'development';
 module.exports = {
     mode: 'development',
     entry: {
-        app: ['./src/index.tsx', 'webpack-hot-middleware/client'],
+        app: ['./src/Index.tsx', 'webpack-hot-middleware/client'],
         vendor: ['react', 'react-dom']
     },
     output: {
