@@ -6,10 +6,12 @@ import './style.scss'
 import Hello from './components/Hello'
 import NotFound from './components/notfound/NotFound'
 
+const HelloPage = () => <Hello compiler='TypeScript' framework='React'/>
+
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route exact={true} path='/' component={Hello} />
+      <Route exact={true} path='/' component={HelloPage} />
       <Route component={NotFound} />
     </Switch>
   </Router>,
