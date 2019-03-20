@@ -1,3 +1,4 @@
+/* Main Imports */
 import * as React from 'react'
 
 /* Material UI Imports */
@@ -21,7 +22,7 @@ class NotFound extends React.Component<{}, {}> {
             Go Back
           </Button>
         </div>
-        <div className='big404'>
+        <div className='big-bkg-text'>
           404
         </div>
       </div>

@@ -1,19 +1,20 @@
 body {
-  margin: 0
+  margin: 0;
+  overflow-x: hidden;
 }
 .view {
   margin: 0;
   font-family: 'Noto Sans JP', sans-serif;
   font-weight: 300;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   .centered-view {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     .title {
       font-weight: bold;
       font-size: 36px;
@@ -24,6 +25,15 @@ body {
       font-size: 18px;
       color: black;
       opacity: 0.5;
+    }
+    .big-bkg-text {
+      font-size: 66vh;
+      position: absolute;
+      font-weight: 700;
+      top: -2vh;
+      letter-spacing: -0.05;
+      z-index: -100;
+      color: #fafafa;
     }
   }
 }
