@@ -1,0 +1,44 @@
+$chang-blue: #0066ff;
+
+.fixed-top-left {
+    position: fixed;
+    top: 30px;
+    left: 30px;  
+}
+
+.fixed-top-right {
+    position: fixed;
+    top: 30px;
+    right: 30px;  
+}
+
+.centered-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.align-left {
+    text-align: left;
+    font-size: 30px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.align-right {
+    text-align: right;
+    margin-top: 15px;
+}
+
+.chang-blue-background {
+    background-color: $chang-blue;
+    font-weight: bold;
+}
+
+.chang-blue-font {
+    color: $chang-blue;
+    font-weight: bold;
+}

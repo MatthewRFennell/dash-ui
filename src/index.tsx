@@ -10,6 +10,8 @@ import { createMuiTheme } from '@material-ui/core'
 import FrontPage from './components/frontpage/Frontpage'
 import Hello from './components/Hello'
 import NotFound from './components/notfound/NotFound'
+import Login from './components/frontpage/Login';
+import Register from './components/frontpage/Register';
 
 /* Passing props to a routed page */
 const HelloPage = () => <Hello compiler='TypeScript' framework='React' />
@@ -17,7 +19,7 @@ const HelloPage = () => <Hello compiler='TypeScript' framework='React' />
 const theme = createMuiTheme({
   typography: {
     fontFamily: 'Noto Sans JP',
-  },
+  }
 })
 
 ReactDOM.render(
@@ -26,6 +28,8 @@ ReactDOM.render(
       <Switch>
         <Route exact={true} path='/' component={HelloPage} />
         <Route exact={true} path='/home' component={FrontPage} />
+        <Route exact={true} path='/login' component={Login} />
+        <Route exact={true} path='/register' component={Register} />
         <Route component={NotFound} />
       </Switch>
     </Router>
