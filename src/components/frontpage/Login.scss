@@ -21,9 +21,8 @@ $chang-blue: #0066ff;
     height: 100vh;
 }
 
-.align-left {
-    text-align: left;
-    font-size: 30px;
+.form-title {
+    font-size: 34px;
     margin-bottom: 5px;
     margin-top: 5px;
 }
@@ -71,6 +70,15 @@ $chang-blue: #0066ff;
     width: 302px;
 }
 
+.medium-box {
+    width: 328px;
+}
+
 .register-link {
     margin-top: 30px;
+}
+
+.grey-light {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
 }

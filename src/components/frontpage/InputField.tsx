@@ -18,6 +18,7 @@ const InputField : React.FunctionComponent<InputFieldProps> = (props) => {
                 type={props.type}
                 required={props.req}
                 onChange={update}
+                className="medium-box"
             />
         </div>
     )

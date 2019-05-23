@@ -12,6 +12,7 @@ import Hello from './components/Hello'
 import NotFound from './components/notfound/NotFound'
 import Login from './components/frontpage/Login';
 import Register from './components/frontpage/Register';
+import Thanks from './components/frontpage/Thanks';
 
 /* Passing props to a routed page */
 const HelloPage = () => <Hello compiler='TypeScript' framework='React' />
@@ -30,6 +31,7 @@ ReactDOM.render(
         <Route exact={true} path='/home' component={FrontPage} />
         <Route exact={true} path='/login' component={Login} />
         <Route exact={true} path='/register' component={Register} />
+        <Route exact={true} path='/thanks' component={Thanks} />
         <Route component={NotFound} />
       </Switch>
     </Router>

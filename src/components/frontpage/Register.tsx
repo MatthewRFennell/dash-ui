@@ -16,6 +16,10 @@ const Register : React.FunctionComponent<RegisterProps> = (props) => {
         props.history.push("/login")
     }
 
+    const submit = () => {
+        props.history.push("/thanks")
+    }
+
     return (
         <div>
             <div className="fixed-top-left">
@@ -33,15 +37,17 @@ const Register : React.FunctionComponent<RegisterProps> = (props) => {
             </div>
             <div className="centered-panel">
                 <div className="login-panel">
-                    <h3 className="align-left">Create Account</h3>
+                    <h3 className="form-title">Create Account</h3>
 
                     <InputField label="First Name"/>
                     <InputField label="Second Name"/>
+                    <InputField label="Company Name"/>
                     <InputField label="Email" req={true}/>
-                    <InputField label="Password" type="password" req={true}/>
+
+                    <h4 className="grey-light">A Password will be sent to you upon registration</h4>
 
                     <div className="align-right">
-                        <Button variant="contained" color="primary" className="chang-blue-background">
+                        <Button variant="contained" color="primary" className="chang-blue-background" onClick={submit}>
                             Register
                         </Button>
                     </div>
