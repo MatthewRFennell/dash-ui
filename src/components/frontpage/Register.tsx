@@ -19,7 +19,10 @@ const Register : React.FunctionComponent<RegisterProps> = (props) => {
     return (
         <div>
             <div className="fixed-top-left">
-                <Button variant="outlined" color="primary" onClick={() => props.history.goBack()} className="chang-blue-font">
+                <Button variant="outlined"
+                        color="primary" 
+                        onClick={() => props.history.goBack()} 
+                        className="chang-blue-font">
                     Back
                 </Button>
             </div>
