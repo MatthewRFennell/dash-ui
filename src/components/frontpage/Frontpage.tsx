@@ -6,18 +6,12 @@ import * as React from 'react'
 import './frontpage.scss'
 
 /* Component Imports */
-import Body from './Body'
-import Cover from './Cover'
+import Banner from './Banner';
 
-const FrontPage: React.FunctionComponent<FrontPageProps> = (props) => (
-  <div className='frontpage-view'>
-    <Cover />
-    <Body />
-  </div>
-)
-
-interface FrontPageProps {
-  history: History
+const FrontPage = () => {
+  return (
+    <Banner/>
+  )
 }
 
 export default FrontPage

@@ -1,0 +1,31 @@
+$chang-blue: #0066ff;
+
+.banner-paper {
+    height: 96px;
+    width: 100vw;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 22px;
+
+    .logo {
+        font-size: 46px;
+        margin-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        float: left;
+    }
+
+    .logo-container {
+        float: right;
+        margin-top: 24px;
+        margin-right: 70px;
+
+        .chang-blue-font {
+            color: $chang-blue;
+            font-weight: bold;
+        }   
+    }
+
+
+}
+
