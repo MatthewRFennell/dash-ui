@@ -32,8 +32,15 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     contentBase: __dirname,
-    compress: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    proxy: {
+      "/api": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "changeOrigin": true,
+        "pathRewrite": { '^/api': '' }
+      }
+    }
   },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
@@ -93,4 +100,4 @@ module.exports = {
       MACRO: JSON.stringify(0)
     })
   ]
-};
+}

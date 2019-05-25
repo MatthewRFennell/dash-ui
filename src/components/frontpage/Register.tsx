@@ -12,6 +12,11 @@ interface RegisterProps {
 
 const Register : React.FunctionComponent<RegisterProps> = (props) => {
 
+    const [email, setEmail] = React.useState("")
+    const [fname, setFname] = React.useState("")
+    const [sname, setSname] = React.useState("")
+    const [company, setCompany] = React.useState("")
+
     const moveToLogin = () => {
         props.history.push("/login")
     }
@@ -39,10 +44,10 @@ const Register : React.FunctionComponent<RegisterProps> = (props) => {
                 <div className="login-panel">
                     <h3 className="form-title">Create Account</h3>
 
-                    <InputField label="First Name"/>
-                    <InputField label="Second Name"/>
-                    <InputField label="Company Name"/>
-                    <InputField label="Email" req={true}/>
+                    <InputField label="First Name" change={setFname}/>
+                    <InputField label="Second Name" change={setSname} />
+                    <InputField label="Company Name" change={setCompany} />
+                    <InputField label="Email" req={true} change={setEmail}/>
 
                     <h4 className="grey-light">A Password will be sent to you upon registration</h4>
 
