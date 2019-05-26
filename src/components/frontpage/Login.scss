@@ -57,7 +57,7 @@ $chang-blue: #0066ff;
 }
 
 .margin-end {
-    margin-right: 30px;
+    margin-right: 30px !important;
 }
 
 .margin-bottom {
@@ -65,8 +65,8 @@ $chang-blue: #0066ff;
 }
 
 .small-box {
-    margin-top: 16px;
-    margin-bottom: 30px;
+    margin-top: 16px !important;
+    margin-bottom: 30px !important;
     width: 302px;
 }
 
