@@ -32,6 +32,7 @@ module.exports = {
   devtool: "source-map",
   devServer: {
     contentBase: __dirname,
+    compress: true,
     historyApiFallback: true,
     proxy: {
       "/api": {

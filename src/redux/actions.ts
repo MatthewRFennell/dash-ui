@@ -1,3 +1,6 @@
+import fetchProtected from '../api/protected'
+import authHeader from '../api/authHeader'
+
 export const login = (email, password) => {
 
     return (dispatch) => {
@@ -25,7 +28,7 @@ export const login = (email, password) => {
                 console.log("Dispatching login success")
                 console.log(res.user)
                 localStorage.setItem("userToken", res.token)
-                dispatch(loginSuccess(res.user))
+                dispatch(loginSuccess())
               } else {
                   console.log("Dispatching login failed")
                 dispatch(loginFailed())
@@ -41,10 +44,9 @@ export const loginRequest = () => {
     }
 }
 
-export const loginSuccess = (user) => {
+export const loginSuccess = () => {
     return {
-        type : "loginSuccess",
-        user
+        type : "loginSuccess"
     }
 }
 
@@ -55,7 +57,31 @@ export const loginFailed = () => {
 }
 
 export const logout = () => {
+
+    return dispatch => {
+        localStorage.removeItem("userToken")
+        dispatch(loginFailed())
+    }
+}
+
+export const fetchDetailSuccesss = (user) => {
     return {
-        type: 'logout'
+        type: "fetchDetailSuccesss",
+        email: user.email,
+        fname: user.fname,
+        sname: user.sname
+
+    }
+}
+
+export const fetchDetails = () => {
+    return dispatch => {
+        fetchProtected('/api/me', authHeader(), null, 'GET', (res) => {
+            if(res.success){
+                dispatch(fetchDetailSuccesss(res.user))
+            } else {
+                dispatch(logout())
+            }
+        })
     }
 }

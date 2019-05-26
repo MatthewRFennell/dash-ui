@@ -3,6 +3,7 @@ import * as React from 'react'
 import Button from '@material-ui/core/Button'
 
 import {login} from '../../redux/actions'
+import { Redirect } from 'react-router-dom'
 
 import './Login.scss'
 import TextField from '@material-ui/core/TextField';
@@ -16,6 +17,7 @@ import { connect } from 'react-redux';
 
 interface LoginProps {
     waiting: boolean,
+    loggedIn: boolean
     onLogin: (email: string, password: string) => void
 }
 
@@ -37,7 +39,19 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
         props.onLogin(email, password)
     }
 
+    const handleKeyPress = (e) => {
+        if(e.keyCode == 13) {
+            submit()
+        }
+    }
+
+    console.log("At login we are", props.loggedIn)
+    console.log("Waiting", props.waiting)
+
     return (
+        props.loggedIn ? 
+        <Redirect to="/home"/>
+            :
         <div>
             <div className="centered-panel">
                 <div className="login-panel">
@@ -60,6 +74,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
                         label="Password"
                         className="small-box"
                         onChange={handlePasswordChange}
+                        onKeyDown={handleKeyPress}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -89,7 +104,8 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        waiting : state.user.logginIn
+        waiting : state.user.logginIn,
+        loggedIn: state.user.loggedIn
     }
 }
 

@@ -8,3 +8,5 @@ export default createStore(
         thunkMiddleware
     )
 )
+
+console.log("Initial state should be set")
