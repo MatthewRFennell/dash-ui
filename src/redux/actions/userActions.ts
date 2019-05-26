@@ -1,5 +1,5 @@
-import fetchProtected from '../api/protected'
-import authHeader from '../api/authHeader'
+import fetchProtected from '../../api/protected'
+import authHeader from '../../api/authHeader'
 
 export const login = (email, password) => {
 
@@ -26,7 +26,6 @@ export const login = (email, password) => {
           .then(res => {
               if(res.success){
                 console.log("Dispatching login success")
-                console.log(res.user)
                 localStorage.setItem("userToken", res.token)
                 dispatch(loginSuccess())
               } else {
@@ -76,7 +75,7 @@ export const fetchDetailSuccesss = (user) => {
 
 export const fetchDetails = () => {
     return dispatch => {
-        fetchProtected('/api/me', authHeader(), null, 'GET', (res) => {
+        fetchProtected('/api/me', null, null, 'GET', (res) => {
             if(res.success){
                 dispatch(fetchDetailSuccesss(res.user))
             } else {

@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
 
-import {login} from '../../redux/actions'
+import {login} from '../../redux/actions/userActions'
 import { Redirect } from 'react-router-dom'
 
 import './Login.scss'
@@ -44,9 +44,6 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
             submit()
         }
     }
-
-    console.log("At login we are", props.loggedIn)
-    console.log("Waiting", props.waiting)
 
     return (
         props.loggedIn ? 

@@ -15,9 +15,11 @@ const InputField : React.FunctionComponent<InputFieldProps> = (props) => {
                 label={props.label}
                 margin="normal"
                 variant="outlined"
+                error={props.errMsg !== ""}
                 type={props.type}
                 required={props.req}
                 onChange={update}
+                helperText={props.errMsg}
                 className="medium-box"
             />
         </div>
@@ -28,12 +30,14 @@ const InputField : React.FunctionComponent<InputFieldProps> = (props) => {
 export interface InputFieldProps { label: string,
                                    type?: string, 
                                    req?: boolean,
-                                   change?: React.Dispatch<React.SetStateAction<string>>}
+                                   change?: React.Dispatch<React.SetStateAction<string>>
+                                   errMsg?: string}
 
 InputField.defaultProps = {
     type: "text",
     req: false,
-    change: () => console.log("Yeet")
+    change: () => null,
+    errMsg: ""
 }
 
 export default InputField;

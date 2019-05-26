@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {logout} from '../../redux/actions'
+import {logout} from '../../redux/actions/userActions'
 
 import Paper from '@material-ui/core/Paper';
 

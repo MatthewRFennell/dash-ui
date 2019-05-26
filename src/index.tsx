@@ -36,7 +36,6 @@ ReactDOM.render(
           <Route exact={true} path='/' component={HelloPage} />
           <Route exact={true} path='/login' component={Login} />
           <Route exact={true} path='/register' component={Register} />
-          <Route exact={true} path='/thanks' component={Thanks} />
           <PrivateRoute path='/home' component={Home} />
           <Route component={NotFound} />
         </Switch>

@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux"
-import { reducer } from './reducer'
+import reducer from './reducers/reducer'
 import thunkMiddleware from 'redux-thunk'
 
 export default createStore(
@@ -8,5 +8,3 @@ export default createStore(
         thunkMiddleware
     )
 )
-
-console.log("Initial state should be set")

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { fetchDetails} from '../../redux/actions'
+import { fetchDetails} from '../../redux/actions/userActions'
 import { connect } from 'react-redux';
 
 const Me = (props) => {

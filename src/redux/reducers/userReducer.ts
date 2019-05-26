@@ -10,14 +10,9 @@ if (localStorage.getItem("userToken")){
 
     const decoded = jwt.decode(localStorage.getItem("userToken"), {json: true})
 
-    console.log(decoded.exp)
-    console.log(Date.now() / 1000)
-
     if(decoded.exp < Date.now() / 1000){
-        console.log("Removing token")
         localStorage.removeItem("userToken")
     } else {
-        console.log("Setting logged in to true")
         initialState.loggedIn = true
     }
 
@@ -52,6 +47,4 @@ const user = (state = initialState, action) => {
     }
 }
 
-export const reducer = combineReducers({
-    user
-})
+export default user

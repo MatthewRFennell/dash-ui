@@ -5,6 +5,8 @@ import InputField from './InputField';
 import { History } from 'history'
 
 import './Login.scss'
+import Thanks from './Thanks';
+import { CircularProgress } from '@material-ui/core';
 
 interface RegisterProps {
     history: History
@@ -15,17 +17,85 @@ const Register : React.FunctionComponent<RegisterProps> = (props) => {
     const [email, setEmail] = React.useState("")
     const [fname, setFname] = React.useState("")
     const [sname, setSname] = React.useState("")
-    const [company, setCompany] = React.useState("")
+    const [password, setPassword] = React.useState("")
+
+    const [finished, setFinished] = React.useState(false)
+    const [waiting, setWaiting] = React.useState(false)
+    const [errors, setErrors] = React.useState({
+        email: "",
+        fname: "",
+        sname: "",
+        password: ""
+    })
 
     const moveToLogin = () => {
         props.history.push("/login")
     }
 
     const submit = () => {
-        props.history.push("/thanks")
+        let ret = false
+        let newErrors = {
+            email: "",
+            fname: "",
+            sname: "",
+            password: ""
+        }
+        if(email === ""){
+            newErrors.email = "Email is required"
+            ret = true
+        }
+        if(fname === ""){
+            newErrors.fname = "First name is required"
+            ret = true
+        }
+        if(sname === ""){
+            newErrors.sname = "Second name is required"
+            ret = true
+        }
+        if(password === ""){
+            newErrors.password = "Password isrequired"
+            ret = true
+        }
+        if(ret){
+            setErrors(newErrors)
+            return
+        }
+
+        setWaiting(true)
+        const body = {
+            email,
+            firstname : fname,
+            lastname: sname,
+            password
+        }
+
+        fetch('/api/register', {
+            method: 'POST',
+            body : JSON.stringify(body),
+            headers : {
+                "Content-Type": "application/json"
+            }
+        }).then(res => res.json())
+          .then(res => {
+            setWaiting(false)
+            console.log(res) 
+            if(res.success){
+                setFinished(true)
+              } else {
+                setErrors({
+                    email: res.message,
+                    fname: "",
+                    sname: "",
+                    password: ""
+                })
+              }
+          })
     }
 
     return (
+        finished ?
+        <Thanks/>
+        :
         <div>
             <div className="fixed-top-left">
                 <Button variant="outlined"
@@ -44,17 +114,20 @@ const Register : React.FunctionComponent<RegisterProps> = (props) => {
                 <div className="login-panel">
                     <h3 className="form-title">Create Account</h3>
 
-                    <InputField label="First Name" change={setFname}/>
-                    <InputField label="Second Name" change={setSname} />
-                    <InputField label="Company Name" change={setCompany} />
-                    <InputField label="Email" req={true} change={setEmail}/>
+                    <InputField label="First Name" change={setFname} errMsg={errors.fname} />
+                    <InputField label="Second Name" change={setSname} errMsg={errors.sname} />
+                    <InputField label="Email" req={true} change={setEmail} type="email" errMsg={errors.email}/>
+                    <InputField label="Password" change={setPassword} req={true} type="password" errMsg={errors.password}/>
 
                     <h4 className="grey-light">A Password will be sent to you upon registration</h4>
 
                     <div className="align-right">
+                        {waiting ?
+                        <CircularProgress />
+                        :
                         <Button variant="contained" color="primary" className="chang-blue-background" onClick={submit}>
                             Register
-                        </Button>
+                        </Button>}
                     </div>
                 </div>
             </div>
