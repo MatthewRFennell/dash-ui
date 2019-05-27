@@ -7,24 +7,19 @@ import Button from '@material-ui/core/Button'
 /* Style Imports */
 import './notfound.scss'
 
-
 const NotFound = () => {
   return (
     <div className='centered-view'>
       <div>
-        <div className='title'>
-          PAGE NOT FOUND
-          </div>
+        <div className='title'>PAGE NOT FOUND</div>
         <div className='subtitle'>
           Sorry, the requested content could not be found.
-          </div>
+        </div>
         <Button className='back-button' variant='outlined'>
           Go Back
-          </Button>
+        </Button>
       </div>
-      <div className='big-bkg-text'>
-        404
-      </div>
+      <div className='big-bkg-text'>404</div>
     </div>
   )
 }
