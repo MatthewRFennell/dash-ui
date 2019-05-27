@@ -12,6 +12,7 @@ import store from './redux/store'
 
 /* Component Imports */
 import { createMuiTheme } from '@material-ui/core'
+import Dashboard from './components/dashboard/Dashboard'
 import Home from './components/frontpage/Home'
 import { Login } from './components/frontpage/Login'
 import Register from './components/frontpage/Register'
@@ -24,7 +25,12 @@ const HelloPage = () => <Hello compiler='TypeScript' framework='React' />
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: 'Noto Sans JP',
+    fontFamily: 'Lato',
+  },
+  palette: {
+    primary: {
+      main: '#0066ff',
+    },
   },
 })
 
@@ -36,7 +42,8 @@ ReactDOM.render((
           <Route exact={true} path='/' component={HelloPage} />
           <Route exact={true} path='/login' component={Login} />
           <Route exact={true} path='/register' component={Register} />
-          <PrivateRoute path='/home' component={Home} />
+          <Route path='/home' component={Home} />
+          <Route path='/dashboard' component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </Router>
