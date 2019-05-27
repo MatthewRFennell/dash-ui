@@ -1,10 +1,10 @@
 export default () => {
-    // return authorization header with jwt token
-    let token = localStorage.getItem('userToken');
+  // return authorization header with jwt token
+  const token = localStorage.getItem('userToken')
 
-    if (token) {
-        return { 'Authorization': 'Bearer ' + token };
-    } else {
-        return {};
-    }
+  if (token) {
+    return { Authorization: 'Bearer ' + token }
+  } else {
+    return {}
+  }
 }

@@ -6,12 +6,8 @@ import './frontpage.scss'
 
 const Cover: React.FunctionComponent = () => (
   <div className='centered-view'>
-    <div className='title'>
-      SUBTLE ASIAN PROBLEMS
-    </div>
-    <div className='big-bkg-text'>
-      SAP
-    </div>
+    <div className='title'>SUBTLE ASIAN PROBLEMS</div>
+    <div className='big-bkg-text'>SAP</div>
   </div>
 )
 
