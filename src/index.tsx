@@ -42,8 +42,8 @@ ReactDOM.render((
           <Route exact={true} path='/' component={HelloPage} />
           <Route exact={true} path='/login' component={Login} />
           <Route exact={true} path='/register' component={Register} />
-          <Route path='/home' component={Home} />
-          <Route path='/dashboard' component={Dashboard} />
+          <PrivateRoute path='/home' component={Home} />
+          <PrivateRoute path='/dashboard' component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </Router>
