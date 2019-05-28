@@ -1,8 +1,10 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import { logout } from '../../redux/actions/userActions'
 import { History } from 'history'
 import './styles.scss'
+import { connect } from 'react-redux';
 
 // tslint:disable-next-line:no-var-requires
 const logo = require('../../../assets/png/DashLogo-Black@4x.png')
@@ -12,22 +14,35 @@ const logo = require('../../../assets/png/DashLogo-Black@4x.png')
  */
 
 const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps) => {
-  const handleGoUrl = (url) => () => props.history.push(url)
+  const handleLogout = () => {
+    props.onLogout()
+  }
   return (
     <div className='header'>
       <div className='header-title'>
         <img src={logo} className='logo' />
         Dash
       </div>
-      <Button className='account-button' variant='outlined' onClick={handleGoUrl('/account')}>
-        Account
+      <Button className='account-button' variant='outlined' onClick={handleLogout}>
+        Logout
       </Button>
     </div>
   )
 }
 
-interface HeaderProps {
-  history?: History
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogout: () => {
+      dispatch(logout())
+    }
+  }
 }
 
-export default Header
+interface HeaderProps {
+  history?: History,
+  onLogout: () => void
+}
+
+const connectedHeader = connect(null, mapDispatchToProps)(Header)
+
+export {connectedHeader as Header }

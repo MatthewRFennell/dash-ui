@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { History } from 'history'
-import Header from '../common/Header'
+import { Header } from '../common/Header'
 
 import CustomerView from './customer/CustomerView'
 import './styles.scss'

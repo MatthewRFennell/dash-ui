@@ -145,10 +145,6 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
             errMsg={errors.password}
           />
 
-          <h4 className='grey-light'>
-            A Password will be sent to you upon registration
-          </h4>
-
           <div className='align-right'>
             {waiting ? (
               <CircularProgress />

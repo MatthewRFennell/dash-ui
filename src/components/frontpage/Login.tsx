@@ -47,7 +47,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
   const handleToggleVisibility = () => setVisibility(!visible)
 
   return props.loggedIn ? (
-    <Redirect to='/home' />
+    <Redirect to='/' />
   ) : (
     <div>
       <div className='centered-panel'>

@@ -39,11 +39,9 @@ ReactDOM.render((
     <MuiThemeProvider theme={theme}>
       <Router history={history}>
         <Switch>
-          <Route exact={true} path='/' component={HelloPage} />
+          <PrivateRoute exact={true} path='/' component={Dashboard} />
           <Route exact={true} path='/login' component={Login} />
           <Route exact={true} path='/register' component={Register} />
-          <PrivateRoute path='/home' component={Home} />
-          <PrivateRoute path='/dashboard' component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </Router>
