@@ -41,15 +41,15 @@ build:
     paths:
     - dist/
 
-# test:
-#   stage: test
-#   dependencies:
-#   - install
-#   - build
-#   only:
-#   - master
-#   script:
-#   - npm run test
+test:
+  stage: test
+  dependencies:
+  - install
+  - build
+  only:
+  - master
+  script:
+  - echo "no test"
 
 deploy:
   stage: deploy
