@@ -3,6 +3,7 @@ import * as React from 'react'
 import Button from '@material-ui/core/Button'
 import { History } from 'history'
 import InputField from './InputField'
+import * as EmailValidator from 'email-validator';
 
 import { CircularProgress } from '@material-ui/core'
 import './Login.scss'
@@ -42,6 +43,9 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
     if (email === '') {
       newErrors.email = 'Email is required'
       ret = true
+    } else if (!EmailValidator.validate(email)) {
+      newErrors.email = "Email not valid"
+      ret = true
     }
     if (fname === '') {
       newErrors.fname = 'First name is required'
@@ -62,9 +66,9 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
 
     setWaiting(true)
     const body = {
-      email,
-      firstname: fname,
-      lastname: sname,
+      email: email.toLowerCase(),
+      firstname: fname.toLowerCase(),
+      lastname: sname.toLowerCase(),
       password,
     }
     const url = DASH_API + '/register'
