@@ -21,7 +21,7 @@ const placeholderCards: EventCardProps[] = [
   {
     name: 'World',
     image: placeholderImage,
-  },
+  }
 ]
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {

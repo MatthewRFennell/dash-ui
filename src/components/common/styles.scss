@@ -8,6 +8,8 @@ $dash-blue: #0066ff;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: fixed;
+  background-color: white; 
   .header-title {
     font-size: 36px;
     font-weight: bold;
@@ -21,4 +23,8 @@ $dash-blue: #0066ff;
     margin-right: 15px;
     height: 30px;
   }
+}
+
+.header + * {
+  padding-top: 96px;
 }
