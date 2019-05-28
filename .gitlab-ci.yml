@@ -20,4 +20,5 @@ production:
   script:
     - docker build --pull -t $CONTAINER_DEPLOY_IMAGE .
     - docker push $CONTAINER_DEPLOY_IMAGE
+    - chmod +x ./release.sh
     - ./release.sh $HEROKU_PROJECT
