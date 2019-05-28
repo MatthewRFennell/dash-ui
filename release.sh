@@ -11,3 +11,19 @@ curl -n -X PATCH https://api.heroku.com/apps/$appName/formation \
 -H "Content-Type: application/json" \
 -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
 -H "Authorization: Bearer $HEROKU_KEY"
+
+echo ""
+echo ""
+echo "                        ##         ."
+echo "                  ## ## ##        =="
+echo "               ## ## ## ## ##    ==="
+echo "           /\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\___/ ==="
+echo "      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~"
+echo "           \______ o           __/"
+echo "             \    \         __/"
+echo "              \____\_______/"
+echo ""
+echo ""
+echo "       ~~~ Moby Dock is a happy whale ~~~"
+echo ""
+echo "                DEPLOY SUCCESS"
