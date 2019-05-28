@@ -1,19 +1,20 @@
-const path = require("path"),
-  webpack = require("webpack"),
-  HtmlWebpackPlugin = require("html-webpack-plugin"),
-  TerserPlugin = require("terser-webpack-plugin");
+const path = require('path'),
+  webpack = require('webpack'),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  TerserPlugin = require('terser-webpack-plugin'),
+  CopyPlugin = require('copy-webpack-plugin')
 
-const environment = process.env.NODE_ENV || "development";
+const environment = process.env.NODE_ENV || 'development'
 
 module.exports = {
-  mode: "development",
+  mode: environment,
   entry: {
-    app: ["./src/index.tsx", "webpack-hot-middleware/client"],
-    vendor: ["react", "react-dom"]
+    app: ['./src/index.tsx', 'webpack-hot-middleware/client'],
+    // vendor: ['react', 'react-dom'],
   },
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "./dist")
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, './dist'),
   },
   optimization: {
     minimizer: [
@@ -22,63 +23,63 @@ module.exports = {
         parallel: true,
         terserOptions: {
           output: {
-            comments: false
-          }
-        }
-      })
-    ]
+            comments: false,
+          },
+        },
+      }),
+    ],
   },
   // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
+  devtool: 'source-map',
   devServer: {
     contentBase: __dirname,
     compress: true,
     historyApiFallback: true,
     proxy: {
-      "/api": {
-        "target": "http://localhost:3000",
-        "secure": false,
-        "changeOrigin": true,
-        "pathRewrite": { '^/api': '' }
-      }
-    }
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' },
+      },
+    },
   },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       {
         test: /\.tsx?$/,
-        loader: "awesome-typescript-loader",
-        exclude: path.resolve(__dirname, "functions")
+        loader: 'awesome-typescript-loader',
+        exclude: path.resolve(__dirname, 'functions'),
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
-        enforce: "pre",
+        enforce: 'pre',
         test: /\.js$/,
-        loader: "source-map-loader",
-        exclude: path.resolve(__dirname, "functions")
+        loader: 'source-map-loader',
+        exclude: path.resolve(__dirname, 'functions'),
       },
       {
         test: /\.(jpg|png|svg)$/,
-        loader: "url-loader",
+        loader: 'url-loader',
         options: {
-          limit: 25000
-        }
+          limit: 25000,
+        },
       },
       {
         test: /\.scss$/,
         use: [
-          "style-loader", // creates style nodes from JS strings
-          "css-loader", // translates CSS into CommonJS
-          "sass-loader" // compiles Sass to CSS, using Node Sass by default
-        ]
-      }
-    ]
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'sass-loader', // compiles Sass to CSS, using Node Sass by default
+        ],
+      },
+    ],
   },
 
   // When importing a module whose path matches one of the following, just
@@ -86,19 +87,32 @@ module.exports = {
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
-    react: "React",
-    "react-dom": "ReactDOM"
+    react: 'React',
+    'react-dom': 'ReactDOM',
   },
 
   plugins: [
-    new HtmlWebpackPlugin({ template: "index.html" }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src', 'index.ejs'),
+      title: 'Dash',
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.EnvironmentPlugin({
       NODE_ENV: environment, // use 'development' unless process.env.NODE_ENV is defined
-      DEBUG: false
+      DEBUG: false,
     }),
     new webpack.DefinePlugin({
-      MACRO: JSON.stringify(0)
-    })
-  ]
+      MACRO: JSON.stringify(0),
+    }),
+    new CopyPlugin([
+      {
+        from: path.resolve(__dirname, 'node_modules', 'react', 'umd', 'react.development.js'),
+        to: path.resolve(__dirname, 'dist', 'react.development.js'),
+      },
+      {
+        from: path.resolve(__dirname, 'node_modules', 'react-dom', 'umd', 'react-dom.development.js'),
+        to: path.resolve(__dirname, 'dist', 'react-dom.development.js'),
+      }
+    ]),
+  ],
 }

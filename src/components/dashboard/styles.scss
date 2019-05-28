@@ -1,0 +1,16 @@
+.customer-cards {
+  display: flex;
+  ul {
+    list-style-type: none;
+  }
+}
+
+.card {
+  width: 344px;
+  height: 376px;
+  .card-header {
+    width: 344px;
+    height: 194px;
+    object-fit: cover;
+  }
+}

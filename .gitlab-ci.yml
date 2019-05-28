@@ -1,0 +1,64 @@
+image: node:latest
+
+stages:
+- install
+- test
+- build
+- deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - node_modules/
+  - .awcache/
+  
+install:
+  stage: install
+  only:
+  - master
+  script:
+  - npm install
+
+lint:
+  stage: test
+  dependencies:
+  - install
+  only:
+  - master
+  script:
+  - npm run lint
+
+build:
+  stage: build
+  dependencies: 
+  - install
+  - test
+  only:
+  - master
+  script:
+  - npm run build
+  artifacts:
+    paths:
+    - dist/
+
+# test:
+#   stage: test
+#   dependencies:
+#   - install
+#   - build
+#   only:
+#   - master
+#   script:
+#   - npm run test
+
+deploy:
+  stage: deploy
+  dependencies: 
+  - install
+  - test
+  - build
+  only:
+  - master
+  script:
+  - echo "no deployment"
+  

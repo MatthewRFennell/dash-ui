@@ -11,5 +11,8 @@
   },
   "include": [
     "./src/**/*"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true
+  }
 }
