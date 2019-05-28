@@ -67,8 +67,8 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
       lastname: sname,
       password,
     }
-
-    fetch('/api/register', {
+    const url = DASH_API + '/register'
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {

@@ -103,6 +103,10 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       MACRO: JSON.stringify(0),
+      DASH_API:
+        environment === 'development'
+          ? JSON.stringify('http://localhost:3000')
+          : JSON.stringify('http://dash-api-19.herokuapp.com'),
     }),
     new CopyPlugin([
       {
@@ -112,7 +116,7 @@ module.exports = {
       {
         from: path.resolve(__dirname, 'node_modules', 'react-dom', 'umd', 'react-dom.development.js'),
         to: path.resolve(__dirname, 'dist', 'react-dom.development.js'),
-      }
+      },
     ]),
   ],
 }

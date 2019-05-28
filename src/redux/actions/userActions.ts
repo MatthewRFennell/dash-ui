@@ -9,10 +9,9 @@ export const login = (email, password) => {
       email,
       password,
     }
-
     const stringy = JSON.stringify(body)
-
-    return fetch('/api/login', {
+    const url = DASH_API + '/login'
+    return fetch(url, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +72,8 @@ export const fetchDetailSuccesss = (user) => {
 
 export const fetchDetails = () => {
   return (dispatch) => {
-    fetchProtected('/api/me', null, null, 'GET', (res) => {
+    const url = DASH_API + '/me'
+    fetchProtected(url, null, null, 'GET', (res) => {
       if (res.success) {
         dispatch(fetchDetailSuccesss(res.user))
       } else {
