@@ -28,6 +28,15 @@ lint:
   script:
   - npm run lint
 
+test:
+  stage: test
+  dependencies:
+  - install
+  only:
+  - master
+  script:
+  - echo "no test"
+
 build:
   stage: build
   dependencies: 
@@ -40,16 +49,6 @@ build:
   artifacts:
     paths:
     - dist/
-
-test:
-  stage: test
-  dependencies:
-  - install
-  - build
-  only:
-  - master
-  script:
-  - echo "no test"
 
 deploy:
   stage: deploy
