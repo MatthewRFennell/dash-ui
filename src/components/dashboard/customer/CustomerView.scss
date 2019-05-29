@@ -1,0 +1,21 @@
+.customer-view {
+  margin: auto;
+  .headline {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 30px;
+    text-align: center;
+  }
+  .customer-cards {
+    display: flex;
+    justify-content: center;
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 15px 0 15px;
+      li {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}

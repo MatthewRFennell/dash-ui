@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 
-import './styles.scss'
+import './Card.scss'
 
 const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProps) => {
   return (
@@ -21,17 +21,19 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
         <Typography className='card-body'>{props.blurb}</Typography>
       </CardContent>
       <CardActions>
-        <Button className='card-button'>Edit Details</Button>
+        <Button className='card-button' onClick={props.action}>Edit Details</Button>
       </CardActions>
     </Card>
   )
 }
 
 export interface EventCardProps {
+  id: number
   name: string
   image: string
   date: Date
   blurb: string
+  action: () => void
 }
 
 export default EventCard

@@ -1,0 +1,56 @@
+.event-page-view {
+  display: /* weird */ flex /* but okay */;
+  min-height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  .event-page-mock-panel {
+    height: 100vh;
+    width: 50vw;
+    min-width: 50vw;
+    max-width: 50vw;
+    z-index: -9999;
+  }
+  .event-page-left-panel {
+    position: fixed;
+    .event-page-back {
+      position: fixed;
+      top: 126px;
+      left: 30px;
+      color: white;
+      font-weight: bold;
+    }
+    .event-page-image {
+      height: 100vh;
+      width: 50vw;
+      object-fit: cover;
+    }
+    height: 100vh;
+    width: 50vw;
+  }
+  .event-page-right-panel {
+    min-height: 100vh;
+    width: 50vw;
+    min-width: 50vw;
+    max-width: 50vw;
+    padding: 30px 30px 30px 60px;
+    .event-page-title {
+      font-weight: bold;
+      font-size: 36pt;
+    }
+    .event-page-block-title {
+      font-weight: bold;
+      font-size: 12pt;
+      letter-spacing: 0.1564em;
+      text-transform: uppercase;
+    }
+    .event-page-body {
+      font-size: 16pt;
+      font-weight: 300;
+      color: rgba(0, 0, 0, 0.6);
+    }
+    .event-page-detail {
+      margin-top: 15px;
+    }
+  }
+}

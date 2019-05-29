@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import * as EmailValidator from 'email-validator'
 import { History } from 'history'
 import InputField from './InputField'
-import * as EmailValidator from 'email-validator';
 
 import { CircularProgress } from '@material-ui/core'
 import './Login.scss'
@@ -44,7 +44,7 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
       newErrors.email = 'Email is required'
       ret = true
     } else if (!EmailValidator.validate(email)) {
-      newErrors.email = "Email not valid"
+      newErrors.email = 'Email not valid'
       ret = true
     }
     if (fname === '') {

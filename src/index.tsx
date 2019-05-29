@@ -13,7 +13,6 @@ import store from './redux/store'
 /* Component Imports */
 import { createMuiTheme } from '@material-ui/core'
 import Dashboard from './components/dashboard/Dashboard'
-import Home from './components/frontpage/Home'
 import { Login } from './components/frontpage/Login'
 import Register from './components/frontpage/Register'
 import Thanks from './components/frontpage/Thanks'
