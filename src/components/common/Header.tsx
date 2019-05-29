@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
-import { logout } from '../../redux/actions/userActions'
 import { History } from 'history'
+import { connect } from 'react-redux'
+import { logout } from '../../redux/actions/userActions'
 import './styles.scss'
-import { connect } from 'react-redux';
 
 // tslint:disable-next-line:no-var-requires
 const logo = require('../../../assets/png/DashLogo-Black@4x.png')
@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLogout: () => {
       dispatch(logout())
-    }
+    },
   }
 }
 
