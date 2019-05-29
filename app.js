@@ -6,13 +6,18 @@ const port = process.env.PORT || 8080
 
 app.use(express.static(__dirname))
 
+const time = () => {
+  const date = new Date()
+  return `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`
+}
+
 app.get(/\.(jpg|png|svg)$/, (req, res) => {
-  console.log('\x1b[36mi\x1b[0m image requested, url: ' + req.url)
+  console.log(time() + ' \x1b[36mi\x1b[0m image requested, url: ' + req.url)
   res.sendFile(path.join(__dirname, 'dist', req.url))
 })
 
 app.get(/\.js$/, (req, res) => {
-  console.log('\x1b[36mi\x1b[0m script requested, url: ' + req.url)
+  console.log(time() + ' \x1b[36mi\x1b[0m script requested, url: ' + req.url)
   res.sendFile(path.join(__dirname, 'dist', req.url))
 })
 
@@ -21,5 +26,5 @@ app.get('/*', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`\x1b[36mi\x1b[0m \x1b[1mDashApp\x1b[0m is listening on port ${port}`)
+  console.log(time() + ` \x1b[36mi\x1b[0m \x1b[1mDashApp\x1b[0m is listening on port ${port}`)
 })

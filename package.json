@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "start:dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "start:staging": "cross-env NODE_ENV=staging webpack-dev-server",
+    "start:staging": "cross-env NODE_ENV=production webpack-dev-server",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:lint": "tslint --project ."
