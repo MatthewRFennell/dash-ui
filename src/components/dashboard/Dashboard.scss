@@ -1,0 +1,13 @@
+.dashboard-view {
+  width: 100vw;
+  height: 100vh;
+  .dashboard-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    font-weight: bold;
+    .dashboard-add-icon {
+      margin-right: 10px;
+    }
+  }
+}
