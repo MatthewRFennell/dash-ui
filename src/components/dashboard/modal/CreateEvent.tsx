@@ -79,6 +79,7 @@ export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) =>
       .then((response) => {
         console.log(response)
         setSubmitting(false)
+        props.onClose()
       })
       .catch((error: Error) => {
         setSubmitting(false)

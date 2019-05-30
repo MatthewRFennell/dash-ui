@@ -40,7 +40,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         </div>
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Number of Tickets</Typography>
-          <Typography className='event-page-body'>{props.numTickets}</Typography>
+          <Typography className='event-page-body'>{props.tickets}</Typography>
         </div>
         {attendeeList !== undefined && (
           <div className='event-page-detail'>
@@ -110,7 +110,7 @@ export interface EventFullDetails {
   event_id: number
   blurb: string
   date: Date
-  numTickets: number
+  tickets: number
   attendees?: AttendeeDetails[]
   transport?: TransportDetails
 }
