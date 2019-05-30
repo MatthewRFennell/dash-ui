@@ -11,11 +11,7 @@ import EventPage, { EventFullDetails } from './customer/EventPage'
 import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'
 
-// tslint:disable-next-line:no-var-requires
-const placeholderImage = require('../../../assets/png/care-bears.jpg')
-
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
-
   const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
 
@@ -66,7 +62,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
       fetchProtected(`${DASH_API}/fullevent?id=${id}`, null, null, 'GET', (res) => {
         setOpenEvent({
           ...res.events,
-          image_path: placeholderImage,
           date: new Date(res.events.date),
           attendees: res.attendees,
           transport: {
