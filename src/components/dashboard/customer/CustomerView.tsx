@@ -2,12 +2,9 @@ import * as React from 'react'
 
 import Typography from '@material-ui/core/Typography'
 import { History } from 'history'
+import fetchProtected from '../../../api/protected'
 import EventCard, { EventCardProps } from '../Card'
 import './CustomerView.scss'
-import fetchProtected from '../../../api/protected';
-
-// tslint:disable-next-line:no-var-requires
-const placeholderImage = require('../../../../assets/png/placeholder.jpg')
 
 const NUM_COLS = 2
 

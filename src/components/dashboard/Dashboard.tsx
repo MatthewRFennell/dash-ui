@@ -1,13 +1,12 @@
 import * as React from 'react'
 
 import { History } from 'history'
+import fetchProtected from '../../../src/api/protected'
 import { Header } from '../common/Header'
 import CustomerView from './customer/CustomerView'
 import EventPage, { EventFullDetails } from './customer/EventPage'
-import fetchProtected from '../../../src/api/protected';
-
 // tslint:disable-next-line:no-var-requires
-const placeholderImage = require('../../../assets/png/placeholder.jpg')
+const placeholderImage = require('../../../assets/png/care-bears.jpg')
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [openEvent, setOpenEvent]: [
@@ -16,21 +15,16 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   ] = React.useState(undefined)
 
   const handleSetEvent = (id?: number) => () => {
-    console.log("Set event", id)
+    console.log('Set event', id)
     if (id !== undefined) {
       /* Fetch from endpoint */
-      console.log("Fetching", `/api/fullevent?id=${id}`)
+      console.log('Fetching', `/api/fullevent?id=${id}`)
       fetchProtected(`/api/fullevent?id=${id}`, null, null, 'GET', (res) => {
-        console.log(res)
-        console.log({
-          ...res.events,
-          attendees: res.attendees,
-          transport: res.transport
-        })
         setOpenEvent({
           ...res.events,
+          image_path: placeholderImage,
           attendees: res.attendees,
-          transport: res.transport
+          transport: res.transport,
         })
       })
     } else {

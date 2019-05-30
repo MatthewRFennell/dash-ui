@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography'
 
 import './Card.scss'
 
+// tslint:disable-next-line:no-var-requires
 const placeholderImage = require('../../../assets/png/care-bears.jpg')
-
 
 const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProps) => {
   return (
@@ -18,7 +18,7 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
       <img src={placeholderImage} className='card-header' />
       <CardContent>
         <Typography className='card-date'>
-          {props.date}
+          {(new Date(props.date)).getDay()}/{(new Date(props.date)).getMonth()}/{(new Date(props.date)).getFullYear()}
         </Typography>
         <Typography className='card-title'>{props.name}</Typography>
         <Typography className='card-body'>{props.blurb}</Typography>

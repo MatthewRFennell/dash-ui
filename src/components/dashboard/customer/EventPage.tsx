@@ -32,7 +32,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Event Date</Typography>
           <Typography className='event-page-body'>
-            {props.date}
+            {(new Date(props.date)).getDay()}/{(new Date(props.date)).getMonth()}/{(new Date(props.date)).getFullYear()}
           </Typography>
         </div>
         <div className='event-page-detail'>
