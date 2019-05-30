@@ -9,10 +9,15 @@ import EventPage, { EventFullDetails } from './customer/EventPage'
 const placeholderImage = require('../../../assets/png/care-bears.jpg')
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
-  const [openEvent, setOpenEvent]: [
-    EventFullDetails | undefined,
-    React.Dispatch<EventFullDetails | undefined>
-  ] = React.useState(undefined)
+  const [openEvent, setOpenEvent] = React.useState(undefined)
+
+  const updateTransport = (transport) => {
+    fetchProtected(DASH_API + '/editTansport', null, transport, 'PUT', ((res) => {
+      if (res.success) {
+        setOpenEvent((event: EventFullDetails) => event.transport = transport)
+      }
+    }))
+  }
 
   const handleSetEvent = (id?: number) => () => {
     console.log('Set event', id)
@@ -25,7 +30,10 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           image_path: placeholderImage,
           date: new Date(res.events.date),
           attendees: res.attendees,
-          transport: res.transport,
+          transport: {
+            ...res.transport,
+            departTime: new Date(res.transport.departTime),
+          },
         })
       })
     } else {

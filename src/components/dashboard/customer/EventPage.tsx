@@ -1,13 +1,13 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
-
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Typography from '@material-ui/core/Typography'
 import './EventPage.scss'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
+
   const attendeeList = props.attendees
     ? props.attendees.map((attendee, index) => (
         <ListItem key={index}>
@@ -17,7 +17,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         </ListItem>
       ))
     : undefined
-
   return (
     <div className='event-page-view'>
       <div className='event-page-left-panel'>
@@ -34,10 +33,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           <Typography className='event-page-body'>
             {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
           </Typography>
-        </div>
-        <div className='event-page-detail'>
-          <Typography className='event-page-block-title'>Event Type</Typography>
-          <Typography className='event-page-body'>{props.type}</Typography>
         </div>
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Event Description</Typography>
@@ -79,7 +74,10 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
                 <div>
                   <Typography className='event-page-block-title'>Departing At</Typography>
                   <Typography className='event-page-body'>
-                    {props.transport.departTime}
+                    {props.transport.departTime.getDay()}/{props.transport.departTime.getMonth()}
+                    /{props.transport.departTime.getFullYear()}{' '}
+
+                    {props.transport.departTime.getHours()}:{props.transport.departTime.getMinutes()}
                   </Typography>
                 </div>
               </ListItem>
@@ -112,7 +110,6 @@ export interface EventFullDetails {
   image_path: string
   blurb: string
   date: Date
-  type: string
   numTickets: number
   attendees?: AttendeeDetails[]
   transport?: TransportDetails
