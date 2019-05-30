@@ -20,10 +20,10 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   return (
     <div className='event-page-view'>
       <div className='event-page-left-panel'>
-        <Button className='event-page-back' variant='outlined' onClick={props.backAction} color='primary'>
+        <Button className='event-page-back' onClick={props.backAction} color='primary'>
           Back
         </Button>
-        <img src={props.image_path} className='event-page-image' />
+        <img src={DASH_API + '/eventImage?id=' + props.event_id} className='event-page-image' />
       </div>
       <div className='event-page-mock-panel'/>
       <div className='event-page-right-panel'>
@@ -107,7 +107,7 @@ interface EventPageProps extends EventFullDetails {
 
 export interface EventFullDetails {
   name: string
-  image_path: string
+  event_id: number
   blurb: string
   date: Date
   numTickets: number

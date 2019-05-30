@@ -9,13 +9,10 @@ import Typography from '@material-ui/core/Typography'
 
 import './Card.scss'
 
-// tslint:disable-next-line:no-var-requires
-const placeholderImage = require('../../../assets/png/care-bears.jpg')
-
 const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProps) => {
   return (
     <Card className='card'>
-      <img src={placeholderImage} className='card-header' />
+      <img src={DASH_API + '/eventImage?id=' + props.event_id} className='card-header' />
       <CardContent>
         <Typography className='card-date'>
           {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
@@ -24,7 +21,9 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
         <Typography className='card-body'>{props.blurb}</Typography>
       </CardContent>
       <CardActions>
-        <Button className='card-button' onClick={props.action}>Edit Details</Button>
+        <Button className='card-button' onClick={props.action}>
+          Edit Details
+        </Button>
       </CardActions>
     </Card>
   )

@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import PublishIcon from '@material-ui/icons/Publish'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
+import authHeader from '../../../api/authHeader'
 
 import './CreateEvent.scss'
 
@@ -24,6 +25,7 @@ export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) =>
   const [image, setImage] = React.useState<File>(null)
   const [submitting, setSubmitting] = React.useState<boolean>(false)
   const [errors, setErrors] = React.useState<string[]>([])
+  const [fetchError, setFetchError] = React.useState<string>('')
   const removeError = (err) => {
     if (errors.includes(err)) {
       setErrors(errors.filter((val) => val !== err))
@@ -67,6 +69,10 @@ export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) =>
     formData.append('tickets', tickets.toString())
     fetch(url, {
       method: 'POST',
+      headers: {
+        ...authHeader(),
+        'Access-Control-Allow-Origin': '*',
+      },
       body: formData,
     })
       .then((response) => response.json())
@@ -75,9 +81,8 @@ export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) =>
         setSubmitting(false)
       })
       .catch((error: Error) => {
-        console.error('fuck you!!' + error)
         setSubmitting(false)
-        setErrors(errors.concat([error.name]))
+        setFetchError(error.message)
       })
   }
 
