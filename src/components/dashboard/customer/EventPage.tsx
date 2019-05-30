@@ -15,6 +15,11 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import './EventPage.scss'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
+
+  const handleDelete = (id) => (event) => {
+    props.deleteAttendee(id)
+  }
+
   const attendeeTable =
     props.attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
@@ -33,7 +38,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
               <TableCell className='table-cell'>{attendee.sname}</TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
               <TableCell className='table-cell'>
-                <IconButton>
+                <IconButton onClick={handleDelete(attendee.attendee_id)}>
                   <CloseIcon />
                 </IconButton>
               </TableCell>
@@ -133,6 +138,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 
 interface EventPageProps extends EventFullDetails {
   backAction: () => void
+  deleteAttendee: (x: number) => void
 }
 
 export interface EventFullDetails {
@@ -149,6 +155,7 @@ interface AttendeeDetails {
   fname: string
   sname: string
   diet?: string
+  attendee_id: number
 }
 
 interface TransportDetails {

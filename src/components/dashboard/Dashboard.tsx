@@ -51,6 +51,18 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     })
   }
 
+  const deleteAttendee = (attendeeID) => {
+    console.log('Delete Clicked')
+    fetchProtected(DASH_API + '/deleteAttendee', null, {attendee_id: attendeeID}, 'DELETE', (res) => {
+      if (res.success) {
+        setOpenEvent((event: EventFullDetails) => {
+          event.attendees = event.attendees.filter((a) => a.attendee_id !== attendeeID)
+          return event
+        })
+      }
+    })
+  }
+
   const handleModalOpen = () => setModalOpen(true)
   const handleModalClose = () => setModalOpen(false)
 
@@ -87,7 +99,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           </Fab>
         </div>
       ) : (
-        <EventPage {...openEvent} backAction={handleSetEvent()} />
+        <EventPage {...openEvent} deleteAttendee={deleteAttendee} backAction={handleSetEvent()} />
       )}
       <CreateEvent open={modalOpen} onClose={handleModalClose} />
     </div>
