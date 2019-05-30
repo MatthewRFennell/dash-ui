@@ -30,7 +30,7 @@
   }
   .event-page-right-panel {
     min-height: 100vh;
-    width: 50vw;
+    width: calc(50vw - 90px);
     min-width: 50vw;
     max-width: 50vw;
     padding: 30px 30px 30px 60px;
@@ -51,6 +51,19 @@
     }
     .event-page-detail {
       margin-top: 15px;
+      .attendee-table {
+        width: calc(50vw - 120px);
+        .table-cell {
+          padding: 4px;
+        }
+      }
+      .attendee-button {
+        margin-top: 10px;
+        font-weight: bold;
+        .add-icon {
+          margin-right: 10px;
+        }
+      }
     }
   }
 }
