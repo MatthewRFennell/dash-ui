@@ -52,12 +52,14 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const deleteAttendee = (attendeeID) => {
-    console.log('Delete Clicked')
-    fetchProtected(DASH_API + '/deleteAttendee', null, {attendee_id: attendeeID}, 'DELETE', (res) => {
+    fetchProtected(DASH_API + '/deleteAttendee?attendee_id=' + attendeeID, null, null, 'DELETE', (res) => {
+      console.log(res)
       if (res.success) {
-        setOpenEvent((event: EventFullDetails) => {
-          event.attendees = event.attendees.filter((a) => a.attendee_id !== attendeeID)
-          return event
+        console.log('Delete Success')
+        const newAttendees = openEvent.attendees.filter((a) => a.attendee_id !== attendeeID)
+        setOpenEvent({
+          ...openEvent,
+          attendees : newAttendees,
         })
       }
     })
