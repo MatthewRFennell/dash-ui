@@ -67,8 +67,8 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
     setWaiting(true)
     const body = {
       email: email.toLowerCase(),
-      firstname: fname.toLowerCase(),
-      lastname: sname.toLowerCase(),
+      fname: fname.toLowerCase(),
+      sname: sname.toLowerCase(),
       password,
     }
     const url = DASH_API + '/register'
