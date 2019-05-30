@@ -6,7 +6,7 @@ import EventCard, { EventCardProps } from '../Card'
 import './CustomerView.scss'
 
 // tslint:disable-next-line:no-var-requires
-const placeholderImage = require('../../../../assets/png/care-bears.jpg')
+const placeholderImage = require('../../../../assets/png/placeholder.jpg')
 
 const NUM_COLS = 2
 
