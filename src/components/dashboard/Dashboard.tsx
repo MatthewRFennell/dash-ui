@@ -1,18 +1,25 @@
 import * as React from 'react'
 
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
 import { History } from 'history'
 import fetchProtected from '../../../src/api/protected'
 import { Header } from '../common/Header'
 import CustomerView from './customer/CustomerView'
 import EventPage, { EventFullDetails } from './customer/EventPage'
+
+import './Dashboard.scss'
+import { CreateEvent } from './modal/CreateEvent'
+
 // tslint:disable-next-line:no-var-requires
 const placeholderImage = require('../../../assets/png/care-bears.jpg')
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
-  const [openEvent, setOpenEvent]: [
-    EventFullDetails | undefined,
-    React.Dispatch<EventFullDetails | undefined>
-  ] = React.useState(undefined)
+  const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false)
+
+  const handleModalOpen = () => setModalOpen(true)
+  const handleModalClose = () => setModalOpen(false)
 
   const handleSetEvent = (id?: number) => () => {
     console.log('Set event', id)
@@ -34,13 +41,20 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   return (
-    <div>
+    <div className='dashboard-view'>
       <Header history={props.history} />
       {openEvent === undefined ? (
-        <CustomerView history={props.history} setActiveEvent={handleSetEvent} />
+        <div>
+          <CustomerView history={props.history} setActiveEvent={handleSetEvent} />
+          <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
+            <AddIcon className='dashboard-add-icon' />
+            Add event
+          </Fab>
+        </div>
       ) : (
         <EventPage {...openEvent} backAction={handleSetEvent()} />
       )}
+      <CreateEvent open={modalOpen} onClose={handleModalClose} />
     </div>
   )
 }

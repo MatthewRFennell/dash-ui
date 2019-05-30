@@ -62,7 +62,10 @@ module.exports = {
         enforce: 'pre',
         test: /\.js$/,
         loader: 'source-map-loader',
-        exclude: path.resolve(__dirname, 'functions'),
+        exclude: [
+          path.resolve(__dirname, 'functions'),
+          path.resolve(__dirname, 'node_modules', 'material-ui-next-pickers'),
+        ],
       },
       {
         test: /\.(jpg|png|svg)$/,
