@@ -138,7 +138,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
             </List>
           </div>
         )}
-        <AddAttendee open={attendeeModalOpen} onClose={handleModalClose} />
+        <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id}/>
       </div>
     </div>
   )
@@ -147,6 +147,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 interface EventPageProps extends EventFullDetails {
   backAction: () => void
   deleteAttendee: (x: number) => void
+  addAttendee: (x: AttendeeDetails) => void
 }
 
 export interface EventFullDetails {
@@ -159,7 +160,7 @@ export interface EventFullDetails {
   transport?: TransportDetails
 }
 
-interface AttendeeDetails {
+export interface AttendeeDetails {
   fname: string
   sname: string
   diet?: string

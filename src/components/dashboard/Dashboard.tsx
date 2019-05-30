@@ -28,13 +28,11 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const addAttendee = (attendee) => {
-    fetchProtected(DASH_API + '/addAttendee', null, {...attendee, id: openEvent.event_id}, 'POST', (res) => {
-      if (res.success) {
-        setOpenEvent((event: EventFullDetails) => {
-          event.attendees.push(attendee)
-          return event
-        })
-      }
+    const newAttendees = openEvent.attendees
+    newAttendees.push(attendee)
+    setOpenEvent({
+      ...openEvent,
+      attendees: newAttendees,
     })
   }
 
@@ -101,7 +99,12 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           </Fab>
         </div>
       ) : (
-        <EventPage {...openEvent} deleteAttendee={deleteAttendee} backAction={handleSetEvent()} />
+        <EventPage
+          {...openEvent}
+          deleteAttendee={deleteAttendee}
+          addAttendee={addAttendee}
+          backAction={handleSetEvent()}
+        />
       )}
       <CreateEvent open={modalOpen} onClose={handleModalClose} />
     </div>

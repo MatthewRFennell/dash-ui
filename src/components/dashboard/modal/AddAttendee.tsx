@@ -11,6 +11,8 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
+import fetchProtected from '../../../../src/api/protected'
+import { AttendeeDetails } from '../customer/EventPage'
 import './Modal.scss'
 
 const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
@@ -44,10 +46,23 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
       setErrors(allErrors)
       return
     }
+
+    const body = {
+      fname,
+      sname,
+      diet: dietr,
+      id: props.id,
+    }
+
+    console.log(body)
+
     setSubmitting(true)
-    setTimeout(() => {
+    fetchProtected(DASH_API + '/addAttendee', null, body, 'POST', (res) => {
       setSubmitting(false)
-    }, 2000)
+      if (res.success) {
+        props.add(res.attendee)
+      }
+    })
   }
   const fnameError = errors.includes('fname')
   const snameError = errors.includes('sname')
@@ -111,6 +126,8 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
 interface AddAttendeeProps {
   open: boolean
   onClose: () => void
+  add: (x: AttendeeDetails) => void
+  id: number
 }
 
 export default AddAttendee
