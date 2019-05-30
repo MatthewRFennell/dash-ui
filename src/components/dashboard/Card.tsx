@@ -18,7 +18,7 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
       <img src={placeholderImage} className='card-header' />
       <CardContent>
         <Typography className='card-date'>
-          {(new Date(props.date)).getDay()}/{(new Date(props.date)).getMonth()}/{(new Date(props.date)).getFullYear()}
+          {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
         </Typography>
         <Typography className='card-title'>{props.name}</Typography>
         <Typography className='card-body'>{props.blurb}</Typography>

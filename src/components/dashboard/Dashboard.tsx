@@ -23,6 +23,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         setOpenEvent({
           ...res.events,
           image_path: placeholderImage,
+          date: new Date(res.events.date),
           attendees: res.attendees,
           transport: res.transport,
         })
