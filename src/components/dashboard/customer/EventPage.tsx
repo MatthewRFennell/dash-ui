@@ -1,31 +1,58 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
+import CloseIcon from '@material-ui/icons/Close'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import './EventPage.scss'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
-
-  const attendeeList = props.attendees
-    ? props.attendees.map((attendee, index) => (
-        <ListItem key={index}>
-          <Typography className='event-page-body'>
-            {attendee.sname}, {attendee.fname}, {attendee.diet}
-          </Typography>
-        </ListItem>
-      ))
-    : undefined
+  const attendeeTable =
+    props.attendees.length !== 0 ? (
+      <Table size='small' className='attendee-table'>
+        <TableHead>
+          <TableRow>
+            <TableCell className='table-cell'>First Name</TableCell>
+            <TableCell className='table-cell'>Last Name</TableCell>
+            <TableCell className='table-cell'>Dietary Requirements</TableCell>
+            <TableCell className='table-cell' />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.attendees.map((attendee, index) => (
+            <TableRow key={index}>
+              <TableCell className='table-cell'>{attendee.fname}</TableCell>
+              <TableCell className='table-cell'>{attendee.sname}</TableCell>
+              <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
+              <TableCell className='table-cell'>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    ) : (
+      undefined
+    )
   return (
     <div className='event-page-view'>
       <div className='event-page-left-panel'>
-        <Button className='event-page-back' onClick={props.backAction} color='primary'>
+        <Button className='event-page-back' variant='contained' onClick={props.backAction} color='primary'>
           Back
         </Button>
         <img src={DASH_API + '/eventImage?id=' + props.event_id} className='event-page-image' />
       </div>
-      <div className='event-page-mock-panel'/>
+      <div className='event-page-mock-panel' />
       <div className='event-page-right-panel'>
         <Typography className='event-page-title'>{props.name}</Typography>
         <div className='event-page-detail'>
@@ -42,13 +69,17 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           <Typography className='event-page-block-title'>Number of Tickets</Typography>
           <Typography className='event-page-body'>{props.tickets}</Typography>
         </div>
-        {attendeeList !== undefined && (
+        {attendeeTable !== undefined && (
           <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Attendees</Typography>
-            <List>{attendeeList}</List>
+            {attendeeTable}
+            <Button variant='outlined' color='primary' className='attendee-button'>
+              <PersonAddIcon className='add-icon' />
+              Add Attendee
+            </Button>
           </div>
         )}
-        {props.transport !== undefined && (
+        {props.transport.operator !== undefined && (
           <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Transport</Typography>
             <List>
@@ -66,7 +97,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
               </ListItem>
               <ListItem>
                 <div>
-                  <Typography className='event-page-block-title'>Duratiom</Typography>
+                  <Typography className='event-page-block-title'>Duration</Typography>
                   <Typography className='event-page-body'>{props.transport.duration}</Typography>
                 </div>
               </ListItem>
@@ -74,10 +105,9 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
                 <div>
                   <Typography className='event-page-block-title'>Departing At</Typography>
                   <Typography className='event-page-body'>
-                    {props.transport.departTime.getDay()}/{props.transport.departTime.getMonth()}
-                    /{props.transport.departTime.getFullYear()}{' '}
-
-                    {props.transport.departTime.getHours()}:{props.transport.departTime.getMinutes()}
+                    {props.transport.departTime.getDay()}/{props.transport.departTime.getMonth()}/
+                    {props.transport.departTime.getFullYear()} {props.transport.departTime.getHours()}:
+                    {props.transport.departTime.getMinutes()}
                   </Typography>
                 </div>
               </ListItem>
