@@ -12,7 +12,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
     ? props.attendees.map((attendee, index) => (
         <ListItem key={index}>
           <Typography className='event-page-body'>
-            {attendee.lastName}, {attendee.firstName}
+            {attendee.sname}, {attendee.fname}, {attendee.diet}
           </Typography>
         </ListItem>
       ))
@@ -119,9 +119,9 @@ export interface EventFullDetails {
 }
 
 interface AttendeeDetails {
-  firstName: string
-  lastName: string
-  dietaryReq?: string
+  fname: string
+  sname: string
+  diet?: string
 }
 
 interface TransportDetails {
