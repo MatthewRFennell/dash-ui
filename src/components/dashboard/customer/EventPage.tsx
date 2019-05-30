@@ -12,7 +12,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
     ? props.attendees.map((attendee, index) => (
         <ListItem key={index}>
           <Typography className='event-page-body'>
-            {attendee.lastName}, {attendee.firstName}
+            {attendee.sname}, {attendee.fname}, {attendee.diet}
           </Typography>
         </ListItem>
       ))
@@ -24,7 +24,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         <Button className='event-page-back' variant='outlined' onClick={props.backAction} color='primary'>
           Back
         </Button>
-        <img src={props.image} className='event-page-image' />
+        <img src={props.image_path} className='event-page-image' />
       </div>
       <div className='event-page-mock-panel'/>
       <div className='event-page-right-panel'>
@@ -79,8 +79,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
                 <div>
                   <Typography className='event-page-block-title'>Departing At</Typography>
                   <Typography className='event-page-body'>
-                    {props.transport.departTime.getDay()}/{props.transport.departTime.getMonth()}/
-                    {props.transport.departTime.getFullYear()}
+                    {props.transport.departTime}
                   </Typography>
                 </div>
               </ListItem>
@@ -110,7 +109,7 @@ interface EventPageProps extends EventFullDetails {
 
 export interface EventFullDetails {
   name: string
-  image: string
+  image_path: string
   blurb: string
   date: Date
   type: string
@@ -120,9 +119,9 @@ export interface EventFullDetails {
 }
 
 interface AttendeeDetails {
-  firstName: string
-  lastName: string
-  dietaryReq?: string
+  fname: string
+  sname: string
+  diet?: string
 }
 
 interface TransportDetails {

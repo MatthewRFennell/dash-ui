@@ -3,6 +3,7 @@ import * as React from 'react'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { History } from 'history'
+import fetchProtected from '../../../src/api/protected'
 import { Header } from '../common/Header'
 import CustomerView from './customer/CustomerView'
 import EventPage, { EventFullDetails } from './customer/EventPage'
@@ -11,7 +12,7 @@ import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'
 
 // tslint:disable-next-line:no-var-requires
-const placeholderImage = require('../../../assets/png/placeholder.jpg')
+const placeholderImage = require('../../../assets/png/care-bears.jpg')
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
@@ -21,29 +22,18 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const handleModalClose = () => setModalOpen(false)
 
   const handleSetEvent = (id?: number) => () => {
+    console.log('Set event', id)
     if (id !== undefined) {
       /* Fetch from endpoint */
-      setOpenEvent({
-        name: 'Care Bears',
-        image: placeholderImage,
-        blurb: 'This is a blurb',
-        date: new Date(1970, 1, 1),
-        type: 'Sharing is Caring',
-        numTickets: 10,
-        attendees: [
-          {
-            firstName: 'Bedtime',
-            lastName: 'Bear',
-          },
-        ],
-        transport: {
-          operator: 'Care Bear Airlines',
-          vesselNumber: 'CA0000',
-          duration: 12000,
-          departTime: new Date(1970, 1, 1),
-          departFrom: 'Atlanta',
-          arriveAt: 'New Jersey',
-        },
+      console.log('Fetching', `/api/fullevent?id=${id}`)
+      fetchProtected(`${DASH_API}/fullevent?id=${id}`, null, null, 'GET', (res) => {
+        setOpenEvent({
+          ...res.events,
+          image_path: placeholderImage,
+          date: new Date(res.events.date),
+          attendees: res.attendees,
+          transport: res.transport,
+        })
       })
     } else {
       setOpenEvent(undefined)
