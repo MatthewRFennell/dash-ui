@@ -54,15 +54,17 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     <div className='dashboard-view'>
       <Header history={props.history} />
       {openEvent === undefined ? (
-        <CustomerView history={props.history} setActiveEvent={handleSetEvent} />
+        <div>
+          <CustomerView history={props.history} setActiveEvent={handleSetEvent} />
+          <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
+            <AddIcon className='dashboard-add-icon' />
+            Add event
+          </Fab>
+        </div>
       ) : (
         <EventPage {...openEvent} backAction={handleSetEvent()} />
       )}
       <CreateEvent open={modalOpen} onClose={handleModalClose} />
-      <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
-        <AddIcon className='dashboard-add-icon' />
-        Add event
-      </Fab>
     </div>
   )
 }
