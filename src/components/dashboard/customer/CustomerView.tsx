@@ -23,7 +23,7 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
   ] = React.useState([])
 
   React.useEffect(() => {
-    fetchProtected('/api/events', null, null, 'GET', (res) => {
+    fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       setEvents(res.events.map((e) => {
         e.date = new Date(e.date)
         return e

@@ -19,7 +19,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     if (id !== undefined) {
       /* Fetch from endpoint */
       console.log('Fetching', `/api/fullevent?id=${id}`)
-      fetchProtected(`/api/fullevent?id=${id}`, null, null, 'GET', (res) => {
+      fetchProtected(`${DASH_API}/fullevent?id=${id}`, null, null, 'GET', (res) => {
         setOpenEvent({
           ...res.events,
           image_path: placeholderImage,
