@@ -14,7 +14,7 @@ import PublishIcon from '@material-ui/icons/Publish'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
 import authHeader from '../../../api/authHeader'
 
-import './CreateEvent.scss'
+import './Modal.scss'
 
 export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
   const [name, setName] = React.useState<string>('')

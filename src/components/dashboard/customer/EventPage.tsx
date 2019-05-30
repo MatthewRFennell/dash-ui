@@ -12,9 +12,15 @@ import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+
+import AddAttendee from '../modal/AddAttendee'
+
 import './EventPage.scss'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
+  const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
+  const handleModalOpen = () => setAttendeeModalOpen(true)
+  const handleModalClose = () => setAttendeeModalOpen(false)
   const attendeeTable =
     props.attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
@@ -73,7 +79,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Attendees</Typography>
             {attendeeTable}
-            <Button variant='outlined' color='primary' className='attendee-button'>
+            <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
               <PersonAddIcon className='add-icon' />
               Add Attendee
             </Button>
@@ -126,6 +132,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
             </List>
           </div>
         )}
+        <AddAttendee open={attendeeModalOpen} onClose={handleModalClose} />
       </div>
     </div>
   )
