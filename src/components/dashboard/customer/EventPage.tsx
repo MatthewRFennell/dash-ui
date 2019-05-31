@@ -18,7 +18,6 @@ import AddAttendee from '../modal/AddAttendee'
 import './EventPage.scss'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
-
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
@@ -81,16 +80,14 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           <Typography className='event-page-block-title'>Number of Tickets</Typography>
           <Typography className='event-page-body'>{props.tickets}</Typography>
         </div>
-        {attendeeTable !== undefined && (
-          <div className='event-page-detail'>
-            <Typography className='event-page-block-title'>Attendees</Typography>
-            {attendeeTable}
-            <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
-              <PersonAddIcon className='add-icon' />
-              Add Attendee
-            </Button>
-          </div>
-        )}
+        <div className='event-page-detail'>
+          <Typography className='event-page-block-title'>Attendees</Typography>
+          {attendeeTable}
+          <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
+            <PersonAddIcon className='add-icon' />
+            Add Attendee
+          </Button>
+        </div>
         {props.transport.operator !== undefined && (
           <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Transport</Typography>
@@ -138,7 +135,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
             </List>
           </div>
         )}
-        <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id}/>
+        <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
       </div>
     </div>
   )
