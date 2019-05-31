@@ -42,7 +42,7 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
   }
   return (
     <div className='customer-view'>
-      <Typography className='headline'>Your Upcoming Events</Typography>
+      <Typography className='headline'>Your New Upcoming Events</Typography>
       <div className='customer-cards'>
         {columns.map((col, index) => (
           <ul key={index}>{col}</ul>
