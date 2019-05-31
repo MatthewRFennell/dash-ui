@@ -13,13 +13,24 @@ before_script:
   - docker login -u $HEROKU_USER -p $HEROKU_KEY $HEROKU_REGISTRY
   - apk add --update curl && rm -rf /var/cache/apk/*
 
-production:
-  stage: deploy
+stages: 
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
   only:
     - master
   script:
     - docker pull $CONTAINER_DEPLOY_IMAGE || true
     - docker build --cache-from $CONTAINER_DEPLOY_IMAGE -t $CONTAINER_DEPLOY_IMAGE .
     - docker push $CONTAINER_DEPLOY_IMAGE
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script: 
     - chmod +x ./release.sh
     - ./release.sh $HEROKU_PROJECT
