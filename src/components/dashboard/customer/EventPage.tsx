@@ -101,7 +101,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
               <ListItem>
                 <div>
                   <Typography className='event-page-block-title'>Vessel Number</Typography>
-                  <Typography className='event-page-body'>{props.transport.vesselNumber}</Typography>
+                  <Typography className='event-page-body'>{props.transport.vessel_id}</Typography>
                 </div>
               </ListItem>
               <ListItem>
@@ -166,7 +166,7 @@ export interface AttendeeDetails {
 
 interface TransportDetails {
   operator: string
-  vesselNumber: string
+  vessel_id: string
   duration: number
   departTime: Date
   departFrom: string
