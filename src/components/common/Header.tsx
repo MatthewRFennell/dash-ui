@@ -23,7 +23,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps) => {
         <img src={logo} className='logo' />
         Dash
       </div>
-      <Button className='account-button' variant='outlined' onClick={handleLogout}>
+      <Button className='account-button' variant='outlined' color='primary' onClick={handleLogout}>
         Logout
       </Button>
     </div>

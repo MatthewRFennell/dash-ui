@@ -21,6 +21,11 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
+
+  const handleDelete = (id) => (event) => {
+    props.deleteAttendee(id)
+  }
+
   const attendeeTable =
     props.attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
@@ -39,7 +44,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
               <TableCell className='table-cell'>{attendee.sname}</TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
               <TableCell className='table-cell'>
-                <IconButton>
+                <IconButton onClick={handleDelete(attendee.attendee_id)}>
                   <CloseIcon />
                 </IconButton>
               </TableCell>
@@ -75,16 +80,14 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           <Typography className='event-page-block-title'>Number of Tickets</Typography>
           <Typography className='event-page-body'>{props.tickets}</Typography>
         </div>
-        {attendeeTable !== undefined && (
-          <div className='event-page-detail'>
-            <Typography className='event-page-block-title'>Attendees</Typography>
-            {attendeeTable}
-            <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
-              <PersonAddIcon className='add-icon' />
-              Add Attendee
-            </Button>
-          </div>
-        )}
+        <div className='event-page-detail'>
+          <Typography className='event-page-block-title'>Attendees</Typography>
+          {attendeeTable}
+          <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
+            <PersonAddIcon className='add-icon' />
+            Add Attendee
+          </Button>
+        </div>
         {props.transport.operator !== undefined && (
           <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Transport</Typography>
@@ -132,7 +135,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
             </List>
           </div>
         )}
-        <AddAttendee open={attendeeModalOpen} onClose={handleModalClose} />
+        <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
       </div>
     </div>
   )
@@ -140,6 +143,8 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 
 interface EventPageProps extends EventFullDetails {
   backAction: () => void
+  deleteAttendee: (x: number) => void
+  addAttendee: (x: AttendeeDetails) => void
 }
 
 export interface EventFullDetails {
@@ -152,10 +157,11 @@ export interface EventFullDetails {
   transport?: TransportDetails
 }
 
-interface AttendeeDetails {
+export interface AttendeeDetails {
   fname: string
   sname: string
   diet?: string
+  attendee_id: number
 }
 
 interface TransportDetails {

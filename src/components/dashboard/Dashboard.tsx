@@ -28,13 +28,11 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const addAttendee = (attendee) => {
-    fetchProtected(DASH_API + '/addAttendee', null, {...attendee, id: openEvent.event_id}, 'POST', (res) => {
-      if (res.success) {
-        setOpenEvent((event: EventFullDetails) => {
-          event.attendees.push(attendee)
-          return event
-        })
-      }
+    const newAttendees = openEvent.attendees
+    newAttendees.push(attendee)
+    setOpenEvent({
+      ...openEvent,
+      attendees: newAttendees,
     })
   }
 
@@ -46,6 +44,20 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             ...currentEvent,
             ...event,
           }
+        })
+      }
+    })
+  }
+
+  const deleteAttendee = (attendeeID) => {
+    fetchProtected(DASH_API + '/deleteAttendee?attendee_id=' + attendeeID, null, null, 'DELETE', (res) => {
+      console.log(res)
+      if (res.success) {
+        console.log('Delete Success')
+        const newAttendees = openEvent.attendees.filter((a) => a.attendee_id !== attendeeID)
+        setOpenEvent({
+          ...openEvent,
+          attendees : newAttendees,
         })
       }
     })
@@ -87,7 +99,12 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           </Fab>
         </div>
       ) : (
-        <EventPage {...openEvent} backAction={handleSetEvent()} />
+        <EventPage
+          {...openEvent}
+          deleteAttendee={deleteAttendee}
+          addAttendee={addAttendee}
+          backAction={handleSetEvent()}
+        />
       )}
       <CreateEvent open={modalOpen} onClose={handleModalClose} />
     </div>

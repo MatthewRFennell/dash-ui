@@ -15,6 +15,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+# Lint the app
+RUN npm run lint
+
 # Build the app
 RUN npm run build
 

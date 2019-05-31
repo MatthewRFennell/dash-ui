@@ -13,7 +13,7 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
   return (
     <Card className='card'>
       <img src={DASH_API + '/eventImage?id=' + props.event_id} className='card-header' />
-      <CardContent>
+      <CardContent className='card-content'>
         <Typography className='card-date'>
           {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
         </Typography>
