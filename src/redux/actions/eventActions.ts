@@ -1,19 +1,19 @@
 export const loadEvents = (events) => {
     return {
-        type: "loadEvents",
+        type: 'loadEvents',
         events : events.map((e) => {
         e.date = new Date(e.date)
         return e
-      })
+      }),
     }
 }
 
 export const addEvent = (event) => {
     return {
-        type: "addEvent",
+        type: 'addEvent',
         event : {
             ...event,
-            date: new Date(event.date)
-        }
+            date: new Date(event.date),
+        },
     }
 }

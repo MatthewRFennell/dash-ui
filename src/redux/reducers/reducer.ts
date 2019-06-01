@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
+import events from './eventsReducer'
 import user from './userReducer'
-import events from './eventsReducer';
 
 export default combineReducers({
     user,
-    events
+    events,
 })

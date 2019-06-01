@@ -1,18 +1,18 @@
 const initialState = {
-    events: []
+    events: [],
 }
 
 const events = (state = initialState, action) => {
-    switch (action.type){
-        case "loadEvents":
+    switch (action.type) {
+        case 'loadEvents':
             return {
-                events: action.events
+                events: action.events,
             }
-        case "addEvent":
+        case 'addEvent':
             const newEvents = state.events
             newEvents.push(action.event)
             return {
-                events: newEvents
+                events: newEvents,
             }
         default:
             return state

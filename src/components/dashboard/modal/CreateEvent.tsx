@@ -14,9 +14,9 @@ import PublishIcon from '@material-ui/icons/Publish'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
 import authHeader from '../../../api/authHeader'
 
+import { connect } from 'react-redux'
+import { addEvent } from '../../../../src/redux/actions/eventActions'
 import './Modal.scss'
-import { addEvent } from '../../../../src/redux/actions/eventActions';
-import { connect } from 'react-redux';
 
 const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
   const [name, setName] = React.useState<string>('')
@@ -81,8 +81,8 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
       .then((response) => {
         console.log(response)
         setSubmitting(false)
-        if(response.success){
-          console.log("Going to add event", response.event)
+        if (response.success) {
+          console.log('Going to add event', response.event)
           props.onAddEvent(response.event)
           props.onClose()
         }
@@ -213,12 +213,12 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
 interface CreateEventProps {
   open: boolean
   onClose: () => void
-  onAddEvent: (event : any) => void
+  onAddEvent: (event: any) => void
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onAddEvent: event => dispatch(addEvent(event))
+    onAddEvent: (event) => dispatch(addEvent(event)),
   }
 }
 

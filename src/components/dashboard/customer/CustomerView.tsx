@@ -2,11 +2,11 @@ import * as React from 'react'
 
 import Typography from '@material-ui/core/Typography'
 import { History } from 'history'
+import { connect } from 'react-redux'
+import { loadEvents } from '../../../../src/redux/actions/eventActions'
 import fetchProtected from '../../../api/protected'
 import EventCard, { EventCardProps } from '../Card'
 import './CustomerView.scss'
-import { loadEvents } from '../../../../src/redux/actions/eventActions';
-import { connect } from 'react-redux';
 
 const NUM_COLS = 2
 
@@ -51,19 +51,19 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
 interface CustomerViewProps {
   history: History
   setActiveEvent: (id?: number) => () => void
-  onReceiveEvents: (x : any) => void
+  onReceiveEvents: (x: any) => void
   events: [EventDetails]
 }
 
 const mapStateToProps = (state) => {
   return {
-    events: state.events.events
+    events: state.events.events,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onReceiveEvents: (events) => dispatch(loadEvents(events))
+    onReceiveEvents: (events) => dispatch(loadEvents(events)),
   }
 }
 
