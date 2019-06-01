@@ -5,6 +5,8 @@ import { History } from 'history'
 import fetchProtected from '../../../api/protected'
 import EventCard, { EventCardProps } from '../Card'
 import './CustomerView.scss'
+import { loadEvents } from '../../../../src/redux/actions/eventActions';
+import { connect } from 'react-redux';
 
 const NUM_COLS = 2
 
@@ -17,23 +19,17 @@ interface EventDetails {
 }
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
-  const [events, setEvents]: [
-    EventDetails[],
-    React.Dispatch<React.SetStateAction<EventDetails[]>>
-  ] = React.useState([])
-
+  console.log(props.events)
   React.useEffect(() => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
-      setEvents(res.events.map((e) => {
-        e.date = new Date(e.date)
-        return e
-      }))
+      props.onReceiveEvents(res.events)
     })
   }, [])
 
-  const eventCards = events.map((event, index) => (
+  const eventCards = props.events.map((event, index) => (
     <EventCard {...event} action={props.setActiveEvent(event.event_id)} key={index} />
   ))
+
   const columns: JSX.Element[][] = []
   for (let i = 0; i < NUM_COLS; i++) {
     columns.push(
@@ -55,6 +51,22 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
 interface CustomerViewProps {
   history: History
   setActiveEvent: (id?: number) => () => void
+  onReceiveEvents: (x : any) => void
+  events: [EventDetails]
 }
 
-export default CustomerView
+const mapStateToProps = (state) => {
+  return {
+    events: state.events.events
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onReceiveEvents: (events) => dispatch(loadEvents(events))
+  }
+}
+
+const ConnectedCustomerView = connect(mapStateToProps, mapDispatchToProps)(CustomerView)
+
+export {ConnectedCustomerView as CustomerView}

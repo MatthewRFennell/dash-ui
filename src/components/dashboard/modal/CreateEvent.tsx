@@ -15,8 +15,10 @@ import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
 import authHeader from '../../../api/authHeader'
 
 import './Modal.scss'
+import { addEvent } from '../../../../src/redux/actions/eventActions';
+import { connect } from 'react-redux';
 
-export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
+const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
   const [name, setName] = React.useState<string>('')
   const [desc, setDesc] = React.useState<string>('')
   const [date, setDate] = React.useState<Date>(new Date())
@@ -79,7 +81,11 @@ export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) =>
       .then((response) => {
         console.log(response)
         setSubmitting(false)
-        props.onClose()
+        if(response.success){
+          console.log("Going to add event", response.event)
+          props.onAddEvent(response.event)
+          props.onClose()
+        }
       })
       .catch((error: Error) => {
         setSubmitting(false)
@@ -207,4 +213,15 @@ export const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) =>
 interface CreateEventProps {
   open: boolean
   onClose: () => void
+  onAddEvent: (event : any) => void
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddEvent: event => dispatch(addEvent(event))
+  }
+}
+
+const ConnectedCreateEvent = connect(null, mapDispatchToProps)(CreateEvent)
+
+export {ConnectedCreateEvent as CreateEvent}

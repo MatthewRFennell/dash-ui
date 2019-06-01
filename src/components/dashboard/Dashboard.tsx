@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add'
 import { History } from 'history'
 import fetchProtected from '../../../src/api/protected'
 import { Header } from '../common/Header'
-import CustomerView from './customer/CustomerView'
+import { CustomerView } from './customer/CustomerView'
 import EventPage, { EventFullDetails } from './customer/EventPage'
 
 import './Dashboard.scss'

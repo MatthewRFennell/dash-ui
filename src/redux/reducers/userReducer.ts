@@ -1,5 +1,4 @@
 import jwt = require('jsonwebtoken')
-import { combineReducers } from 'redux'
 
 const initialState = {
     loggedIn: false,

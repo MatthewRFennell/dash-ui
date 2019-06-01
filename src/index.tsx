@@ -15,7 +15,6 @@ import { createMuiTheme } from '@material-ui/core'
 import Dashboard from './components/dashboard/Dashboard'
 import { Login } from './components/frontpage/Login'
 import Register from './components/frontpage/Register'
-import Thanks from './components/frontpage/Thanks'
 import Hello from './components/Hello'
 import NotFound from './components/notfound/NotFound'
 
