@@ -7,7 +7,7 @@ export const login = (email, password) => {
     console.log('Dispatching login request')
     const body = {
       email: email.toLowerCase(),
-      password: password.toLowerCase(),
+      password,
     }
     const stringy = JSON.stringify(body)
     const url = DASH_API + '/login'
