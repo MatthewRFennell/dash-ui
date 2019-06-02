@@ -1,10 +1,10 @@
 export const loadEvents = (events) => {
     return {
         type: 'loadEvents',
-        events : events.map((e) => {
+        events : events ? events.map((e) => {
         e.date = new Date(e.date)
         return e
-      }),
+      }) : [],
     }
 }
 

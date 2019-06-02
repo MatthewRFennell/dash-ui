@@ -61,7 +61,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         <Button className='event-page-back' variant='contained' onClick={props.backAction} color='primary'>
           Back
         </Button>
-        <img src={DASH_API + '/eventImage?id=' + props.event_id} className='event-page-image' />
+        <img src={props.image} className='event-page-image' />
       </div>
       <div className='event-page-mock-panel' />
       <div className='event-page-right-panel'>
@@ -155,6 +155,7 @@ export interface EventFullDetails {
   tickets: number
   attendees?: AttendeeDetails[]
   transport?: TransportDetails
+  image: string
 }
 
 export interface AttendeeDetails {

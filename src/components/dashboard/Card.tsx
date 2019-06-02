@@ -12,7 +12,7 @@ import './Card.scss'
 const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProps) => {
   return (
     <Card className='card'>
-      <img src={DASH_API + '/eventImage?id=' + props.event_id} className='card-header' />
+      <img src={props.image} className='card-header' />
       <CardContent className='card-content'>
         <Typography className='card-date'>
           {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
