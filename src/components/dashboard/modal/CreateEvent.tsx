@@ -21,6 +21,7 @@ import './Modal.scss'
 const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
   const [name, setName] = React.useState<string>('')
   const [desc, setDesc] = React.useState<string>('')
+  const [comp, setComp] = React.useState<string>('')
   const [date, setDate] = React.useState<Date>(new Date())
   const [time, setTime] = React.useState<Date>(new Date())
   const [tickets, setTickets] = React.useState<number>(0)
@@ -35,6 +36,7 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
   }
   const handleChangeName = (event) => (removeError('name'), setName(event.target.value))
   const handleChangeDesc = (event) => (removeError('desc'), setDesc(event.target.value))
+  const handleChangeComp = (event) => (removeError('comp'), setComp(event.target.value))
   const handleChangeImage = (event) => (removeError('image'), setImage(event.target.files[0]))
   const handleChangeTickets = (event) => (removeError('tickets'), setTickets(event.target.value))
   const handleChangeTime = (newTime) => (removeError('date'), setTime(newTime))
@@ -48,13 +50,18 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
     if (desc === '') {
       allErrors.push('desc')
     }
+    if (comp === '') {
+      allErrors.push('comp')
+    }
     if (tickets === 0) {
       allErrors.push('tickets')
     }
     if (image === null) {
       allErrors.push('image')
     }
-    if (mergedDate < new Date()) {
+    const newdate = new Date()
+    if (mergedDate < newdate) {
+      console.log(mergedDate, newdate)
       allErrors.push('date')
     }
     if (allErrors.length > 0) {
@@ -62,10 +69,11 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
       return
     }
     setSubmitting(true)
-    const url = DASH_API + '/createEvent'
+    const url = DASH_API + '/event'
     const formData = new FormData()
     formData.append('image', image, image.name)
     formData.append('name', name)
+    formData.append('company', comp)
     formData.append('date', mergedDate.toISOString())
     formData.append('blurb', desc)
     formData.append('tickets', tickets.toString())
@@ -128,6 +136,17 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
           className='modal-form-field'
           error={errors.includes('desc')}
           helperText={errors.includes('desc') ? 'Please input a description' : ''}
+        />
+        <TextField
+          fullWidth={true}
+          value={comp}
+          onChange={handleChangeComp}
+          color='primary'
+          variant='outlined'
+          label='Company'
+          className='modal-form-field'
+          error={errors.includes('name')}
+          helperText={errors.includes('name') ? 'Please input a company' : ''}
         />
         <TextField
           label='Number of Tickets'

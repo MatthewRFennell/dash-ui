@@ -69,8 +69,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     console.log('Set event', id)
     if (id !== undefined) {
       /* Fetch from endpoint */
-      console.log('Fetching', `/api/fullevent?id=${id}`)
-      fetchProtected(`${DASH_API}/fullevent?id=${id}`, null, null, 'GET', (res) => {
+      fetchProtected(`${DASH_API}/event?id=${id}`, null, null, 'GET', (res) => {
         setOpenEvent({
           ...res.events,
           date: new Date(res.events.date),

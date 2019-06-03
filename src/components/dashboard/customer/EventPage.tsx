@@ -66,6 +66,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
       <div className='event-page-mock-panel' />
       <div className='event-page-right-panel'>
         <Typography className='event-page-title'>{props.name}</Typography>
+        <Typography className='event-page-block-title'>For {props.company}</Typography>
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Event Date</Typography>
           <Typography className='event-page-body'>
@@ -151,6 +152,7 @@ export interface EventFullDetails {
   name: string
   event_id: number
   blurb: string
+  company: string
   date: Date
   tickets: number
   attendees?: AttendeeDetails[]
