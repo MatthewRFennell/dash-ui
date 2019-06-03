@@ -9,10 +9,10 @@ if (localStorage.getItem('userToken')) {
 
     const decoded = jwt.decode(localStorage.getItem('userToken'), {json: true})
 
-    if (decoded.exp < Date.now() / 1000) {
-        localStorage.removeItem('userToken')
-    } else {
+    if (decoded && decoded.exp > Date.now() / 1000) {
         initialState.loggedIn = true
+    } else {
+        localStorage.removeItem('userToken')
     }
 
 }

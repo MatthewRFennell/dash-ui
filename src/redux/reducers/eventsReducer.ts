@@ -14,6 +14,8 @@ const events = (state = initialState, action) => {
             return {
                 events: newEvents,
             }
+        case 'loginFailed':
+            return initialState
         default:
             return state
     }
