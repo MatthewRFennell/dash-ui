@@ -1,7 +1,7 @@
 import authHeader from './authHeader'
 
+import { logout } from '../redux/actions/userActions'
 import store from '../redux/store'
-import { logout } from '../redux/actions/userActions';
 
 const fetchProtected = (path, headers, body, method, callBack) => {
 
@@ -27,7 +27,7 @@ const fetchProtected = (path, headers, body, method, callBack) => {
   }
   fetch(path, data)
     .then((res) => {
-      if(res.status === 401){
+      if (res.status === 401) {
         logout()(store.dispatch)
       }
       return res.json()
