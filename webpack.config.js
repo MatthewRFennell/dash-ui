@@ -107,7 +107,7 @@ module.exports = {
     new webpack.DefinePlugin({
       MACRO: JSON.stringify(0),
       DASH_API:
-        environment === ''
+        environment === 'development'
           ? JSON.stringify('http://localhost:3000')
           : JSON.stringify('http://dash-api-19.herokuapp.com'),
     }),
