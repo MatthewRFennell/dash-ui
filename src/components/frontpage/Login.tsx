@@ -75,10 +75,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>
-                  <IconButton
-                    aria-label='Toggle password visibility'
-                    onClick={handleToggleVisibility}
-                  >
+                  <IconButton aria-label='Toggle password visibility' onClick={handleToggleVisibility}>
                     {visible ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -89,12 +86,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
             {props.waiting ? (
               <CircularProgress />
             ) : (
-              <Button
-                variant='contained'
-                color='primary'
-                className='chang-blue-background'
-                onClick={submit}
-              >
+              <Button variant='contained' color='primary' className='chang-blue-background' onClick={submit}>
                 Login
               </Button>
             )}

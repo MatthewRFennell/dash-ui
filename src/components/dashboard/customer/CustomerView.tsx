@@ -67,6 +67,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ConnectedCustomerView = connect(mapStateToProps, mapDispatchToProps)(CustomerView)
+const ConnectedCustomerView = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CustomerView)
 
-export {ConnectedCustomerView as CustomerView}
+export { ConnectedCustomerView as CustomerView }

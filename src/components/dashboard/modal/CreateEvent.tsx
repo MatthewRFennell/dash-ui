@@ -222,6 +222,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ConnectedCreateEvent = connect(null, mapDispatchToProps)(CreateEvent)
+const ConnectedCreateEvent = connect(
+  null,
+  mapDispatchToProps,
+)(CreateEvent)
 
-export {ConnectedCreateEvent as CreateEvent}
+export { ConnectedCreateEvent as CreateEvent }

@@ -16,7 +16,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
 
   const updateTransport = (transport) => {
-    fetchProtected(DASH_API + '/editTansport', null, {...transport, id: openEvent.event_id}, 'PUT', ((res) => {
+    fetchProtected(DASH_API + '/editTansport', null, { ...transport, id: openEvent.event_id }, 'PUT', (res) => {
       if (res.success) {
         setOpenEvent((event: EventFullDetails) => {
           event.transport = transport
@@ -24,7 +24,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           return event
         })
       }
-    }))
+    })
   }
 
   const addAttendee = (attendee) => {
@@ -37,7 +37,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const editEvent = (event) => {
-    fetchProtected(DASH_API + '/editEvent', null, { ...event, id: openEvent.event_id}, 'PUT', (res) => {
+    fetchProtected(DASH_API + '/editEvent', null, { ...event, id: openEvent.event_id }, 'PUT', (res) => {
       if (res.success) {
         setOpenEvent((currentEvent: EventFullDetails) => {
           return {
@@ -50,13 +50,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const deleteAttendee = (attendeeID) => {
-    fetchProtected(DASH_API + '/deleteAttendee', null, {attendee_id : attendeeID}, 'DELETE', (res) => {
+    fetchProtected(DASH_API + '/deleteAttendee', null, { attendee_id: attendeeID }, 'DELETE', (res) => {
       if (res.success) {
         console.log('Delete Success')
         const newAttendees = openEvent.attendees.filter((a) => a.attendee_id !== attendeeID)
         setOpenEvent({
           ...openEvent,
-          attendees : newAttendees,
+          attendees: newAttendees,
         })
       }
     })
