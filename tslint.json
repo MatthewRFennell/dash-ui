@@ -13,6 +13,7 @@
       "object-literal-sort-keys": false,
       "indent": [true, "spaces", 2],
       "jsx-no-multiline-js": false,
+      "jsx-wrap-multiline": false,
       "no-console": false
   },
   "rulesDirectory": []

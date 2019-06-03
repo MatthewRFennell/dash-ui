@@ -32,7 +32,7 @@ const theme = createMuiTheme({
   },
 })
 
-ReactDOM.render((
+ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
       <Router history={history}>
@@ -44,6 +44,6 @@ ReactDOM.render((
         </Switch>
       </Router>
     </MuiThemeProvider>
-  </Provider>
-  ), document.getElementById('example'),
+  </Provider>,
+  document.getElementById('example'),
 )

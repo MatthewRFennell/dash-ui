@@ -101,22 +101,12 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
   ) : (
     <div>
       <div className='fixed-top-left'>
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={props.history.goBack}
-          className='chang-blue-font'
-        >
+        <Button variant='outlined' color='primary' onClick={props.history.goBack} className='chang-blue-font'>
           Back
         </Button>
       </div>
       <div className='fixed-top-right'>
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={moveToLogin}
-          className='chang-blue-font'
-        >
+        <Button variant='outlined' color='primary' onClick={moveToLogin} className='chang-blue-font'>
           Login
         </Button>
       </div>
@@ -124,41 +114,16 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
         <div className='login-panel'>
           <h3 className='form-title'>Create Account</h3>
 
-          <InputField
-            label='First Name'
-            change={setFname}
-            errMsg={errors.fname}
-          />
-          <InputField
-            label='Second Name'
-            change={setSname}
-            errMsg={errors.sname}
-          />
-          <InputField
-            label='Email'
-            req={true}
-            change={setEmail}
-            type='email'
-            errMsg={errors.email}
-          />
-          <InputField
-            label='Password'
-            change={setPassword}
-            req={true}
-            type='password'
-            errMsg={errors.password}
-          />
+          <InputField label='First Name' change={setFname} errMsg={errors.fname} />
+          <InputField label='Second Name' change={setSname} errMsg={errors.sname} />
+          <InputField label='Email' req={true} change={setEmail} type='email' errMsg={errors.email} />
+          <InputField label='Password' change={setPassword} req={true} type='password' errMsg={errors.password} />
 
           <div className='align-right'>
             {waiting ? (
               <CircularProgress />
             ) : (
-              <Button
-                variant='contained'
-                color='primary'
-                className='chang-blue-background'
-                onClick={submit}
-              >
+              <Button variant='contained' color='primary' className='chang-blue-background' onClick={submit}>
                 Register
               </Button>
             )}

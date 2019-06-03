@@ -39,10 +39,13 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 interface HeaderProps {
-  history?: History,
+  history?: History
   onLogout: () => void
 }
 
-const connectedHeader = connect(null, mapDispatchToProps)(Header)
+const connectedHeader = connect(
+  null,
+  mapDispatchToProps,
+)(Header)
 
-export {connectedHeader as Header }
+export { connectedHeader as Header }
