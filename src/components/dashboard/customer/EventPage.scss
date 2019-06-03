@@ -1,3 +1,18 @@
+.tabs-paper {
+  z-index: 1001;
+  position: fixed;
+  top: 24px;
+}
+
+.event-page-back {
+  position: fixed!important;
+  top: 126px;
+  left: 30px;
+  color: white;
+  font-weight: bold;
+  z-index: 1001;
+}
+
 .event-page-view {
   display: /* weird */ flex /* but okay */;
   min-height: 100vh;
@@ -13,13 +28,6 @@
   }
   .event-page-left-panel {
     position: fixed;
-    .event-page-back {
-      position: fixed;
-      top: 126px;
-      left: 30px;
-      color: white;
-      font-weight: bold;
-    }
     .event-page-image {
       height: 100vh;
       width: 50vw;
@@ -29,10 +37,7 @@
     width: 50vw;
   }
   .event-page-right-panel {
-    min-height: 100vh;
     width: calc(50vw - 90px);
-    min-width: 50vw;
-    max-width: 50vw;
     padding: 30px 30px 30px 60px;
     .event-page-title {
       font-weight: bold;
