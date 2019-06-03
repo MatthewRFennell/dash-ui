@@ -92,6 +92,14 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
         if (response.success) {
           console.log('Going to add event', response.event)
           props.onAddEvent(response.event)
+
+          setName('')
+          setDesc('')
+          setDate(new Date())
+          setTime(new Date())
+          setTickets(0)
+          setImage(null)
+
           props.onClose()
         }
       })
