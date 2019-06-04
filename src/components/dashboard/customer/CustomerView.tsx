@@ -23,6 +23,7 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
   React.useEffect(() => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
+      props.onLoadComplete()
     })
   }, [])
 
@@ -52,6 +53,7 @@ interface CustomerViewProps {
   history: History
   setActiveEvent: (id?: number) => () => void
   onReceiveEvents: (x: any) => void
+  onLoadComplete: () => void
   events: [EventDetails]
 }
 

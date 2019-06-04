@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 
+import SwipeableViews from 'react-swipeable-views'
 import './EventPage.scss'
 import AttendeesTab from './Tabs/AttendeesTab'
 import ItineraryTab from './Tabs/ItineraryTab'
@@ -33,9 +34,11 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           </Tabs>
         </div>
       </div>
-      {currentTab === 0 && <OverviewTab {...props} />}
-      {currentTab === 1 && <AttendeesTab {...props} />}
-      {currentTab === 2 && <ItineraryTab {...props} />}
+      <SwipeableViews index={currentTab} onChangeIndex={setCurrentTab} style={{ overflow: 'hidden' }}>
+        {currentTab === 0 && <OverviewTab {...props} key='overview' />}
+        {currentTab === 1 && <AttendeesTab {...props} key='attendees' />}
+        {currentTab === 2 && <ItineraryTab {...props} key='itinerary' />}
+      </SwipeableViews>
     </div>
   )
 }

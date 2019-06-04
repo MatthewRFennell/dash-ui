@@ -11,8 +11,8 @@ const time = () => {
   return `[${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}]`
 }
 
-app.get(/\.(jpg|png|svg)$/, (req, res) => {
-  console.log(time() + ' \x1b[36mi\x1b[0m image requested, url: ' + req.url)
+app.get(/\.(jpg|png|svg|mp4)$/, (req, res) => {
+  console.log(time() + ' \x1b[36mi\x1b[0m file requested, url: ' + req.url)
   res.sendFile(path.join(__dirname, 'dist', req.url))
 })
 
