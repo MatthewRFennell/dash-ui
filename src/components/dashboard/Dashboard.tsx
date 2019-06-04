@@ -20,18 +20,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
 
-  const updateTransport = (transport) => {
-    fetchProtected(DASH_API + '/editTansport', null, { ...transport, id: openEvent.event_id }, 'PUT', (res) => {
-      if (res.success) {
-        setOpenEvent((event: EventFullDetails) => {
-          event.transport = transport
-          event.transport.departTime = new Date(event.transport.departTime)
-          return event
-        })
-      }
-    })
-  }
-
   const addAttendee = (attendee) => {
     const newAttendees = openEvent.attendees
     newAttendees.push(attendee)
@@ -76,14 +64,17 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     if (id !== undefined) {
       /* Fetch from endpoint */
       fetchProtected(`${DASH_API}/event?id=${id}`, null, null, 'GET', (res) => {
+        console.log(res)
         setOpenEvent({
           ...res.events,
           date: new Date(res.events.date),
-          attendees: res.attendees,
-          transport: {
-            ...res.transport,
-            departTime: new Date(res.transport.departTime),
-          },
+          attendees: res.attendees ?
+            res.attendees.map((a) => {
+              if (a.transport) {
+                a.transport.departTime = new Date(a.transport.departTime)
+              }
+              return a
+            }) : [],
         })
       })
     } else {

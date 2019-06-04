@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Airplane from '@material-ui/icons/AirplanemodeActive'
 import CloseIcon from '@material-ui/icons/Close'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import AddAttendee from '../../modal/AddAttendee'
@@ -17,6 +18,11 @@ import TransportSection from './TransportSection'
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
 
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
+
+  const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
+
+  const setIndex = (id) => (event) => setAttendeeTransport(id)
+
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
 
@@ -24,13 +30,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     props.deleteAttendee(id)
   }
 
-  const trans = {
-    operator: 'Ryanair',
-    vessel_id: '#34DF',
-    duration: 100,
-    departTime: new Date(),
-    departFrom: 'London',
-    arriveAt: 'Rome',
+  let attendeeTransportDetails
+  if (attendeeTransport >= 0) {
+    attendeeTransportDetails = props.attendees[attendeeTransport].transport
   }
 
   const attendeeTable =
@@ -46,14 +48,21 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
         </TableHead>
         <TableBody>
           {props.attendees.map((attendee, index) => (
-            <TableRow key={index}>
+            <TableRow key={attendee.attendee_id}>
               <TableCell className='table-cell'>{attendee.fname}</TableCell>
-              <TableCell className='table-cell'>{attendee.sname}</TableCell>
+              <TableCell className='table-cell'>{attendee.sname} </TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
               <TableCell className='table-cell'>
                 <IconButton onClick={handleDelete(attendee.attendee_id)}>
                   <CloseIcon />
                 </IconButton>
+                {attendee.transport ?
+                <IconButton onClick={setIndex(index)}>
+                  <Airplane/>
+                </IconButton>
+                :
+                undefined
+                }
               </TableCell>
             </TableRow>
           ))}
@@ -77,7 +86,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       </div>
       <div className='event-page-mock-panel' />
       <div className='event-page-right-panel'>
-        <TransportSection transport={trans} />
+        <TransportSection transport={attendeeTransportDetails} />
       </div>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
     </div>

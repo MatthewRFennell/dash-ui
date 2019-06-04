@@ -57,7 +57,6 @@ export interface EventFullDetails {
   date: Date
   tickets: number
   attendees?: AttendeeDetails[]
-  transport?: TransportDetails
   image: string
 }
 
@@ -66,6 +65,7 @@ export interface AttendeeDetails {
   sname: string
   diet?: string
   attendee_id: number
+  transport?: TransportDetails
 }
 
 export interface TransportDetails {

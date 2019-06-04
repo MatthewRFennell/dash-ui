@@ -5,7 +5,10 @@ import * as React from 'react'
 import { TransportDetails } from '../EventPage'
 
 const TransportSection = (props: TransportSectionProps) => {
+
+    console.log(props)
     return (
+        props.transport ?
         <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Transport</Typography>
             <List>
@@ -51,11 +54,13 @@ const TransportSection = (props: TransportSectionProps) => {
                 </ListItem>
             </List>
         </div>
+        :
+            <h1>Select a attendee to see their trasport details</h1>
     )
 }
 
 interface TransportSectionProps {
-    transport: TransportDetails
+    transport?: TransportDetails
 }
 
 export default TransportSection
