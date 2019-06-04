@@ -42,7 +42,7 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
   const handleChangeTime = (newTime) => (removeError('date'), setTime(newTime))
   const handleChangeDate = (newDate) => (removeError('date'), setDate(newDate))
   const handleSubmit = () => {
-    const mergedDate = new Date(date.getFullYear(), date.getMonth(), date.getDay(), time.getHours(), time.getMinutes())
+    const mergedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes())
     const allErrors = []
     if (name === '') {
       allErrors.push('name')
@@ -61,7 +61,6 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
     }
     const newdate = new Date()
     if (mergedDate < newdate) {
-      console.log(mergedDate, newdate)
       allErrors.push('date')
     }
     if (allErrors.length > 0) {
