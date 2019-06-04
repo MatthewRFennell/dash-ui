@@ -97,7 +97,7 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
   }
 
   return finished ? (
-    <Thanks />
+    <Thanks history={props.history} />
   ) : (
     <div>
       <div className='fixed-top-left'>

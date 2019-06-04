@@ -9,11 +9,9 @@ import { Header } from '../common/Header'
 import { CustomerView } from './customer/CustomerView'
 import EventPage, { EventFullDetails } from './customer/EventPage'
 
+import Loader from '../misc/Loader'
 import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'
-
-// tslint:disable-next-line:no-var-requires
-const loader = require('../../../assets/mp4/loader.mp4')
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [loading, setLoading] = React.useState<boolean>(true)
@@ -63,7 +61,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     console.log('Set event', id)
     if (id !== undefined) {
       /* Fetch from endpoint */
-      fetchProtected(`${DASH_API}/event?id=${id}`, null, null, 'GET', (res) => {
+      fetchProtected(`${DASH_API}/event?event_id=${id}`, null, null, 'GET', (res) => {
         console.log(res)
         const newEvent = {
           events: {
@@ -92,7 +90,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     <div className='dashboard-view'>
       <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={500} transitionLeaveTimeout={500}>
         {loading && (
-          <div
+          <Loader
             style={{
               width: '100vw',
               height: '100vh',
@@ -104,11 +102,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               backgroundColor: 'white',
             }}
             key='loader'
-          >
-            <video width='420' height='420' loop={true} autoPlay={true}>
-              <source src={loader} type='video/mp4' />
-            </video>
-          </div>
+          />
         )}
         <div key='main'>
           <Header history={props.history} />

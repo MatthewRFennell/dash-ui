@@ -1,12 +1,11 @@
 import { Button } from '@material-ui/core'
 import * as React from 'react'
-import history from '../../history'
 
 import './Login.scss'
 
-const Thanks = () => {
+const Thanks = (props) => {
   const gotoLogin = () => {
-    history.push('/login')
+    props.history.push('/login')
   }
 
   return (

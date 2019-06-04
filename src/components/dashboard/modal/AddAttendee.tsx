@@ -51,7 +51,7 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
       fname,
       sname,
       diet: dietr,
-      id: props.id,
+      event_id: props.id,
     }
 
     console.log(body)

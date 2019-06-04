@@ -7,19 +7,16 @@ import { Route, Router, Switch } from 'react-router-dom'
 import { PrivateRoute } from './components/router/privateRoute'
 import './style.scss'
 
-import history from './history'
 import store from './redux/store'
 
 /* Component Imports */
 import { createMuiTheme } from '@material-ui/core'
+import { createBrowserHistory } from 'history'
 import Dashboard from './components/dashboard/Dashboard'
 import { Login } from './components/frontpage/Login'
 import Register from './components/frontpage/Register'
-import Hello from './components/Hello'
-import NotFound from './components/notfound/NotFound'
-
-/* Passing props to a routed page */
-const HelloPage = () => <Hello compiler='TypeScript' framework='React' />
+import Loader from './components/misc/Loader'
+import NotFound from './components/misc/NotFound'
 
 const theme = createMuiTheme({
   typography: {
@@ -35,11 +32,12 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
-      <Router history={history}>
+      <Router history={createBrowserHistory()}>
         <Switch>
           <PrivateRoute exact={true} path='/' component={Dashboard} />
           <Route exact={true} path='/login' component={Login} />
           <Route exact={true} path='/register' component={Register} />
+          <Route exact={true} path='/loader' component={Loader} />
           <Route component={NotFound} />
         </Switch>
       </Router>
