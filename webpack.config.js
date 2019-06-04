@@ -110,7 +110,7 @@ module.exports = {
         environment === 'development'
           ? JSON.stringify('http://localhost:3000')
           : JSON.stringify('http://dash-api-19.herokuapp.com'),
-      GMAPS_API_KEY: JSON.stringify('AIzaSyAyPK-B3XZE4f6XPqyShiWGqspxgXBQjOg')
+      GMAPS_API_KEY: JSON.stringify('AIzaSyBH47Nhu4cB_ynRUwmIXrQHxQIXrBUIp1Y')
     }),
     new CopyPlugin([
       {
