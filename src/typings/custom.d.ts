@@ -4,3 +4,4 @@ declare module '*.png' {
 }
 
 declare const DASH_API: string
+declare const GMAPS_API_KEY: string
