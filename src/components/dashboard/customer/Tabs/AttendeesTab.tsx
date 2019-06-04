@@ -19,7 +19,14 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [transportActive, setTransportActive] = React.useState<boolean>(false)
   const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
 
-  const setIndex = (id) => (event) => (setAttendeeTransport(id), setTransportActive(true))
+  const setIndex = (id) => () => {
+    if (id === attendeeTransport) {
+      setAttendeeTransport(-1)
+    } else {
+      setAttendeeTransport(id)
+    }
+    setTransportActive(true)
+  }
 
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
@@ -57,7 +64,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                   <CloseIcon />
                 </IconButton>
                 {attendee.transport ? (
-                  <IconButton onClick={setIndex(index)}>
+                  <IconButton color={index === attendeeTransport ? 'primary' : 'default'} onClick={setIndex(index)}>
                     <Airplane />
                   </IconButton>
                 ) : (
