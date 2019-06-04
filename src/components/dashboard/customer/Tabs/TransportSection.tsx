@@ -12,6 +12,12 @@ const TransportSection = (props: TransportSectionProps) => {
         <div className='event-page-detail'>
             <Typography className='event-page-block-title'>Transport</Typography>
             <List>
+                    <ListItem>
+                        <div>
+                            <Typography className='event-page-block-title'>Attendee</Typography>
+                            <Typography className='event-page-body'>{props.name}</Typography>
+                        </div>
+                    </ListItem>
                 <ListItem>
                     <div>
                         <Typography className='event-page-block-title'>Operator</Typography>
@@ -61,6 +67,7 @@ const TransportSection = (props: TransportSectionProps) => {
 
 interface TransportSectionProps {
     transport?: TransportDetails
+    name: string
 }
 
 export default TransportSection

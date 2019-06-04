@@ -31,7 +31,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   }
 
   let attendeeTransportDetails
+  let name
   if (attendeeTransport >= 0) {
+    name = props.attendees[attendeeTransport].fname + ' ' + props.attendees[attendeeTransport].sname
     attendeeTransportDetails = props.attendees[attendeeTransport].transport
   }
 
@@ -86,7 +88,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       </div>
       <div className='event-page-mock-panel' />
       <div className='event-page-right-panel'>
-        <TransportSection transport={attendeeTransportDetails} />
+        <TransportSection transport={attendeeTransportDetails} name={name} />
       </div>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
     </div>
