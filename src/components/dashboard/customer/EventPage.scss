@@ -15,7 +15,8 @@
 
 .event-page-view {
   display: /* weird */ flex /* but okay */;
-  min-height: 100vh;
+  height: calc(100vh - 96px);
+  overflow: hidden;
   width: 100vw;
   top: 0;
   left: 0;
@@ -39,6 +40,7 @@
   .event-page-right-panel {
     width: calc(50vw - 90px);
     padding: 30px 30px 30px 60px;
+    overflow-y: scroll;
     .event-page-title {
       font-weight: bold;
       font-size: 36pt;
