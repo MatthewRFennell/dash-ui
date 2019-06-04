@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
@@ -11,7 +12,11 @@ import EventPage, { EventFullDetails } from './customer/EventPage'
 import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'
 
+// tslint:disable-next-line:no-var-requires
+const loader = require('../../../assets/mp4/loader.mp4')
+
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
+  const [loading, setLoading] = React.useState<boolean>(true)
   const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
 
@@ -64,6 +69,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
 
   const handleModalOpen = () => setModalOpen(true)
   const handleModalClose = () => setModalOpen(false)
+  const handleLoadingFinish = () => setLoading(false)
 
   const handleSetEvent = (id?: number) => () => {
     console.log('Set event', id)
@@ -87,24 +93,51 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
 
   return (
     <div className='dashboard-view'>
-      <Header history={props.history} />
-      {openEvent === undefined ? (
-        <div>
-          <CustomerView history={props.history} setActiveEvent={handleSetEvent} />
-          <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
-            <AddIcon className='dashboard-add-icon' />
-            Add event
-          </Fab>
+      <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+        {loading && (
+          <div
+            style={{
+              width: '100vw',
+              height: '100vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1000000,
+              position: 'fixed',
+              backgroundColor: 'white',
+            }}
+            key='loader'
+          >
+            <video width='420' height='420' loop={true} autoPlay={true}>
+              <source src={loader} type='video/mp4' />
+            </video>
+          </div>
+        )}
+        <div key='main'>
+          <Header history={props.history} />
+          {openEvent === undefined ? (
+            <div>
+              <CustomerView
+                history={props.history}
+                setActiveEvent={handleSetEvent}
+                onLoadComplete={handleLoadingFinish}
+              />
+              <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
+                <AddIcon className='dashboard-add-icon' />
+                Add event
+              </Fab>
+            </div>
+          ) : (
+            <EventPage
+              {...openEvent}
+              deleteAttendee={deleteAttendee}
+              addAttendee={addAttendee}
+              backAction={handleSetEvent()}
+            />
+          )}
+          <CreateEvent open={modalOpen} onClose={handleModalClose} />
         </div>
-      ) : (
-        <EventPage
-          {...openEvent}
-          deleteAttendee={deleteAttendee}
-          addAttendee={addAttendee}
-          backAction={handleSetEvent()}
-        />
-      )}
-      <CreateEvent open={modalOpen} onClose={handleModalClose} />
+      </ReactCSSTransitionGroup>
     </div>
   )
 }

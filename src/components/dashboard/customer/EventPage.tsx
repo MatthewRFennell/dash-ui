@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
