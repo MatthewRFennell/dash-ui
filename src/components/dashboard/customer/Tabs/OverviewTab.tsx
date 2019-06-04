@@ -2,13 +2,9 @@ import * as React from 'react'
 
 import Typography from '@material-ui/core/Typography'
 
-import AddAttendee from '../../modal/AddAttendee'
-import { AttendeeDetails, EventFullDetails } from '../EventPage'
-
 import '../EventPage.scss'
 
 const OverviewTab: React.FunctionComponent<OverviewTabProps> = (props) => {
-
   return (
     <div className='event-page-view'>
       <div className='event-page-left-panel'>
@@ -37,10 +33,14 @@ const OverviewTab: React.FunctionComponent<OverviewTabProps> = (props) => {
   )
 }
 
-interface OverviewTabProps extends EventFullDetails {
-  backAction: () => void
-  deleteAttendee: (x: number) => void
-  addAttendee: (x: AttendeeDetails) => void
+export interface OverviewTabProps {
+  event_id: number
+  name: string
+  company: string
+  date: Date
+  tickets: number
+  image: string
+  blurb: string
 }
 
 export default OverviewTab

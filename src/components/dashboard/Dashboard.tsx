@@ -30,7 +30,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const editEvent = (event) => {
-    fetchProtected(DASH_API + '/editEvent', null, { ...event, id: openEvent.event_id }, 'PUT', (res) => {
+    fetchProtected(DASH_API + '/editEvent', null, { ...event, id: openEvent.events.event_id }, 'PUT', (res) => {
       if (res.success) {
         setOpenEvent((currentEvent: EventFullDetails) => {
           return {
@@ -65,17 +65,23 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
       /* Fetch from endpoint */
       fetchProtected(`${DASH_API}/event?id=${id}`, null, null, 'GET', (res) => {
         console.log(res)
-        setOpenEvent({
-          ...res.events,
-          date: new Date(res.events.date),
-          attendees: res.attendees ?
-            res.attendees.map((a) => {
-              if (a.transport) {
-                a.transport.departTime = new Date(a.transport.departTime)
-              }
-              return a
-            }) : [],
-        })
+        const newEvent = {
+          events: {
+            ...res.events,
+            date: new Date(res.events.date),
+          },
+          attendees: res.attendees
+            ? res.attendees.map((a) => {
+                if (a.transport) {
+                  a.transport.departTime = new Date(a.transport.departTime)
+                }
+                return a
+              })
+            : [],
+          itinerary: res.itinerary,
+        }
+        console.log(newEvent)
+        setOpenEvent(newEvent)
       })
     } else {
       setOpenEvent(undefined)

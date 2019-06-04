@@ -12,16 +12,14 @@ import Airplane from '@material-ui/icons/AirplanemodeActive'
 import CloseIcon from '@material-ui/icons/Close'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import AddAttendee from '../../modal/AddAttendee'
-import { AttendeeDetails, EventFullDetails } from '../EventPage'
-import TransportSection from './TransportSection'
+import TransportSection, { TransportDetails } from './TransportSection'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
-
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
-
+  const [transportActive, setTransportActive] = React.useState<boolean>(false)
   const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
 
-  const setIndex = (id) => (event) => setAttendeeTransport(id)
+  const setIndex = (id) => (event) => (setAttendeeTransport(id), setTransportActive(true))
 
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
@@ -58,20 +56,20 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                 <IconButton onClick={handleDelete(attendee.attendee_id)}>
                   <CloseIcon />
                 </IconButton>
-                {attendee.transport ?
-                <IconButton onClick={setIndex(index)}>
-                  <Airplane/>
-                </IconButton>
-                :
-                undefined
-                }
+                {attendee.transport ? (
+                  <IconButton onClick={setIndex(index)}>
+                    <Airplane />
+                  </IconButton>
+                ) : (
+                  undefined
+                )}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     ) : (
-        undefined
+      undefined
     )
 
   return (
@@ -88,17 +86,26 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       </div>
       <div className='event-page-mock-panel' />
       <div className='event-page-right-panel'>
-        <TransportSection transport={attendeeTransportDetails} name={name} />
+        <TransportSection {...attendeeTransportDetails} active={transportActive} name={name} />
       </div>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
     </div>
   )
 }
 
-interface AttendeesTabProps extends EventFullDetails {
-  backAction: () => void
-  deleteAttendee: (x: number) => void
+interface AttendeesTabProps {
+  event_id: number
+  attendees: AttendeeDetails[]
+  deleteAttendee: (id: number) => void
   addAttendee: (x: AttendeeDetails) => void
+}
+
+export interface AttendeeDetails {
+  attendee_id: number
+  fname: string
+  sname: string
+  diet: string
+  transport: TransportDetails
 }
 
 export default AttendeesTab

@@ -7,9 +7,9 @@ import Tabs from '@material-ui/core/Tabs'
 
 import SwipeableViews from 'react-swipeable-views'
 import './EventPage.scss'
-import AttendeesTab from './Tabs/AttendeesTab'
-import ItineraryTab from './Tabs/ItineraryTab'
-import OverviewTab from './Tabs/OverviewTab'
+import AttendeesTab, { AttendeeDetails } from './Tabs/AttendeesTab'
+import ItineraryTab, { ItineraryDetails } from './Tabs/ItineraryTab'
+import OverviewTab, { OverviewTabProps } from './Tabs/OverviewTab'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   const [currentTab, setCurrentTab] = React.useState<number>(0)
@@ -35,9 +35,15 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         </div>
       </div>
       <SwipeableViews index={currentTab} onChangeIndex={setCurrentTab} style={{ overflow: 'hidden' }}>
-        {currentTab === 0 && <OverviewTab {...props} key='overview' />}
-        {currentTab === 1 && <AttendeesTab {...props} key='attendees' />}
-        {currentTab === 2 && <ItineraryTab {...props} key='itinerary' />}
+        <OverviewTab {...props.events} key='overview' />
+        <AttendeesTab
+          attendees={props.attendees}
+          event_id={props.events.event_id}
+          deleteAttendee={props.deleteAttendee}
+          addAttendee={props.addAttendee}
+          key='attendees'
+        />
+        <ItineraryTab itinerary={props.itinerary} key='itinerary' />
       </SwipeableViews>
     </div>
   )
@@ -50,31 +56,9 @@ interface EventPageProps extends EventFullDetails {
 }
 
 export interface EventFullDetails {
-  name: string
-  event_id: number
-  blurb: string
-  company: string
-  date: Date
-  tickets: number
-  attendees?: AttendeeDetails[]
-  image: string
-}
-
-export interface AttendeeDetails {
-  fname: string
-  sname: string
-  diet?: string
-  attendee_id: number
-  transport?: TransportDetails
-}
-
-export interface TransportDetails {
-  operator: string
-  vessel_id: string
-  duration: number
-  departTime: Date
-  departFrom: string
-  arriveAt: string
+  events: OverviewTabProps
+  attendees: AttendeeDetails[]
+  itinerary: ItineraryDetails[]
 }
 
 export default EventPage

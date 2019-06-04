@@ -23,7 +23,7 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
   React.useEffect(() => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
-      props.onLoadComplete()
+      setTimeout(props.onLoadComplete, 750)
     })
   }, [])
 

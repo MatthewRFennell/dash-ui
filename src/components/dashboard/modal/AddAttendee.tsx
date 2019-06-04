@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
 import fetchProtected from '../../../../src/api/protected'
-import { AttendeeDetails } from '../customer/EventPage'
+import { AttendeeDetails } from '../customer/Tabs/AttendeesTab'
 import './Modal.scss'
 
 const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
