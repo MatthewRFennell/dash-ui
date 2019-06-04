@@ -65,7 +65,7 @@ export interface AttendeeDetails {
   attendee_id: number
 }
 
-interface TransportDetails {
+export interface TransportDetails {
   operator: string
   vessel_id: string
   duration: number
