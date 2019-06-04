@@ -22,10 +22,11 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const setIndex = (id) => () => {
     if (id === attendeeTransport) {
       setAttendeeTransport(-1)
+      setTransportActive(false)
     } else {
       setAttendeeTransport(id)
+      setTransportActive(true)
     }
-    setTransportActive(true)
   }
 
   const handleModalOpen = () => setAttendeeModalOpen(true)
