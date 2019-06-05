@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -85,16 +86,24 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     )
 
   return (
-    <div className='event-page-view' style={{ justifyContent: 'center' }}>
-      <Paper className='event-page-center-paper'>
-        <Typography className='event-page-block-title'>Attendees</Typography>
-        {attendeeTable}
-        <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
-          <PersonAddIcon className='add-icon' />
-          Add Attendee
-        </Button>
-      </Paper>
-      {transportActive && <TransportSection {...attendeeTransportDetails} name={name} />}
+    <div className='event-page-view' style={{ justifyContent: 'center', overflowY: 'auto' }}>
+      <div>
+        <Paper className='event-page-center-paper'>
+          <Typography className='attendee-title'>Attendees</Typography>
+          {attendeeTable}
+          <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
+            <PersonAddIcon className='add-icon' />
+            Add Attendee
+          </Button>
+        </Paper>
+      </div>
+      <ReactCSSTransitionGroup
+        transitionName='horizontal-grow'
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+      >
+        {transportActive && <TransportSection {...attendeeTransportDetails} name={name} />}
+      </ReactCSSTransitionGroup>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
     </div>
   )

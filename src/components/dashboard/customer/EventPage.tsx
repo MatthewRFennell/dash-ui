@@ -14,7 +14,6 @@ import OverviewTab, { OverviewTabProps } from './Tabs/OverviewTab'
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   const [currentTab, setCurrentTab] = React.useState<number>(0)
   const handleTabChange = (_, newValue) => setCurrentTab(newValue)
-  console.log(props)
   return (
     <div>
       <Button className='event-page-back' variant='contained' onClick={props.backAction} color='primary'>
