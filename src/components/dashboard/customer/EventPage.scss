@@ -94,6 +94,11 @@
     margin: 30px;
     padding: 30px;
     width: 300px;
+    .action-button {
+      margin-top: 10px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
   }
   .event-page-aux-wrapper {
     position: sticky;
