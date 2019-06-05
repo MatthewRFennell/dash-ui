@@ -12,14 +12,16 @@ import './Card.scss'
 const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProps) => {
   return (
     <Card className='card'>
-      <img src={props.image} className='card-header' />
-      <CardContent className='card-content'>
-        <Typography className='card-date'>
-          {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
-        </Typography>
-        <Typography className='card-title'>{props.name}</Typography>
-        <Typography className='card-body'>{props.blurb}</Typography>
-      </CardContent>
+      <CardActionArea onClick={props.action}>
+        <img src={props.image} className='card-header' />
+        <CardContent className='card-content'>
+          <Typography className='card-date'>
+            {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
+          </Typography>
+          <Typography className='card-title'>{props.name}</Typography>
+          <Typography className='card-body'>{props.blurb}</Typography>
+        </CardContent>
+      </CardActionArea>
       <CardActions>
         <Button className='card-button' onClick={props.action}>
           Edit Details

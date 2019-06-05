@@ -17,6 +17,9 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const [loading, setLoading] = React.useState<boolean>(true)
   const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
+  const [currentTab, setCurrentTab] = React.useState<number>(0)
+
+  const handleTabChange = (_, newValue) => setCurrentTab(newValue)
 
   const addAttendee = (attendee) => {
     const newAttendees = openEvent.attendees
@@ -58,6 +61,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const handleLoadingFinish = () => setLoading(false)
 
   const handleSetEvent = (id?: number) => () => {
+    setCurrentTab(0) // Reset tab
     console.log('Set event', id)
     if (id !== undefined) {
       /* Fetch from endpoint */
@@ -94,22 +98,37 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           />
         )}
         <div key='main'>
-          <Header history={props.history} onBack={openEvent ? handleSetEvent() : undefined} />
-          {openEvent === undefined ? (
-            <div>
-              <CustomerView
-                history={props.history}
-                setActiveEvent={handleSetEvent}
-                onLoadComplete={handleLoadingFinish}
+          <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+            <Header
+              history={props.history}
+              onBack={openEvent ? handleSetEvent() : undefined}
+              onTabChange={openEvent ? handleTabChange : undefined}
+              currentTab={currentTab}
+              key='header'
+            />
+            {openEvent === undefined ? (
+              <div key='customer-view'>
+                <CustomerView
+                  history={props.history}
+                  setActiveEvent={handleSetEvent}
+                  onLoadComplete={handleLoadingFinish}
+                />
+                <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
+                  <AddIcon className='dashboard-add-icon' />
+                  Add event
+                </Fab>
+              </div>
+            ) : (
+              <EventPage
+                event={openEvent}
+                deleteAttendee={deleteAttendee}
+                addAttendee={addAttendee}
+                key='event-page'
+                currentTab={currentTab}
+                onTabChange={setCurrentTab}
               />
-              <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
-                <AddIcon className='dashboard-add-icon' />
-                Add event
-              </Fab>
-            </div>
-          ) : (
-            <EventPage event={openEvent} deleteAttendee={deleteAttendee} addAttendee={addAttendee} />
-          )}
+            )}
+          </ReactCSSTransitionGroup>
           <CreateEvent open={modalOpen} onClose={handleModalClose} />
         </div>
       </ReactCSSTransitionGroup>
