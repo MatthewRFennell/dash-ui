@@ -37,11 +37,14 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     props.deleteAttendee(id)
   }
 
-  let attendeeTransportDetails
+  let attendeeTransportDetails: TransportDetails
   let name
   if (attendeeTransport >= 0) {
     name = props.attendees[attendeeTransport].fname + ' ' + props.attendees[attendeeTransport].sname
-    attendeeTransportDetails = props.attendees[attendeeTransport].transport
+    attendeeTransportDetails = {
+      ...props.attendees[attendeeTransport].transport,
+      departTime: new Date(props.attendees[attendeeTransport].transport.departTime),
+    }
   }
 
   const attendeeTable =
