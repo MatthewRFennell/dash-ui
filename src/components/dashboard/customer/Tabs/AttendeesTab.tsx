@@ -3,7 +3,6 @@ import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -12,22 +11,24 @@ import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import Airplane from '@material-ui/icons/AirplanemodeActive'
 import CloseIcon from '@material-ui/icons/Close'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import AddAttendee from '../../modal/AddAttendee'
+import DetailsPanel from './DetailsPanel'
 import TransportSection, { TransportDetails } from './TransportSection'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
-  const [transportActive, setTransportActive] = React.useState<boolean>(false)
+  const [detailActive, setdetailActive] = React.useState<boolean>(false)
   const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
 
   const setIndex = (id) => () => {
     if (id === attendeeTransport) {
       setAttendeeTransport(-1)
-      setTransportActive(false)
+      setdetailActive(false)
     } else {
       setAttendeeTransport(id)
-      setTransportActive(true)
+      setdetailActive(true)
     }
   }
 
@@ -42,10 +43,12 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   let name
   if (attendeeTransport >= 0) {
     name = props.attendees[attendeeTransport].fname + ' ' + props.attendees[attendeeTransport].sname
-    attendeeTransportDetails = {
-      ...props.attendees[attendeeTransport].transport,
-      departTime: new Date(props.attendees[attendeeTransport].transport.departTime),
-    }
+    attendeeTransportDetails = props.attendees[attendeeTransport].transport
+      ? {
+          ...props.attendees[attendeeTransport].transport,
+          departTime: new Date(props.attendees[attendeeTransport].transport.departTime),
+        }
+      : undefined
   }
 
   const attendeeTable =
@@ -56,7 +59,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             <TableCell className='table-cell'>First Name</TableCell>
             <TableCell className='table-cell'>Last Name</TableCell>
             <TableCell className='table-cell'>Dietary Requirements</TableCell>
-            <TableCell className='table-cell' />
+            <TableCell className='table-cell'>Details</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -66,16 +69,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
               <TableCell className='table-cell'>{attendee.sname} </TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
               <TableCell className='table-cell'>
-                <IconButton onClick={handleDelete(attendee.attendee_id)}>
-                  <CloseIcon />
+                <IconButton onClick={setIndex(index)}>
+                  <MoreVertIcon color={index === attendeeTransport ? 'primary' : 'default'} />
                 </IconButton>
-                {attendee.transport ? (
-                  <IconButton color={index === attendeeTransport ? 'primary' : 'default'} onClick={setIndex(index)}>
-                    <Airplane />
-                  </IconButton>
-                ) : (
-                  undefined
-                )}
               </TableCell>
             </TableRow>
           ))}
@@ -101,8 +97,12 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
         transitionName='horizontal-grow'
         transitionEnterTimeout={300}
         transitionLeaveTimeout={300}
+        style={{
+          position: 'sticky',
+          top: 0,
+        }}
       >
-        {transportActive && <TransportSection {...attendeeTransportDetails} name={name} />}
+        {detailActive && <DetailsPanel name={name} transport={attendeeTransportDetails} />}
       </ReactCSSTransitionGroup>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
     </div>
