@@ -94,7 +94,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           />
         )}
         <div key='main'>
-          <Header history={props.history} />
+          <Header history={props.history} onBack={openEvent ? handleSetEvent() : undefined} />
           {openEvent === undefined ? (
             <div>
               <CustomerView
@@ -108,12 +108,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               </Fab>
             </div>
           ) : (
-            <EventPage
-              event={openEvent}
-              deleteAttendee={deleteAttendee}
-              addAttendee={addAttendee}
-              backAction={handleSetEvent()}
-            />
+            <EventPage event={openEvent} deleteAttendee={deleteAttendee} addAttendee={addAttendee} />
           )}
           <CreateEvent open={modalOpen} onClose={handleModalClose} />
         </div>

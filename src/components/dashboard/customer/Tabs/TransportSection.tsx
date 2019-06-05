@@ -9,7 +9,7 @@ const TransportSection = (props: TransportSectionProps) => {
   console.log(props)
   return (
     <div className='event-page-aux-wrapper'>
-      <Paper className='event-page-aux-paper'>
+      <div className='event-page-aux-paper'>
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Transport Details For</Typography>
           <Typography className='event-page-body'>{props.name}</Typography>
@@ -55,7 +55,7 @@ const TransportSection = (props: TransportSectionProps) => {
             </ListItem>
           </List>
         </div>
-      </Paper>
+      </div>
     </div>
   )
 }

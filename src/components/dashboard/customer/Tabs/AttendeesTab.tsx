@@ -88,14 +88,14 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   return (
     <div className='event-page-view' style={{ justifyContent: 'center', overflowY: 'auto' }}>
       <div>
-        <Paper className='event-page-center-paper'>
+        <div className='event-page-center-paper'>
           <Typography className='attendee-title'>Attendees</Typography>
           {attendeeTable}
           <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
             <PersonAddIcon className='add-icon' />
             Add Attendee
           </Button>
-        </Paper>
+        </div>
       </div>
       <ReactCSSTransitionGroup
         transitionName='horizontal-grow'

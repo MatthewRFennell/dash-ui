@@ -16,9 +16,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   const handleTabChange = (_, newValue) => setCurrentTab(newValue)
   return (
     <div>
-      <Button className='event-page-back' variant='contained' onClick={props.backAction} color='primary'>
-        Back
-      </Button>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div className='tabs-paper'>
           <Tabs
@@ -28,9 +25,9 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
             textColor='primary'
             centered={true}
           >
-            <Tab label='Overview' />
-            <Tab label='Attendees' />
-            <Tab label='Itinerary' />
+            <Tab label='Overview' style={{ fontWeight: 'bold' }} />
+            <Tab label='Attendees' style={{ fontWeight: 'bold' }} />
+            <Tab label='Itinerary' style={{ fontWeight: 'bold' }} />
           </Tabs>
         </div>
       </div>
@@ -50,7 +47,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 }
 
 interface EventPageProps {
-  backAction: () => void
   deleteAttendee: (x: number) => void
   addAttendee: (x: AttendeeDetails) => void
   event: EventFullDetails
