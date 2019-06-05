@@ -1,12 +1,12 @@
 export const setFormDetails = (itinerary) => {
     return {
         type: 'setFormDetails',
-        itinerary
+        itinerary,
     }
 }
 
 export const removeFormDetails = () => {
     return {
-        type: 'removeFormDetails'
+        type: 'removeFormDetails',
     }
 }

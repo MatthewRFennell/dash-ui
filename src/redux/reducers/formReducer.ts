@@ -1,5 +1,5 @@
 const inititalState = {
-    set: false
+    set: false,
 }
 
 const form = (state = inititalState, action) => {
@@ -7,11 +7,11 @@ const form = (state = inititalState, action) => {
         case 'setFormDetails':
             return {
                 set: true,
-                itinerary_id: action.itinerary.itinerary_id
+                itinerary_id: action.itinerary.itinerary_id,
             }
         case 'removeFormDetails':
             return {
-                set: false
+                set: false,
             }
         default:
             return state
