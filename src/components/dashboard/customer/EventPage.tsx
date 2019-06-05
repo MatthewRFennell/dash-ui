@@ -16,9 +16,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   const handleTabChange = (_, newValue) => setCurrentTab(newValue)
   return (
     <div>
-      <Button className='event-page-back' variant='contained' onClick={props.backAction} color='primary'>
-        Back
-      </Button>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div className='tabs-paper'>
           <Tabs
@@ -28,37 +25,36 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
             textColor='primary'
             centered={true}
           >
-            <Tab label='Overview' />
-            <Tab label='Attendees' />
-            <Tab label='Itinerary' />
+            <Tab label='Overview' style={{ fontWeight: 'bold' }} />
+            <Tab label='Attendees' style={{ fontWeight: 'bold' }} />
+            <Tab label='Itinerary' style={{ fontWeight: 'bold' }} />
           </Tabs>
         </div>
       </div>
       <SwipeableViews index={currentTab} onChangeIndex={setCurrentTab} style={{ overflow: 'hidden' }}>
-        <OverviewTab {...props.events} key='overview' />
+        <OverviewTab {...props.event} key='overview' />
         <AttendeesTab
-          attendees={props.attendees}
-          event_id={props.events.event_id}
+          attendees={props.event.attendees}
+          event_id={props.event.event_id}
           deleteAttendee={props.deleteAttendee}
           addAttendee={props.addAttendee}
           key='attendees'
         />
-        <ItineraryTab itinerary={props.itinerary} key='itinerary' />
+        <ItineraryTab itinerary={props.event.itineraries} key='itinerary' />
       </SwipeableViews>
     </div>
   )
 }
 
-interface EventPageProps extends EventFullDetails {
-  backAction: () => void
+interface EventPageProps {
   deleteAttendee: (x: number) => void
   addAttendee: (x: AttendeeDetails) => void
+  event: EventFullDetails
 }
 
-export interface EventFullDetails {
-  events: OverviewTabProps
+export interface EventFullDetails extends OverviewTabProps {
   attendees: AttendeeDetails[]
-  itinerary: ItineraryDetails[]
+  itineraries: ItineraryDetails[]
 }
 
 export default EventPage

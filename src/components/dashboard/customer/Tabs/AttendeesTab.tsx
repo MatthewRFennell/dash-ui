@@ -1,13 +1,15 @@
 import * as React from 'react'
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
+import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Typography from '@material-ui/core/Typography'
 import Airplane from '@material-ui/icons/AirplanemodeActive'
 import CloseIcon from '@material-ui/icons/Close'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
@@ -36,11 +38,14 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     props.deleteAttendee(id)
   }
 
-  let attendeeTransportDetails
+  let attendeeTransportDetails: TransportDetails
   let name
   if (attendeeTransport >= 0) {
     name = props.attendees[attendeeTransport].fname + ' ' + props.attendees[attendeeTransport].sname
-    attendeeTransportDetails = props.attendees[attendeeTransport].transport
+    attendeeTransportDetails = {
+      ...props.attendees[attendeeTransport].transport,
+      departTime: new Date(props.attendees[attendeeTransport].transport.departTime),
+    }
   }
 
   const attendeeTable =
@@ -81,10 +86,10 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     )
 
   return (
-    <div className='event-page-view'>
-      <div className='event-page-left-panel'>
-        <div className='event-page-detail'>
-          <Typography className='event-page-block-title'>Attendees</Typography>
+    <div className='event-page-view' style={{ justifyContent: 'center', overflowY: 'auto' }}>
+      <div>
+        <div className='event-page-center-paper'>
+          <Typography className='attendee-title'>Attendees</Typography>
           {attendeeTable}
           <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
             <PersonAddIcon className='add-icon' />
@@ -92,10 +97,13 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           </Button>
         </div>
       </div>
-      <div className='event-page-mock-panel' />
-      <div className='event-page-right-panel'>
-        <TransportSection {...attendeeTransportDetails} active={transportActive} name={name} />
-      </div>
+      <ReactCSSTransitionGroup
+        transitionName='horizontal-grow'
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+      >
+        {transportActive && <TransportSection {...attendeeTransportDetails} name={name} />}
+      </ReactCSSTransitionGroup>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
     </div>
   )

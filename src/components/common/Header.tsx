@@ -23,9 +23,16 @@ const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps) => {
         <img src={logo} className='logo' />
         Dash
       </div>
-      <Button className='account-button' variant='outlined' color='primary' onClick={handleLogout}>
-        Logout
-      </Button>
+      <div>
+        {props.onBack && (
+          <Button className='account-button' color='primary' onClick={props.onBack}>
+            Back
+          </Button>
+        )}
+        <Button className='account-button' variant='outlined' color='primary' onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
     </div>
   )
 }
@@ -40,6 +47,7 @@ const mapDispatchToProps = (dispatch) => {
 
 interface HeaderProps {
   history?: History
+  onBack?: () => void
   onLogout: () => void
 }
 
