@@ -5,7 +5,7 @@ import * as React from 'react'
 
 const TransportSection = (props: TransportSectionProps) => {
   console.log(props)
-  return props.active ? (
+  return (
     <div className='event-page-detail'>
       <Typography className='event-page-block-title'>Transport</Typography>
       <List>
@@ -56,14 +56,11 @@ const TransportSection = (props: TransportSectionProps) => {
         </ListItem>
       </List>
     </div>
-  ) : (
-    <h1>Select a attendee to see their trasport details</h1>
   )
 }
 
 interface TransportSectionProps extends TransportDetails {
   name: string
-  active: boolean
 }
 
 export interface TransportDetails {

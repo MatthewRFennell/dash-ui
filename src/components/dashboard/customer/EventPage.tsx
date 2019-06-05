@@ -14,6 +14,7 @@ import OverviewTab, { OverviewTabProps } from './Tabs/OverviewTab'
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   const [currentTab, setCurrentTab] = React.useState<number>(0)
   const handleTabChange = (_, newValue) => setCurrentTab(newValue)
+  console.log(props)
   return (
     <div>
       <Button className='event-page-back' variant='contained' onClick={props.backAction} color='primary'>
@@ -35,30 +36,30 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
         </div>
       </div>
       <SwipeableViews index={currentTab} onChangeIndex={setCurrentTab} style={{ overflow: 'hidden' }}>
-        <OverviewTab {...props.events} key='overview' />
+        <OverviewTab {...props.event} key='overview' />
         <AttendeesTab
-          attendees={props.attendees}
-          event_id={props.events.event_id}
+          attendees={props.event.attendees}
+          event_id={props.event.event_id}
           deleteAttendee={props.deleteAttendee}
           addAttendee={props.addAttendee}
           key='attendees'
         />
-        <ItineraryTab itinerary={props.itinerary} key='itinerary' />
+        <ItineraryTab itinerary={props.event.itineraries} key='itinerary' />
       </SwipeableViews>
     </div>
   )
 }
 
-interface EventPageProps extends EventFullDetails {
+interface EventPageProps {
   backAction: () => void
   deleteAttendee: (x: number) => void
   addAttendee: (x: AttendeeDetails) => void
+  event: EventFullDetails
 }
 
-export interface EventFullDetails {
-  events: OverviewTabProps
+export interface EventFullDetails extends OverviewTabProps {
   attendees: AttendeeDetails[]
-  itinerary: ItineraryDetails[]
+  itineraries: ItineraryDetails[]
 }
 
 export default EventPage

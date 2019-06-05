@@ -28,7 +28,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const editEvent = (event) => {
-    fetchProtected(DASH_API + '/editEvent', null, { ...event, id: openEvent.events.event_id }, 'PUT', (res) => {
+    fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event_id }, 'PUT', (res) => {
       if (res.success) {
         setOpenEvent((currentEvent: EventFullDetails) => {
           return {
@@ -64,19 +64,8 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
       fetchProtected(`${DASH_API}/event?event_id=${id}`, null, null, 'GET', (res) => {
         console.log(res)
         const newEvent = {
-          events: {
-            ...res.events,
-            date: new Date(res.events.date),
-          },
-          attendees: res.attendees
-            ? res.attendees.map((a) => {
-                if (a.transport) {
-                  a.transport.departTime = new Date(a.transport.departTime)
-                }
-                return a
-              })
-            : [],
-          itinerary: res.itinerary,
+          ...res.event,
+          date: new Date(res.event.date),
         }
         console.log(newEvent)
         setOpenEvent(newEvent)
@@ -120,7 +109,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             </div>
           ) : (
             <EventPage
-              {...openEvent}
+              event={openEvent}
               deleteAttendee={deleteAttendee}
               addAttendee={addAttendee}
               backAction={handleSetEvent()}
