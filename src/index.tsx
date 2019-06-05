@@ -13,6 +13,7 @@ import store from './redux/store'
 import { createMuiTheme } from '@material-ui/core'
 import { createBrowserHistory } from 'history'
 import Dashboard from './components/dashboard/Dashboard'
+import FormGenerator from './components/forms/FormGenerator'
 import { Login } from './components/frontpage/Login'
 import Register from './components/frontpage/Register'
 import Loader from './components/misc/Loader'
@@ -38,6 +39,7 @@ ReactDOM.render(
           <Route exact={true} path='/login' component={Login} />
           <Route exact={true} path='/register' component={Register} />
           <Route exact={true} path='/loader' component={Loader} />
+          <Route exact={true} path='/form' component={FormGenerator} />
           <Route component={NotFound} />
         </Switch>
       </Router>
