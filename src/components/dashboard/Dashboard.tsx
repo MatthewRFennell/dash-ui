@@ -108,7 +108,12 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               </Fab>
             </div>
           ) : (
-            <EventPage event={openEvent} deleteAttendee={deleteAttendee} addAttendee={addAttendee} />
+            <EventPage
+              history={props.history}
+              event={openEvent}
+              deleteAttendee={deleteAttendee}
+              addAttendee={addAttendee}
+            />
           )}
           <CreateEvent open={modalOpen} onClose={handleModalClose} />
         </div>

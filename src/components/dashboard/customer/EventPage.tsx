@@ -5,10 +5,11 @@ import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 
+import {History} from 'history'
 import SwipeableViews from 'react-swipeable-views'
 import './EventPage.scss'
 import AttendeesTab, { AttendeeDetails } from './Tabs/AttendeesTab'
-import ItineraryTab, { ItineraryDetails } from './Tabs/ItineraryTab'
+import { ItineraryDetails, ItineraryTab } from './Tabs/ItineraryTab'
 import OverviewTab, { OverviewTabProps } from './Tabs/OverviewTab'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
@@ -40,7 +41,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           addAttendee={props.addAttendee}
           key='attendees'
         />
-        <ItineraryTab itinerary={props.event.itineraries} key='itinerary' />
+        <ItineraryTab history={props.history} itinerary={props.event.itineraries} key='itinerary' />
       </SwipeableViews>
     </div>
   )
@@ -50,6 +51,7 @@ interface EventPageProps {
   deleteAttendee: (x: number) => void
   addAttendee: (x: AttendeeDetails) => void
   event: EventFullDetails
+  history: History
 }
 
 export interface EventFullDetails extends OverviewTabProps {

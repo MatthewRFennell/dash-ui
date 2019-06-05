@@ -3,9 +3,9 @@ import * as React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { History } from 'history'
 import { connect } from 'react-redux'
-import { loadEvents } from '../../../../src/redux/actions/eventActions'
+import { loadEvents } from '../../..//redux/actions/eventActions'
 import fetchProtected from '../../../api/protected'
-import EventCard, { EventCardProps } from '../Card'
+import EventCard from '../Card'
 import './CustomerView.scss'
 
 const NUM_COLS = 2

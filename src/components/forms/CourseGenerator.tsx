@@ -5,23 +5,24 @@ import EditBox from './EditBox'
 
 const CourseGenerator = (props) => {
 
-    const [dishTitle, setDishTitle] = React.useState('')
+    const [dishName, setDishName] = React.useState('')
     const [dishDescription, setDishDescription] = React.useState('')
 
     const handleDescChange = (event) => {
         setDishDescription(event.target.value)
     }
 
-    const handleTitleChange = (event) => {
-        setDishTitle(event.target.value)
+    const handleNameChange = (event) => {
+        setDishName(event.target.value)
     }
 
-    const add = (event) => {
+    const add = () => {
         props.add({
-            title: dishTitle,
+            name: dishName,
             description: dishDescription,
+            warnings: [],
         })
-        setDishTitle('')
+        setDishName('')
         setDishDescription('')
     }
 
@@ -37,8 +38,8 @@ const CourseGenerator = (props) => {
                 <div className='dishField'>
                     <TextField
                         label='Dish Name'
-                        value={dishTitle}
-                        onChange={handleTitleChange}
+                        value={dishName}
+                        onChange={handleNameChange}
                     />
                 </div>
                 <div className='dishField'>
@@ -59,7 +60,7 @@ const CourseGenerator = (props) => {
             {props.course.dishes.map((d, i) => {
                 return (
                     <Card className='dish' key={i}>
-                        <h1>{d.title}</h1>
+                        <h1>{d.name}</h1>
                         <p>{d.description}</p>
                     </Card>
                 )

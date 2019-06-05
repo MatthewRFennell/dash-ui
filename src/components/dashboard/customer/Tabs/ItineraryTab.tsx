@@ -8,10 +8,14 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Add from '@material-ui/icons/Add'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu'
+import { History } from 'history'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
+import { connect } from 'react-redux'
+import { setFormDetails } from '../../../../redux/actions/formActions'
 
 const MapPanel = withScriptjs(
   withGoogleMap((props: any) => {
@@ -58,6 +62,16 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
       return () => setFocus(-1)
     }
   }
+
+  const createMenu = (item) => () => {
+    props.createForm(item)
+    props.history.push('/form')
+  }
+
+  const viewMenu = (item) => () => {
+    console.log('Should show menu', item.menu)
+  }
+
   const itineraryTable = (
     <Table>
       <TableHead>
@@ -84,8 +98,12 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
               </TableCell>
               <TableCell className='table-cell'>{item.description}</TableCell>
               <TableCell className='table-cell'>
-                <IconButton>
-                  <RestaurantMenuIcon />
+                <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item)}>
+                  {item.menu ?
+                    <RestaurantMenuIcon/>
+                    :
+                    <Add/>
+                  }
                 </IconButton>
               </TableCell>
               <TableCell className='table-cell'>
@@ -138,6 +156,8 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
 
 interface ItineraryTabProps {
   itinerary: ItineraryDetails[]
+  createForm: (x: ItineraryDetails) => void
+  history: History
 }
 
 export interface ItineraryDetails {
@@ -148,6 +168,15 @@ export interface ItineraryDetails {
   end_date?: Date
   long: any
   lat: any
+  menu: any
 }
 
-export default ItineraryTab
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createForm: (itinerary) => dispatch(setFormDetails(itinerary)),
+  }
+}
+
+const ConnectedItineraryTab = connect(null, mapDispatchToProps)(ItineraryTab)
+
+export {ConnectedItineraryTab as ItineraryTab}
