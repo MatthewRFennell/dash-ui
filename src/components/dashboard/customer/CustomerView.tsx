@@ -19,7 +19,9 @@ interface EventDetails {
 }
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
+  const [raised, setRaised] = React.useState<boolean>(false)
   console.log(props.events)
+
   React.useEffect(() => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
