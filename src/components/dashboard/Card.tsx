@@ -22,11 +22,6 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
           <Typography className='card-body'>{props.blurb}</Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button className='card-button' onClick={props.action}>
-          Edit Details
-        </Button>
-      </CardActions>
     </Card>
   )
 }
