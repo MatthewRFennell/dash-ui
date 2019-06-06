@@ -24,6 +24,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false)
   const [detailActive, setdetailActive] = React.useState<boolean>(false)
   const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
+  const [modalLoading, setModalLoading] = React.useState<boolean>(false)
 
   const setIndex = (id) => () => {
     if (id === attendeeTransport) {
@@ -41,7 +42,13 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const handleDeleteModal = (state) => () => setDeleteModalOpen(state)
 
   const handleDelete = (id) => () => {
-    props.deleteAttendee(id)
+    setModalLoading(true)
+    props.deleteAttendee(id, () => {
+      setAttendeeTransport(-1)
+      setdetailActive(false)
+      setModalLoading(false)
+      setDeleteModalOpen(false)
+    })
   }
 
   let attendeeTransportDetails: TransportDetails
@@ -85,7 +92,6 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     ) : (
       undefined
     )
-
   return (
     <div className='event-page-view' style={{ justifyContent: 'center', overflowY: 'auto' }}>
       <div>
@@ -119,29 +125,42 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
       <ConfirmDialog
         title='Confirm attendee'
-        content={`Confirm attendee ${name || 'ERROR'}'s attendance`}
+        content={`Confirm attendee ${name}'s attendance`}
         open={confirmModalOpen}
         confirm={{
           text: 'Confirm',
-          action: () => undefined,
+          action: () => {
+            setModalLoading(true)
+            setTimeout(() => {
+              setModalLoading(false)
+            }, 1000)
+          },
         }}
         alt={{
           text: 'Cancel',
           action: handleConfirmModal(false),
         }}
+        loading={modalLoading}
       />
       <ConfirmDialog
         title='Delete attendee'
-        content={`Delete attendee ${name || 'ERROR'} and their associated details`}
+        content={`Delete attendee ${name} and their associated details`}
         open={deleteModalOpen}
         confirm={{
           text: 'Delete',
-          action: () => undefined,
+          action: handleDelete(
+            (
+              props.attendees[attendeeTransport] || {
+                attendee_id: -1,
+              }
+            ).attendee_id,
+          ),
         }}
         alt={{
           text: 'Cancel',
           action: handleDeleteModal(false),
         }}
+        loading={modalLoading}
       />
     </div>
   )
@@ -150,7 +169,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
 interface AttendeesTabProps {
   event_id: number
   attendees: AttendeeDetails[]
-  deleteAttendee: (id: number) => void
+  deleteAttendee: (id: number, callback: () => void) => void
   addAttendee: (x: AttendeeDetails) => void
 }
 

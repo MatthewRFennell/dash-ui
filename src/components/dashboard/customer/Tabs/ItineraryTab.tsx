@@ -18,10 +18,12 @@ import { connect } from 'react-redux'
 import { setFormDetails } from '../../../../redux/actions/formActions'
 import MenuModal from './MenuModal'
 
+const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
+
 const MapPanel = withScriptjs(
   withGoogleMap((props: any) => {
-    console.log(props)
-    const markers = props.markers.map(({ lat, long, name, id, description }, index) => (
+    const centerFocus = props.markers.filter(({ id }) => id === props.focus)[0]
+    const markers = props.markers.map(({ lat, long, name, id, description, index }) => (
       <Marker position={{ lat, lng: long }} key={index} label={{ color: 'white', text: String(index + 1) }}>
         {props.focus === id ? (
           <InfoBox
@@ -42,17 +44,30 @@ const MapPanel = withScriptjs(
       lat: 0,
       long: 0,
     })
+    const bounds = new google.maps.LatLngBounds()
+    props.markers.forEach(({ lat, long }) => {
+      bounds.extend({ lat, lng: long })
+    })
     const center = { lat: markerSum.lat / markers.length, long: markerSum.long / markers.length }
-    console.log(center)
     return (
-      <GoogleMap defaultZoom={8} defaultCenter={{ lat: center.lat, lng: center.long }}>
+      <GoogleMap
+        defaultZoom={8}
+        defaultCenter={{ lat: center.lat, lng: center.long }}
+        zoom={centerFocus ? 14 : 8}
+        center={centerFocus ? { lat: centerFocus.lat, lng: centerFocus.long } : { lat: center.lat, lng: center.long }}
+        ref={(map) => {
+          if (map) {
+            if (!centerFocus) {
+              map.fitBounds(bounds)
+            }
+          }
+        }}
+      >
         {props.isMarkerShown && markers}
       </GoogleMap>
     )
   }),
 )
-
-const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
 const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [focus, setFocus] = React.useState<number>(-1)
@@ -76,7 +91,6 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   }
 
   const viewMenu = (item: ItineraryDetails) => () => {
-    console.log('Should show menu', item.menu)
     setModalOpen(true)
     setModalContent(item.menu)
     setModalName(item.name)
@@ -85,6 +99,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const itineraryTable = (
     <Table>
       <TableHead>
+        <TableCell className='table-cell' />
         <TableCell className='table-cell'>Name</TableCell>
         <TableCell className='table-cell'>Time</TableCell>
         <TableCell className='table-cell'>Description</TableCell>
@@ -96,6 +111,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
           const date = new Date(item.start_date)
           return (
             <TableRow key={index}>
+              <TableCell className='table-cell'>{index + 1}</TableCell>
               <TableCell className='table-cell'>{item.name}</TableCell>
               <TableCell className='table-cell'>
                 {date.toLocaleTimeString('default', {
@@ -116,6 +132,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
                 <IconButton
                   onClick={handleChangeFocus(item.itinerary_id)}
                   color={focus === item.itinerary_id ? 'primary' : 'default'}
+                  disabled={item.lat === null || item.long === null}
                 >
                   <LocationOnIcon />
                 </IconButton>
@@ -126,10 +143,10 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
       </TableBody>
     </Table>
   )
-  const markers: Array<{ lat: number; long: number }> = props.itinerary
+  const markers = props.itinerary
     .map(
-      ({ lat, long, name, itinerary_id, description }) =>
-        lat !== null && long !== null && { lat, long, name, id: itinerary_id, description },
+      ({ lat, long, name, itinerary_id, description }, index) =>
+        lat !== null && long !== null && { lat, long, name, id: itinerary_id, description, index },
     )
     .filter((entry) => entry)
   return (

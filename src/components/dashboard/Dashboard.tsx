@@ -43,10 +43,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     })
   }
 
-  const deleteAttendee = (attendeeID) => {
+  const deleteAttendee = (attendeeID, callback) => {
     fetchProtected(DASH_API + '/attendee', null, { attendee_id: attendeeID }, 'DELETE', (res) => {
       if (res.success) {
         console.log('Delete Success')
+        if (callback) {
+          callback()
+        }
         const newAttendees = openEvent.attendees.filter((a) => a.attendee_id !== attendeeID)
         setOpenEvent({
           ...openEvent,

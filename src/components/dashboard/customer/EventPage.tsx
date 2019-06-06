@@ -26,7 +26,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 }
 
 interface EventPageProps {
-  deleteAttendee: (x: number) => void
+  deleteAttendee: (x: number, callback: () => void) => void
   addAttendee: (x: AttendeeDetails) => void
   event: EventFullDetails
   history: History

@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -25,7 +26,13 @@ const ConfirmDialog: React.FunctionComponent<ConfirmDialogProps> = (props) => {
         <Button color='primary' className='modal-button' onClick={props.alt.action}>
           {props.alt.text}
         </Button>
-        <Button variant='outlined' color='primary' className='modal-button' onClick={props.confirm.action}>
+        <Button
+          variant='outlined'
+          color='primary'
+          className='modal-button'
+          onClick={props.confirm.action}
+          disabled={props.loading}
+        >
           {props.confirm.text}
         </Button>
       </DialogActions>
@@ -37,6 +44,7 @@ interface ConfirmDialogProps {
   title: string
   content: string
   open: boolean
+  loading: boolean
   confirm: ActionLabel
   alt: ActionLabel
   onClose?: () => void
