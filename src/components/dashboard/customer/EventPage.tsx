@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {History} from 'history'
+import { History } from 'history'
 import SwipeableViews from 'react-swipeable-views'
 import './EventPage.scss'
 import AttendeesTab, { AttendeeDetails } from './Tabs/AttendeesTab'
