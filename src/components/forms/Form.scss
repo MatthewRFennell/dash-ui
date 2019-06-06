@@ -46,3 +46,21 @@
     display: inline;
     margin-right: 30px;
 }
+
+.actionCard {
+    margin-top: 20px;
+    display: block;
+    width: 250px;
+    margin-right: 30px;
+    height: 128px;
+    display: inline-block
+}
+
+.selected {
+    border-bottom: 1px solid blue;
+}
+
+.cardActionArea {
+    padding: 0 20px;
+    height: 100%;
+}
