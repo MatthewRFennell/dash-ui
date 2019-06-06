@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
@@ -8,14 +8,18 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import Add from '@material-ui/icons/Add'
+import Typography from '@material-ui/core/Typography'
+import AddIcon from '@material-ui/icons/Add'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu'
+
 import { History } from 'history'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
 import { connect } from 'react-redux'
+
 import { setFormDetails } from '../../../../redux/actions/formActions'
+import AddItinerary from '../../modal/AddItinerary'
 import MenuModal from './MenuModal'
 
 const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
@@ -74,10 +78,14 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [modalContent, setModalContent] = React.useState<MenuDetails>(undefined)
   const [modalName, setModalName] = React.useState<string>('')
+  const [addItineraryOpen, setAddItineraryOpen] = React.useState<boolean>(false)
+  const [itineraryAddendum, setItineraryAddendum] = React.useState<ItineraryDetails[]>([])
 
-  const itinerary = props.itinerary.sort((eventA, eventB) =>
-    eventA.start_date < eventB.start_date ? -1 : eventA.start_date > eventB.start_date ? 1 : 0,
-  )
+  const itinerary = props.itinerary
+    .concat(itineraryAddendum)
+    .sort((eventA, eventB) =>
+      eventA.start_date < eventB.start_date ? -1 : eventA.start_date > eventB.start_date ? 1 : 0,
+    )
 
   const handleChangeFocus = (id: number) => {
     if (id !== focus) {
@@ -88,6 +96,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   }
 
   const handleModalOpen = (state) => () => setModalOpen(state)
+  const handleAddItineraryOpen = (state) => () => setAddItineraryOpen(state)
 
   const createMenu = (item) => () => {
     props.createForm(item)
@@ -98,6 +107,10 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     setModalOpen(true)
     setModalContent(item.menu)
     setModalName(item.name)
+  }
+
+  const handleAddItineraryEvent = (details) => {
+    setItineraryAddendum((prev) => prev.concat([details]))
   }
 
   const itineraryTable = (
@@ -131,7 +144,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
               <TableCell className='table-cell'>{item.description}</TableCell>
               <TableCell className='table-cell'>
                 <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item)}>
-                  {item.menu ? <RestaurantMenuIcon /> : <Add />}
+                  {item.menu ? <RestaurantMenuIcon /> : <AddIcon />}
                 </IconButton>
               </TableCell>
               <TableCell className='table-cell'>
@@ -161,6 +174,15 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
         <div className='event-page-table'>
           <Typography className='event-page-title'>Itinerary</Typography>
           {itineraryTable}
+          <Button
+            variant='outlined'
+            color='primary'
+            style={{ marginTop: '15px', fontWeight: 'bold' }}
+            onClick={handleAddItineraryOpen(true)}
+          >
+            <AddIcon className='add-icon' style={{ marginRight: '10px' }} />
+            Add Itinerary Event
+          </Button>
         </div>
       </div>
       <div className='event-page-mock-panel' />
@@ -180,6 +202,12 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
         )}
       </div>
       <MenuModal open={modalOpen} onClose={handleModalOpen(false)} name={modalName} menu={modalContent} />
+      <AddItinerary
+        open={addItineraryOpen}
+        eventId={props.eventId}
+        onClose={handleAddItineraryOpen(false)}
+        onSuccess={handleAddItineraryEvent}
+      />
     </div>
   )
 }
@@ -187,6 +215,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
 interface ItineraryTabProps {
   itinerary: ItineraryDetails[]
   createForm: (x: ItineraryDetails) => void
+  eventId: number
   history: History
 }
 

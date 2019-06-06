@@ -10,7 +10,6 @@ import TransportSection, { TransportDetails } from './TransportSection'
 import '../../../forms/Form.scss'
 
 const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
-
   const link = 'http://dash-web-19.herokuapp.com/completeform/' + props.form_id
 
   return (
@@ -18,19 +17,21 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
       <div className='event-page-aux-paper'>
         <Typography className='event-page-block-title'>Details for</Typography>
         <Typography className='event-page-body'>{props.name}</Typography>
-        <Typography className='event-page-block-title'>Attendee form link</Typography>
-        <Typography className='event-page-body inline'>Copy to clipboard</Typography>
-        <CopyToClipboard text={link}>
-          <IconButton>
-            <Link/>
-          </IconButton>
-        </CopyToClipboard>
+        <div className='event-page-detail'>
+          <Typography className='event-page-block-title'>Attendee form link</Typography>
+          <Typography className='event-page-body inline'>Copy to clipboard</Typography>
+          <CopyToClipboard text={link}>
+            <IconButton>
+              <Link />
+            </IconButton>
+          </CopyToClipboard>
+        </div>
         {props.transport && <TransportSection {...props.transport} />}
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Attendee Actions</Typography>
-          <Button variant='outlined' color='primary' className='action-button' onClick={props.confirm}>
+          {/*<Button variant='outlined' color='primary' className='action-button' onClick={props.confirm}>
             Confirm
-          </Button>
+  </Button>*/}
           <Button color='primary' className='action-button' onClick={props.delete}>
             Delete
           </Button>

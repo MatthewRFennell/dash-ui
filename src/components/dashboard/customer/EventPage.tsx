@@ -19,7 +19,12 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           addAttendee={props.addAttendee}
           key='attendees'
         />
-        <ItineraryTab history={props.history} itinerary={props.event.itineraries} key='itinerary' />
+        <ItineraryTab
+          eventId={props.event.event_id}
+          history={props.history}
+          itinerary={props.event.itineraries}
+          key='itinerary'
+        />
       </SwipeableViews>
     </div>
   )

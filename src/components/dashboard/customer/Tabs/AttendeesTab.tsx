@@ -9,7 +9,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
-import Airplane from '@material-ui/icons/AirplanemodeActive'
+import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive'
 import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
@@ -73,6 +73,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             <TableCell className='table-cell'>First Name</TableCell>
             <TableCell className='table-cell'>Last Name</TableCell>
             <TableCell className='table-cell'>Dietary Requirements</TableCell>
+            <TableCell className='table-cell'>Miscellaneous</TableCell>
             <TableCell className='table-cell'>Details</TableCell>
           </TableRow>
         </TableHead>
@@ -82,6 +83,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
               <TableCell className='table-cell'>{attendee.fname}</TableCell>
               <TableCell className='table-cell'>{attendee.sname} </TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
+              <TableCell className='table-cell'>
+                {attendee.transport !== null && <AirplanemodeActiveIcon style={{ opacity: 0.54 }} />}
+              </TableCell>
               <TableCell className='table-cell'>
                 <IconButton onClick={setIndex(index)} color={index === attendeeTransport ? 'primary' : 'default'}>
                   <MoreVertIcon />
