@@ -1,16 +1,30 @@
 import * as React from 'react'
 
+import { IconButton } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-
+import Link from '@material-ui/icons/Link'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import TransportSection, { TransportDetails } from './TransportSection'
 
+import '../../../forms/Form.scss'
+
 const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
+
+  const link = 'http://dash-web-19.herokuapp.com/completeform/' + props.form_id
+
   return (
     <div className='event-page-aux-wrapper'>
       <div className='event-page-aux-paper'>
         <Typography className='event-page-block-title'>Details for</Typography>
         <Typography className='event-page-body'>{props.name}</Typography>
+        <Typography className='event-page-block-title'>Attendee form link</Typography>
+        <Typography className='event-page-body inline'>Copy to clipboard</Typography>
+        <CopyToClipboard text={link}>
+          <IconButton>
+            <Link/>
+          </IconButton>
+        </CopyToClipboard>
         {props.transport && <TransportSection {...props.transport} />}
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Attendee Actions</Typography>
@@ -28,6 +42,7 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
 
 interface DetailsPanelProps {
   name: string
+  form_id: string
   transport?: TransportDetails
   confirm: () => void
   delete: () => void

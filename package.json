@@ -36,6 +36,7 @@
     "material-ui-next-pickers": "0.0.21",
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.8.6",
     "react-google-maps": "^9.4.5",
     "react-redux": "^7.0.3",

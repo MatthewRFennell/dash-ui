@@ -53,7 +53,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
 
   let attendeeTransportDetails: TransportDetails
   let name
+  let formID
   if (attendeeTransport >= 0) {
+    formID = props.attendees[attendeeTransport].form_id
     name = props.attendees[attendeeTransport].fname + ' ' + props.attendees[attendeeTransport].sname
     attendeeTransportDetails = props.attendees[attendeeTransport].transport
       ? {
@@ -119,6 +121,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             transport={attendeeTransportDetails}
             confirm={handleConfirmModal(true)}
             delete={handleDeleteModal(true)}
+            form_id={formID}
           />
         )}
       </ReactCSSTransitionGroup>
@@ -179,6 +182,7 @@ export interface AttendeeDetails {
   sname: string
   diet: string
   transport: TransportDetails
+  form_id: string
 }
 
 export default AttendeesTab
