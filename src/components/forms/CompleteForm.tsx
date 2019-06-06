@@ -28,7 +28,7 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
 
     if (selected >= 0) {
       return (
-        <MenuSelector menu={data.menus[selected].menu}/>
+        <MenuSelector menu={data.menus[selected]}/>
       )
     }
 

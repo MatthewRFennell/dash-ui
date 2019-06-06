@@ -9,7 +9,7 @@ const MenuSelector = (props) => {
 
     console.log(props.menu)
 
-    const [selection, setSelection] = React.useState(props.menu.courses.map((c) => -1))
+    const [selection, setSelection] = React.useState(props.menu.menu.courses.map((c) => -1))
 
     const makeChoice = (courseIndex, dishIndex) => () => {
         setSelection((oldSelection) => oldSelection.map((s, i) =>
@@ -30,7 +30,7 @@ const MenuSelector = (props) => {
             <p>{props.menu.description}</p>
 
             {
-                props.menu.courses.map((course, cIndex) => (
+                props.menu.menu.courses.map((course, cIndex) => (
                     <Paper className='newCourse' key={cIndex}>
                         <h1>{course.name}</h1>
                         {
