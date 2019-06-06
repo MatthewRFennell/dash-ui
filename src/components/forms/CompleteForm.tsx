@@ -12,8 +12,10 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
 
     const [invalid, setInvalid] = React.useState(false)
 
+    const form_id = props.match.params.form_id
+
     React.useEffect(() => {
-      fetch(DASH_API + '/getMenus?form_id=' + props.match.params.form_id).then((res) => res.json())
+      fetch(DASH_API + '/getMenus?form_id=' + form_id).then((res) => res.json())
       .then((res) => {
         if (res.success) {
           setData({
@@ -26,14 +28,22 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
       })
     }, [])
 
-    if (selected >= 0) {
-      return (
-        <MenuSelector menu={data.menus[selected]}/>
-      )
-    }
-
     const selectMenu = (index) => () => {
       setSelected(index)
+    }
+
+    const completed = () => {
+      setData((oldData) => ({
+        attendee: oldData.attendee,
+        menus: oldData.menus.filter((m, i) => i !== selected),
+      }))
+      setSelected(-1)
+    }
+
+    if (selected >= 0) {
+      return (
+        <MenuSelector menu={data.menus[selected]} done={completed} form_id={form_id}/>
+      )
     }
 
     if (invalid) {

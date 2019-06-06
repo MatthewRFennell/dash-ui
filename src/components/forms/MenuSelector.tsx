@@ -9,18 +9,36 @@ const MenuSelector = (props) => {
 
     console.log(props.menu)
 
-    const [selection, setSelection] = React.useState(props.menu.menu.courses.map((c) => -1))
+    const [selection, setSelection] = React.useState(props.menu.menu.courses.map(() => -1))
 
     const makeChoice = (courseIndex, dishIndex) => () => {
         setSelection((oldSelection) => oldSelection.map((s, i) =>
          i !== courseIndex ? s : (s === dishIndex ? -1 : dishIndex)))
     }
 
+    console.log(props.form_id)
+
     const submitChoice = () => {
       console.log('Your choice is saved')
-    }
+      const body = {
+        uuid: props.form_id,
+        dish_ids: selection.map((s, i) => props.menu.menu.courses[i].dishes[s].dish_id),
+      }
 
-    console.log('actionCard' + (1 === 1 ? ' selected' : ''))
+      fetch(DASH_API + '/makeChoice', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'Application/json',
+        },
+      }).then((res) => res.json())
+        .then((res) => {
+          console.log(res)
+          if (res.success) {
+            props.done()
+          }
+        })
+    }
 
     const disabled = selection.filter((s) => s === -1).length > 0
 
