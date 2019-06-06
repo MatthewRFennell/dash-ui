@@ -14,11 +14,14 @@ import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import AddAttendee from '../../modal/AddAttendee'
+import ConfirmDialog from '../../modal/ConfirmDialog'
 import DetailsPanel from './DetailsPanel'
 import TransportSection, { TransportDetails } from './TransportSection'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
+  const [confirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false)
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false)
   const [detailActive, setdetailActive] = React.useState<boolean>(false)
   const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
 
@@ -34,6 +37,8 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
 
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
+  const handleConfirmModal = (state) => () => setConfirmModalOpen(state)
+  const handleDeleteModal = (state) => () => setDeleteModalOpen(state)
 
   const handleDelete = (id) => () => {
     props.deleteAttendee(id)
@@ -102,9 +107,42 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           top: 0,
         }}
       >
-        {detailActive && <DetailsPanel name={name} transport={attendeeTransportDetails} />}
+        {detailActive && (
+          <DetailsPanel
+            name={name}
+            transport={attendeeTransportDetails}
+            confirm={handleConfirmModal(true)}
+            delete={handleDeleteModal(true)}
+          />
+        )}
       </ReactCSSTransitionGroup>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
+      <ConfirmDialog
+        title='Confirm attendee'
+        content={`Confirm attendee ${name || 'ERROR'}'s attendance`}
+        open={confirmModalOpen}
+        confirm={{
+          text: 'Confirm',
+          action: () => undefined,
+        }}
+        alt={{
+          text: 'Cancel',
+          action: handleConfirmModal(false),
+        }}
+      />
+      <ConfirmDialog
+        title='Delete attendee'
+        content={`Delete attendee ${name || 'ERROR'} and their associated details`}
+        open={deleteModalOpen}
+        confirm={{
+          text: 'Delete',
+          action: () => undefined,
+        }}
+        alt={{
+          text: 'Cancel',
+          action: handleDeleteModal(false),
+        }}
+      />
     </div>
   )
 }

@@ -16,6 +16,7 @@ import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-map
 import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
 import { connect } from 'react-redux'
 import { setFormDetails } from '../../../../redux/actions/formActions'
+import MenuModal from './MenuModal'
 
 const MapPanel = withScriptjs(
   withGoogleMap((props: any) => {
@@ -55,6 +56,10 @@ const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.ex
 
 const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [focus, setFocus] = React.useState<number>(-1)
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false)
+  const [modalContent, setModalContent] = React.useState<MenuDetails>(undefined)
+  const [modalName, setModalName] = React.useState<string>('')
+
   const handleChangeFocus = (id: number) => {
     if (id !== focus) {
       return () => setFocus(id)
@@ -63,13 +68,18 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     }
   }
 
+  const handleModalOpen = (state) => () => setModalOpen(state)
+
   const createMenu = (item) => () => {
     props.createForm(item)
     props.history.push('/form')
   }
 
-  const viewMenu = (item) => () => {
+  const viewMenu = (item: ItineraryDetails) => () => {
     console.log('Should show menu', item.menu)
+    setModalOpen(true)
+    setModalContent(item.menu)
+    setModalName(item.name)
   }
 
   const itineraryTable = (
@@ -99,11 +109,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
               <TableCell className='table-cell'>{item.description}</TableCell>
               <TableCell className='table-cell'>
                 <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item)}>
-                  {item.menu ?
-                    <RestaurantMenuIcon/>
-                    :
-                    <Add/>
-                  }
+                  {item.menu ? <RestaurantMenuIcon /> : <Add />}
                 </IconButton>
               </TableCell>
               <TableCell className='table-cell'>
@@ -150,6 +156,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
           />
         )}
       </div>
+      <MenuModal open={modalOpen} onClose={handleModalOpen(false)} name={modalName} menu={modalContent} />
     </div>
   )
 }
@@ -168,7 +175,27 @@ export interface ItineraryDetails {
   end_date?: Date
   long: any
   lat: any
-  menu: any
+  menu: MenuDetails
+}
+
+export interface MenuDetails {
+  caterer: string
+  courses: CourseDetails[]
+  image: string | null
+  menu_id: number
+}
+
+interface CourseDetails {
+  course_id: number
+  dishes: DishDetails[]
+  name: string
+}
+
+interface DishDetails {
+  description: string
+  dish_id: number
+  name: string
+  warnings: string[]
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -177,6 +204,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ConnectedItineraryTab = connect(null, mapDispatchToProps)(ItineraryTab)
+const ConnectedItineraryTab = connect(
+  null,
+  mapDispatchToProps,
+)(ItineraryTab)
 
-export {ConnectedItineraryTab as ItineraryTab}
+export { ConnectedItineraryTab as ItineraryTab }

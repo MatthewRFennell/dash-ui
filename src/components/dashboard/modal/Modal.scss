@@ -3,6 +3,16 @@
     font-weight: bold;
     font-size: 24pt;
   }
+  .modal-subtitle {
+    font-weight: 300;
+    font-size: 18pt;
+  }
+  .modal-block-title {
+    font-weight: bold;
+    font-size: 12pt;
+    letter-spacing: 0.1564em;
+    text-transform: uppercase;
+  }
   .modal-form-field {
     margin-bottom: 15px;
     .modal-form-field-title {
@@ -12,5 +22,14 @@
   }
   .modal-button {
     font-weight: bold;
+  }
+  .modal-body {
+    font-size: 1rem;
+  }
+  .modal-detail {
+    margin-bottom: 30px;
+  }
+  .modal-table {
+    width: 100%;
   }
 }

@@ -219,9 +219,13 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
         />
       </DialogContent>
       <DialogActions>
+        <Button className='modal-button' color='primary' onClick={props.onClose}>
+          Cancel
+        </Button>
         <Button
           className='modal-button'
           color='primary'
+          variant='outlined'
           disabled={submitting || errors.length > 0}
           onClick={handleSubmit}
           style={{

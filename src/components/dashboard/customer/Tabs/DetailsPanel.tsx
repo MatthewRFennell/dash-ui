@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography'
 import TransportSection, { TransportDetails } from './TransportSection'
 
 const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
-  console.log('Hello: ' + props)
   return (
     <div className='event-page-aux-wrapper'>
       <div className='event-page-aux-paper'>
@@ -15,10 +14,10 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
         {props.transport && <TransportSection {...props.transport} />}
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Attendee Actions</Typography>
-          <Button variant='outlined' color='primary' className='action-button'>
+          <Button variant='outlined' color='primary' className='action-button' onClick={props.confirm}>
             Confirm
           </Button>
-          <Button color='primary' className='action-button'>
+          <Button color='primary' className='action-button' onClick={props.delete}>
             Delete
           </Button>
         </div>
@@ -30,6 +29,8 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
 interface DetailsPanelProps {
   name: string
   transport?: TransportDetails
+  confirm: () => void
+  delete: () => void
 }
 
 export default DetailsPanel

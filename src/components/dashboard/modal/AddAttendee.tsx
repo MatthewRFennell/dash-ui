@@ -110,11 +110,12 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button style={{ opacity: 0.5 }} onClick={props.onClose}>
+        <Button onClick={props.onClose} color='primary'>
           Cancel
         </Button>
         <Button
           color='primary'
+          variant='outlined'
           onClick={handleSubmit}
           style={{ width: '68.141px', height: '36.5px' }}
           disabled={submitting}
