@@ -102,6 +102,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             <Header
               history={props.history}
               onBack={openEvent ? handleSetEvent() : undefined}
+              onHome={openEvent ? handleSetEvent() : undefined}
               onTabChange={openEvent ? handleTabChange : undefined}
               currentTab={currentTab}
               key='header'

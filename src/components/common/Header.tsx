@@ -23,7 +23,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps) => {
   }
   return (
     <div className='header'>
-      <div className='header-title'>
+      <div className='header-title' onClick={props.onHome} style={{ cursor: 'pointer' }}>
         <img src={logo} className='logo' />
         Dash
       </div>
@@ -70,6 +70,7 @@ interface HeaderProps {
   history?: History
   onTabChange?: (event, newValue) => void
   currentTab?: number
+  onHome?: () => void
   onBack?: () => void
   onLogout: () => void
 }
