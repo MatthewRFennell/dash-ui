@@ -75,6 +75,10 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [modalContent, setModalContent] = React.useState<MenuDetails>(undefined)
   const [modalName, setModalName] = React.useState<string>('')
 
+  const itinerary = props.itinerary.sort((eventA, eventB) =>
+    eventA.start_date < eventB.start_date ? -1 : eventA.start_date > eventB.start_date ? 1 : 0,
+  )
+
   const handleChangeFocus = (id: number) => {
     if (id !== focus) {
       return () => setFocus(id)
@@ -99,15 +103,17 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const itineraryTable = (
     <Table>
       <TableHead>
-        <TableCell className='table-cell' />
-        <TableCell className='table-cell'>Name</TableCell>
-        <TableCell className='table-cell'>Time</TableCell>
-        <TableCell className='table-cell'>Description</TableCell>
-        <TableCell className='table-cell'>Menus</TableCell>
-        <TableCell className='table-cell'>Location</TableCell>
+        <TableRow>
+          <TableCell className='table-cell' />
+          <TableCell className='table-cell'>Name</TableCell>
+          <TableCell className='table-cell'>Time</TableCell>
+          <TableCell className='table-cell'>Description</TableCell>
+          <TableCell className='table-cell'>Menus</TableCell>
+          <TableCell className='table-cell'>Location</TableCell>
+        </TableRow>
       </TableHead>
       <TableBody>
-        {props.itinerary.map((item, index) => {
+        {itinerary.map((item, index) => {
           const date = new Date(item.start_date)
           return (
             <TableRow key={index}>
@@ -143,7 +149,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
       </TableBody>
     </Table>
   )
-  const markers = props.itinerary
+  const markers = itinerary
     .map(
       ({ lat, long, name, itinerary_id, description }, index) =>
         lat !== null && long !== null && { lat, long, name, id: itinerary_id, description, index },
@@ -166,8 +172,8 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
             loadingElement={<div style={{ height: `100vh` }} />}
             containerElement={<div style={{ height: `100vh` }} />}
             mapElement={<div style={{ height: `100vh` }} />}
-            lat={props.itinerary[0] ? props.itinerary[0].lat || 0 : 0}
-            long={props.itinerary[0] ? props.itinerary[0].long || 0 : 0}
+            lat={itinerary[0] ? itinerary[0].lat || 0 : 0}
+            long={itinerary[0] ? itinerary[0].long || 0 : 0}
             markers={markers}
             focus={focus}
           />

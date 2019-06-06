@@ -28,9 +28,11 @@ const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
             <Typography className='modal-block-title'>{course.name}</Typography>
             <Table className='modal-table'>
               <TableHead>
-                <TableCell>Dish</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Allergens</TableCell>
+                <TableRow>
+                  <TableCell>Dish</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Allergens</TableCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 {course.dishes.map((dish, dindex) => (

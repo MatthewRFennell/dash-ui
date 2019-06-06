@@ -81,8 +81,8 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
               <TableCell className='table-cell'>{attendee.sname} </TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
               <TableCell className='table-cell'>
-                <IconButton onClick={setIndex(index)}>
-                  <MoreVertIcon color={index === attendeeTransport ? 'primary' : 'default'} />
+                <IconButton onClick={setIndex(index)} color={index === attendeeTransport ? 'primary' : 'default'}>
+                  <MoreVertIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
