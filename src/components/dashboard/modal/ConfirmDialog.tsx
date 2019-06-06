@@ -37,15 +37,14 @@ interface ConfirmDialogProps {
   title: string
   content: string
   open: boolean
-  confirm: {
-    text: string
-    action: () => void,
-  }
-  alt: {
-    text: string
-    action: () => void,
-  }
+  confirm: ActionLabel
+  alt: ActionLabel
   onClose?: () => void
+}
+
+interface ActionLabel {
+  text: string
+  action: () => void
 }
 
 export default ConfirmDialog

@@ -6,19 +6,20 @@ import './Form.scss'
 import Save from '@material-ui/icons/Save'
 
 const MenuSelector = (props) => {
+  console.log(props.menu)
 
-    console.log(props.menu)
+  console.log(props.menu)
 
-    const [selection, setSelection] = React.useState(props.menu.menu.courses.map(() => -1))
+  const [selection, setSelection] = React.useState(props.menu.menu.courses.map(() => -1))
 
-    const makeChoice = (courseIndex, dishIndex) => () => {
+  const makeChoice = (courseIndex, dishIndex) => () => {
         setSelection((oldSelection) => oldSelection.map((s, i) =>
          i !== courseIndex ? s : (s === dishIndex ? -1 : dishIndex)))
     }
 
-    console.log(props.form_id)
+  console.log(props.form_id)
 
-    const submitChoice = () => {
+  const submitChoice = () => {
       console.log('Your choice is saved')
       const body = {
         uuid: props.form_id,
@@ -40,9 +41,9 @@ const MenuSelector = (props) => {
         })
     }
 
-    const disabled = selection.filter((s) => s === -1).length > 0
+  const disabled = selection.filter((s) => s === -1).length > 0
 
-    return (
+  return (
         <div className='newCourse'>
             <h1>{props.menu.name}</h1>
             <p>{props.menu.description}</p>
@@ -75,6 +76,6 @@ const MenuSelector = (props) => {
             </Button>
         </div>
     )
-}
+  }
 
 export default MenuSelector

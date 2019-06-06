@@ -5,7 +5,6 @@ import './Form.scss'
 import MenuSelector from './MenuSelector'
 
 const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
-
     const [data, setData] = React.useState(undefined)
 
     const [selected, setSelected] = React.useState(-1)
@@ -19,14 +18,14 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
       .then((res) => {
         if (res.success) {
           setData({
-           attendee: res.attendee,
-           menus: res.itineraries,
+            attendee: res.attendee,
+            menus: res.itineraries,
           })
         } else {
           setInvalid(true)
         }
       })
-    }, [])
+  }, [])
 
     const selectMenu = (index) => () => {
       setSelected(index)
@@ -52,32 +51,31 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
 
     console.log(data)
     if (!data) {
-      return <h1>Loading data</h1>
-    }
+    return <h1>Loading data</h1>
+  }
 
     return (
-        <div className='newCourse'>
-            <h1>Welcome {data.attendee.fname} {data.attendee.sname}</h1>
-            <h2>Please complete your menu choices for these events</h2>
-            <div className='newCourse'>
-              {
-                data.menus ?
-                data.menus.map((m, i) => (
-                    <Card className='actionCard' key={i}>
-                      <CardActionArea onClick={selectMenu(i)}>
-                        <CardContent>
-                          <h1>{m.name}</h1>
-                          <p>{m.description}</p>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                ))
-                :
-                undefined
-              }
-            </div>
-        </div>
-    )
+    <div className='newCourse'>
+      <h1>
+        Welcome {data.attendee.fname} {data.attendee.sname}
+      </h1>
+      <h2>Please complete your menu choices for these events</h2>
+      <div className='newCourse'>
+        {data.menus
+          ? data.menus.map((m, i) => (
+              <Card className='actionCard' key={i}>
+                <CardActionArea onClick={selectMenu(i)}>
+                  <CardContent>
+                    <h1>{m.name}</h1>
+                    <p>{m.description}</p>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))
+          : undefined}
+      </div>
+    </div>
+  )
 }
 
 interface Params {
