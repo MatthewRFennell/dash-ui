@@ -6,11 +6,8 @@ import './Form.scss'
 import Save from '@material-ui/icons/Save'
 
 const MenuSelector = (props) => {
-  console.log(props.menu)
 
-  console.log(props.menu)
-
-  const [selection, setSelection] = React.useState(props.menu.menu.courses.map(() => -1))
+  const [selection, setSelection] = React.useState(props.menu ? props.menu.menu.courses.map(() => -1) : [])
 
   const makeChoice = (courseIndex, dishIndex) => () => {
         setSelection((oldSelection) => oldSelection.map((s, i) =>
@@ -42,6 +39,10 @@ const MenuSelector = (props) => {
     }
 
   const disabled = selection.filter((s) => s === -1).length > 0
+
+  if (!props.menu) {
+      return <h1>Something went wrong</h1>
+    }
 
   return (
         <div className='newCourse'>

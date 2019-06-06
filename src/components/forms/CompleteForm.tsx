@@ -72,7 +72,8 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
                 </CardActionArea>
               </Card>
             ))
-          : undefined}
+          :
+          <h3>No menus to be completed</h3>}
       </div>
     </div>
   )
