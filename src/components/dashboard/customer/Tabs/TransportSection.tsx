@@ -2,10 +2,10 @@ import * as React from 'react'
 
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import { Transport } from '../../../../types/BackendTypes'
 
-const TransportSection = (props: TransportDetails) => {
+const TransportSection: React.FunctionComponent<Transport> = (props) => {
   console.log(props)
   return (
     <div className='event-page-detail'>
@@ -53,15 +53,6 @@ const TransportSection = (props: TransportDetails) => {
       </List>
     </div>
   )
-}
-
-export interface TransportDetails {
-  operator: string
-  vessel_id: string
-  duration: number
-  departTime: Date
-  departFrom: string
-  arriveAt: string
 }
 
 export default TransportSection

@@ -5,23 +5,13 @@ import { History } from 'history'
 import { connect } from 'react-redux'
 import { loadEvents } from '../../..//redux/actions/eventActions'
 import fetchProtected from '../../../api/protected'
+import { EventRedued } from '../../../types/BackendTypes'
 import EventCard from '../Card'
 import './CustomerView.scss'
 
 const NUM_COLS = 2
 
-interface EventDetails {
-  event_id: number
-  name: string
-  image: string
-  date: Date
-  blurb: string
-}
-
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
-  const [raised, setRaised] = React.useState<boolean>(false)
-  console.log(props.events)
-
   React.useEffect(() => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
@@ -56,7 +46,7 @@ interface CustomerViewProps {
   setActiveEvent: (id?: number) => () => void
   onReceiveEvents: (x: any) => void
   onLoadComplete: () => void
-  events: [EventDetails]
+  events: EventRedued[]
 }
 
 const mapStateToProps = (state) => {

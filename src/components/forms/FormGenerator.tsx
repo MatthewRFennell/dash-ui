@@ -7,26 +7,25 @@ import { IconButton } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import fetchProtected from '../../../src/api/protected'
+import {NewCourse, NewDish } from '../../types/CreationTypes'
 import CourseGenerator from './CourseGenerator'
 import EditBox from './EditBox'
 import './Form.scss'
 import MenuThanks from './MenuThanks'
 
-const FormGenerator = (props) => {
-  const [menu, setMenu] = React.useState([
+const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
+  const [menu, setMenu] = React.useState<NewCourse[]>([
     {
       name: 'starters',
       dishes: [],
     },
   ])
 
-  const [done, setDone] = React.useState(false)
+  const [done, setDone] = React.useState<boolean>(false)
 
-  const [caterer, setCaterer] = React.useState('')
+  const [caterer, setCaterer] = React.useState<string>('')
 
-  const handleAddDish = (index) => (dish) => {
-    console.log('Yeet')
-    console.log('Adding dish', dish)
+  const handleAddDish = (index: number) => (dish: NewDish) => {
     setMenu((oldMenu) =>
       oldMenu.map((c, i) =>
         i !== index
@@ -69,7 +68,7 @@ const FormGenerator = (props) => {
       courses: menu,
     }
 
-    fetchProtected(DASH_API + '/menu', null, body, 'POST', (res) => {
+    fetchProtected(DASH_API + '/menu', null, body, 'POST', () => {
       setDone(true)
     })
   }
@@ -110,6 +109,11 @@ const FormGenerator = (props) => {
       </div>
     </div>
   )
+}
+
+interface FormGeneratorProps {
+  itinerary_id?: string
+  history: History
 }
 
 const mapStateToProps = (state) => {

@@ -1,11 +1,10 @@
 import * as React from 'react'
 
-import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
+import { Event, EventRedued } from '../../types/BackendTypes'
 
 import './Card.scss'
 
@@ -26,12 +25,7 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
   )
 }
 
-export interface EventCardProps {
-  event_id: number
-  name: string
-  image: string
-  date: Date
-  blurb: string
+export interface EventCardProps extends EventRedued {
   action: () => void
 }
 

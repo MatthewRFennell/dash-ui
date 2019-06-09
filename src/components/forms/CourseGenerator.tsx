@@ -1,17 +1,18 @@
 import { Card, IconButton, Paper, TextField } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import * as React from 'react'
+import {NewCourse, NewDish} from '../../types/CreationTypes'
 import EditBox from './EditBox'
 
-const CourseGenerator = (props) => {
+const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) => {
   const [dishName, setDishName] = React.useState('')
   const [dishDescription, setDishDescription] = React.useState('')
 
-  const handleDescChange = (event) => {
+  const handleDescChange: ChangeEventFunc = (event) => {
     setDishDescription(event.target.value)
   }
 
-  const handleNameChange = (event) => {
+  const handleNameChange: ChangeEventFunc = (event) => {
     setDishName(event.target.value)
   }
 
@@ -25,7 +26,7 @@ const CourseGenerator = (props) => {
     setDishDescription('')
   }
 
-  const setTitle = (title) => {
+  const setTitle = (title: string) => {
     props.setTitle(title)
   }
 
@@ -56,6 +57,12 @@ const CourseGenerator = (props) => {
       })}
     </Paper>
   )
+}
+
+interface CourseGeneratorProps {
+  course: NewCourse
+  add: (d: NewDish) => void
+  setTitle: (title: string) => void
 }
 
 export default CourseGenerator

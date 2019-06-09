@@ -1,15 +1,17 @@
 import { Card, CardActionArea, CardContent } from '@material-ui/core'
 import * as React from 'react'
 
+import { Itinerary } from '../../../src/types/BackendTypes'
+import { Attendee } from '../../../src/types/BackendTypes'
 import './Form.scss'
 import MenuSelector from './MenuSelector'
 
 const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
-  const [data, setData] = React.useState(undefined)
+  const [data, setData] = React.useState<GetMenusData>(undefined)
 
-  const [selected, setSelected] = React.useState(-1)
+  const [selected, setSelected] = React.useState<number>(-1)
 
-  const [invalid, setInvalid] = React.useState(false)
+  const [invalid, setInvalid] = React.useState<boolean>(false)
 
   const form_id = props.match.params.form_id
 
@@ -20,7 +22,7 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
         if (res.success) {
           setData({
             attendee: res.attendee,
-            menus: res.itineraries,
+            itineraries: res.itineraries,
           })
         } else {
           setInvalid(true)
@@ -35,20 +37,19 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
   const completed = () => {
     setData((oldData) => ({
       attendee: oldData.attendee,
-      menus: oldData.menus.filter((m, i) => i !== selected),
+      itineraries: oldData.itineraries.filter((m, i) => i !== selected),
     }))
     setSelected(-1)
   }
 
   if (selected >= 0) {
-    return <MenuSelector menu={data.menus[selected]} done={completed} form_id={form_id} />
+    return <MenuSelector menu={data.itineraries[selected]} done={completed} form_id={form_id} />
   }
 
   if (invalid) {
     return <h1>Sorry that is not a recognised link</h1>
   }
 
-  console.log(data)
   if (!data) {
     return <h1>Loading data</h1>
   }
@@ -60,8 +61,8 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
       </h1>
       <h2>Please complete your menu choices for these events</h2>
       <div className='newCourse'>
-        {data.menus ? (
-          data.menus.map((m, i) => (
+        {data.itineraries ? (
+          data.itineraries.map((m, i) => (
             <Card className='actionCard' key={i}>
               <CardActionArea onClick={selectMenu(i)}>
                 <CardContent>
@@ -85,6 +86,11 @@ interface Params {
 
 interface CompleFormProps {
   match: Match
+}
+
+interface GetMenusData {
+  itineraries: Itinerary[]
+  attendee: Attendee
 }
 
 interface Match {

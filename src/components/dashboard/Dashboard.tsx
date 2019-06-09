@@ -7,15 +7,16 @@ import { History } from 'history'
 import fetchProtected from '../../../src/api/protected'
 import { Header } from '../common/Header'
 import { CustomerView } from './customer/CustomerView'
-import EventPage, { EventFullDetails } from './customer/EventPage'
+import EventPage from './customer/EventPage'
 
+import { Event } from '../../types/BackendTypes'
 import Loader from '../misc/Loader'
 import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [loading, setLoading] = React.useState<boolean>(true)
-  const [openEvent, setOpenEvent] = React.useState<EventFullDetails | undefined>(undefined)
+  const [openEvent, setOpenEvent] = React.useState<Event>(undefined)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [currentTab, setCurrentTab] = React.useState<number>(0)
 
@@ -33,7 +34,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const editEvent = (event) => {
     fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event_id }, 'PUT', (res) => {
       if (res.success) {
-        setOpenEvent((currentEvent: EventFullDetails) => {
+        setOpenEvent((currentEvent: Event) => {
           return {
             ...currentEvent,
             ...event,

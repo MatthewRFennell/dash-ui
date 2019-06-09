@@ -14,14 +14,14 @@ interface RegisterProps {
 }
 
 const Register: React.FunctionComponent<RegisterProps> = (props) => {
-  const [email, setEmail] = React.useState('')
-  const [fname, setFname] = React.useState('')
-  const [sname, setSname] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [email, setEmail] = React.useState<string>('')
+  const [fname, setFname] = React.useState<string>('')
+  const [sname, setSname] = React.useState<string>('')
+  const [password, setPassword] = React.useState<string>('')
 
-  const [finished, setFinished] = React.useState(false)
-  const [waiting, setWaiting] = React.useState(false)
-  const [errors, setErrors] = React.useState({
+  const [finished, setFinished] = React.useState<boolean>(false)
+  const [waiting, setWaiting] = React.useState<boolean>(false)
+  const [errors, setErrors] = React.useState<FormFields>({
     email: '',
     fname: '',
     sname: '',
@@ -82,7 +82,6 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
       .then((res) => res.json())
       .then((res) => {
         setWaiting(false)
-        // console.log(res)
         if (res.success) {
           setFinished(true)
         } else {
@@ -132,6 +131,13 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
       </div>
     </div>
   )
+}
+
+interface FormFields {
+  email: string,
+  fname: string,
+  sname: string,
+  password: string
 }
 
 export default Register

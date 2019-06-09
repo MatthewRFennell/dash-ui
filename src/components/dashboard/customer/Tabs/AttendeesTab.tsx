@@ -10,13 +10,12 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive'
-import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import { Attendee, Transport } from '../../../../types/BackendTypes'
 import AddAttendee from '../../modal/AddAttendee'
 import ConfirmDialog from '../../modal/ConfirmDialog'
 import DetailsPanel from './DetailsPanel'
-import TransportSection, { TransportDetails } from './TransportSection'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
@@ -51,7 +50,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     })
   }
 
-  let attendeeTransportDetails: TransportDetails
+  let attendeeTransportDetails: Transport
   let name
   let formID
   if (attendeeTransport >= 0) {
@@ -175,18 +174,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
 
 interface AttendeesTabProps {
   event_id: number
-  attendees: AttendeeDetails[]
+  attendees: Attendee[]
   deleteAttendee: (id: number, callback: () => void) => void
-  addAttendee: (x: AttendeeDetails) => void
-}
-
-export interface AttendeeDetails {
-  attendee_id: number
-  fname: string
-  sname: string
-  diet: string
-  transport: TransportDetails
-  form_id: string
+  addAttendee: (x: Attendee) => void
 }
 
 export default AttendeesTab

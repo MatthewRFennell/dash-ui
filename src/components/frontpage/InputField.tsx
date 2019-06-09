@@ -3,7 +3,7 @@ import * as React from 'react'
 import TextField from '@material-ui/core/TextField'
 
 const InputField: React.FunctionComponent<InputFieldProps> = (props) => {
-  const update = (e) => {
+  const update: ChangeEventFunc = (e) => {
     props.change(e.target.value)
   }
 

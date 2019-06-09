@@ -5,20 +5,20 @@ import * as React from 'react'
 
 import './Form.scss'
 
-const EditBox = (props) => {
-  const [saved, setSaved] = React.useState(false)
-  const [value, setValue] = React.useState('')
+const EditBox: React.FunctionComponent<EditBoxProps> = (props) => {
+  const [saved, setSaved] = React.useState<boolean>(false)
+  const [value, setValue] = React.useState<string>('')
 
-  const handleChange = (event) => {
+  const handleChange: ChangeEventFunc = (event) => {
     setValue(event.target.value)
   }
 
-  const save = () => {
+  const save = (): void => {
     props.setValue(value)
     setSaved(true)
   }
 
-  const edit = () => {
+  const edit = (): void => {
     setSaved(false)
   }
 
@@ -32,6 +32,11 @@ const EditBox = (props) => {
       <IconButton onClick={saved ? edit : save}>{saved ? <Edit /> : <Save />}</IconButton>
     </div>
   )
+}
+
+interface EditBoxProps {
+  title: string
+  setValue: (value: string) => void
 }
 
 export default EditBox

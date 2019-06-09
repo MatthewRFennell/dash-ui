@@ -16,8 +16,8 @@ import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import LinkIcon from '@material-ui/icons/Link'
 
+import { Menu } from '../../../../types/BackendTypes'
 import '../../modal/Modal.scss'
-import { MenuDetails } from './ItineraryTab'
 
 const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
   const courses = props.menu ? (
@@ -88,7 +88,7 @@ interface MenuModalProps {
   name: string
   open: boolean
   onClose: () => void
-  menu: MenuDetails
+  menu: Menu
 }
 
 export default MenuModal

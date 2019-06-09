@@ -6,13 +6,11 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import IconButton from '@material-ui/core/IconButton'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { Attendee } from '../../../types/BackendTypes'
 
 import fetchProtected from '../../../../src/api/protected'
-import { AttendeeDetails } from '../customer/Tabs/AttendeesTab'
 import './Modal.scss'
 
 const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
@@ -130,7 +128,7 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
 interface AddAttendeeProps {
   open: boolean
   onClose: () => void
-  add: (x: AttendeeDetails) => void
+  add: (x: Attendee) => void
   id: number
 }
 

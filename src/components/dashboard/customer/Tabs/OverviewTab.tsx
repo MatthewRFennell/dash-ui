@@ -4,7 +4,9 @@ import Typography from '@material-ui/core/Typography'
 
 import '../EventPage.scss'
 
-const OverviewTab: React.FunctionComponent<OverviewTabProps> = (props) => {
+import { Event } from '../../../../types/BackendTypes'
+
+const OverviewTab: React.FunctionComponent<Event> = (props) => {
   return (
     <div className='event-page-view'>
       <div className='event-page-left-panel'>
@@ -31,16 +33,6 @@ const OverviewTab: React.FunctionComponent<OverviewTabProps> = (props) => {
       </div>
     </div>
   )
-}
-
-export interface OverviewTabProps {
-  event_id: number
-  name: string
-  company: string
-  date: Date
-  tickets: number
-  image: string
-  blurb: string
 }
 
 export default OverviewTab

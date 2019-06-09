@@ -2,10 +2,11 @@ import * as React from 'react'
 
 import { History } from 'history'
 import SwipeableViews from 'react-swipeable-views'
+import { Attendee, Event } from '../../../types/BackendTypes'
 import './EventPage.scss'
-import AttendeesTab, { AttendeeDetails } from './Tabs/AttendeesTab'
-import { ItineraryDetails, ItineraryTab } from './Tabs/ItineraryTab'
-import OverviewTab, { OverviewTabProps } from './Tabs/OverviewTab'
+import AttendeesTab from './Tabs/AttendeesTab'
+import { ItineraryTab } from './Tabs/ItineraryTab'
+import OverviewTab from './Tabs/OverviewTab'
 
 const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
   return (
@@ -32,16 +33,11 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 
 interface EventPageProps {
   deleteAttendee: (x: number, callback: () => void) => void
-  addAttendee: (x: AttendeeDetails) => void
-  event: EventFullDetails
+  addAttendee: (x: Attendee) => void
+  event: Event
   history: History
   currentTab: number
-  onTabChange: (index) => void
-}
-
-export interface EventFullDetails extends OverviewTabProps {
-  attendees: AttendeeDetails[]
-  itineraries: ItineraryDetails[]
+  onTabChange: (index: number) => void
 }
 
 export default EventPage

@@ -17,6 +17,7 @@ import { History } from 'history'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
 import { connect } from 'react-redux'
+import { Itinerary , Menu} from '../../../../types/BackendTypes'
 
 import { setFormDetails } from '../../../../redux/actions/formActions'
 import AddItinerary from '../../modal/AddItinerary'
@@ -76,10 +77,10 @@ const MapPanel = withScriptjs(
 const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [focus, setFocus] = React.useState<number>(-1)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
-  const [modalContent, setModalContent] = React.useState<MenuDetails>(undefined)
+  const [modalContent, setModalContent] = React.useState<Menu>(undefined)
   const [modalName, setModalName] = React.useState<string>('')
   const [addItineraryOpen, setAddItineraryOpen] = React.useState<boolean>(false)
-  const [itineraryAddendum, setItineraryAddendum] = React.useState<ItineraryDetails[]>([])
+  const [itineraryAddendum, setItineraryAddendum] = React.useState<Itinerary[]>([])
 
   const itinerary = props.itinerary
     .concat(itineraryAddendum)
@@ -103,7 +104,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     props.history.push('/form')
   }
 
-  const viewMenu = (item: ItineraryDetails) => () => {
+  const viewMenu = (item: Itinerary) => () => {
     setModalOpen(true)
     setModalContent(item.menu)
     setModalName(item.name)
@@ -213,41 +214,10 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
 }
 
 interface ItineraryTabProps {
-  itinerary: ItineraryDetails[]
-  createForm: (x: ItineraryDetails) => void
+  itinerary: Itinerary[]
+  createForm: (x: Itinerary) => void
   eventId: number
   history: History
-}
-
-export interface ItineraryDetails {
-  itinerary_id: number
-  name: string
-  description: string
-  start_date: Date
-  end_date?: Date
-  long: any
-  lat: any
-  menu: MenuDetails
-}
-
-export interface MenuDetails {
-  caterer: string
-  courses: CourseDetails[]
-  image: string | null
-  menu_id: number
-}
-
-interface CourseDetails {
-  course_id: number
-  dishes: DishDetails[]
-  name: string
-}
-
-interface DishDetails {
-  description: string
-  dish_id: number
-  name: string
-  warnings: string[]
 }
 
 const mapDispatchToProps = (dispatch) => {

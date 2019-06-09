@@ -21,4 +21,8 @@ const Thanks = (props) => {
   )
 }
 
+interface ThanksProps {
+  history: History
+}
+
 export default Thanks

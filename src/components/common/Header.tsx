@@ -17,7 +17,7 @@ const logo = require('../../../assets/png/DashLogo-Black@4x.png')
  * Dash Header
  */
 
-const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps) => {
+const Header: React.FunctionComponent<HeaderProps> = (props) => {
   const handleLogout = () => {
     props.onLogout()
   }
@@ -75,9 +75,9 @@ interface HeaderProps {
   onLogout: () => void
 }
 
-const connectedHeader = connect(
+const ConnectedHeader = connect(
   null,
   mapDispatchToProps,
 )(Header)
 
-export { connectedHeader as Header }
+export { ConnectedHeader as Header }

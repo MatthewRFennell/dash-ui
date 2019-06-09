@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Link from '@material-ui/icons/Link'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import TransportSection, { TransportDetails } from './TransportSection'
+import { Transport } from '../../../../types/BackendTypes'
+import TransportSection from './TransportSection'
 
 import '../../../forms/Form.scss'
 
@@ -44,7 +45,7 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
 interface DetailsPanelProps {
   name: string
   form_id: string
-  transport?: TransportDetails
+  transport?: Transport
   confirm: () => void
   delete: () => void
 }

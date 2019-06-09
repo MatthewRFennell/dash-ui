@@ -15,30 +15,24 @@ import './Login.scss'
 
 import { connect } from 'react-redux'
 
-interface LoginProps {
-  waiting: boolean
-  loggedIn: boolean
-  onLogin: (email: string, password: string) => void
-}
-
 const Login: React.FunctionComponent<LoginProps> = (props) => {
-  const [visible, setVisibility] = React.useState(false)
-  const [password, setPassword] = React.useState('')
-  const [email, setEmail] = React.useState('')
+  const [visible, setVisibility] = React.useState<boolean>(false)
+  const [password, setPassword] = React.useState<string>('')
+  const [email, setEmail] = React.useState<string>('')
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange: ChangeEventFunc = (e) => {
     setPassword(e.target.value)
   }
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange: ChangeEventFunc = (e) => {
     setEmail(e.target.value)
   }
 
-  const submit = () => {
+  const submit = (): void => {
     props.onLogin(email, password)
   }
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress: KeyEventFunc = (e) => {
     if (e.keyCode === 13) {
       submit()
     }
@@ -96,6 +90,12 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
       </div>
     </div>
   )
+}
+
+interface LoginProps {
+  waiting: boolean
+  loggedIn: boolean
+  onLogin: (email: string, password: string) => void
 }
 
 const mapStateToProps = (state) => {

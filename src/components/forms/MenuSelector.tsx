@@ -4,8 +4,9 @@ import { Button, Card, CardActionArea, CardContent, Paper } from '@material-ui/c
 import './Form.scss'
 
 import Save from '@material-ui/icons/Save'
+import { Itinerary } from '../../../src/types/BackendTypes'
 
-const MenuSelector = (props) => {
+const MenuSelector: React.FunctionComponent<MenuSelectorProps> = (props) => {
   const [selection, setSelection] = React.useState(props.menu ? props.menu.menu.courses.map(() => -1) : [])
 
   const makeChoice = (courseIndex, dishIndex) => () => {
@@ -71,6 +72,12 @@ const MenuSelector = (props) => {
       </Button>
     </div>
   )
+}
+
+interface MenuSelectorProps {
+  menu: Itinerary
+  form_id: string
+  done: () => void
 }
 
 export default MenuSelector
