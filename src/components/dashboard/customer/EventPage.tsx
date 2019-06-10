@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { History } from 'history'
 import SwipeableViews from 'react-swipeable-views'
-import { Attendee, Event } from '../../../types/BackendTypes'
+import { Attendee, Event } from '../../../typings/BackendTypes'
 import './EventPage.scss'
 import AttendeesTab from './Tabs/AttendeesTab'
 import { ItineraryTab } from './Tabs/ItineraryTab'

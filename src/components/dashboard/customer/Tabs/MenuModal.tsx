@@ -16,7 +16,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import LinkIcon from '@material-ui/icons/Link'
 
-import { Menu } from '../../../../types/BackendTypes'
+import { Menu } from '../../../../typings/BackendTypes'
 import '../../modal/Modal.scss'
 
 const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {

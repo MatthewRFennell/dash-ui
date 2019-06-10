@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Link from '@material-ui/icons/Link'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { Transport } from '../../../../types/BackendTypes'
+import { Transport } from '../../../../typings/BackendTypes'
 import TransportSection from './TransportSection'
 
 import '../../../forms/Form.scss'

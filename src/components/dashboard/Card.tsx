@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { Event, EventRedued } from '../../types/BackendTypes'
+import { Event, EventRedued } from '../../typings/BackendTypes'
 
 import './Card.scss'
 

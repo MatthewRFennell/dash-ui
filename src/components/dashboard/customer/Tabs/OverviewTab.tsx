@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 
 import '../EventPage.scss'
 
-import { Event } from '../../../../types/BackendTypes'
+import { Event } from '../../../../typings/BackendTypes'
 
 const OverviewTab: React.FunctionComponent<Event> = (props) => {
   return (

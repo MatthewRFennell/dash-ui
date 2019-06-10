@@ -1,7 +1,7 @@
 import { Card, IconButton, Paper, TextField } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import * as React from 'react'
-import {NewCourse, NewDish} from '../../types/CreationTypes'
+import { NewCourse, NewDish } from '../../typings/CreationTypes'
 import EditBox from './EditBox'
 
 const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) => {

@@ -4,7 +4,7 @@ import { Button, Card, CardActionArea, CardContent, Paper } from '@material-ui/c
 import './Form.scss'
 
 import Save from '@material-ui/icons/Save'
-import { Itinerary } from '../../../src/types/BackendTypes'
+import { Itinerary } from '../../typings/BackendTypes'
 
 const MenuSelector: React.FunctionComponent<MenuSelectorProps> = (props) => {
   const [selection, setSelection] = React.useState(props.menu ? props.menu.menu.courses.map(() => -1) : [])

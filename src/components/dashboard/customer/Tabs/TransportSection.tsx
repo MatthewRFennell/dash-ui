@@ -3,7 +3,7 @@ import * as React from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Typography from '@material-ui/core/Typography'
-import { Transport } from '../../../../types/BackendTypes'
+import { Transport } from '../../../../typings/BackendTypes'
 
 const TransportSection: React.FunctionComponent<Transport> = (props) => {
   console.log(props)

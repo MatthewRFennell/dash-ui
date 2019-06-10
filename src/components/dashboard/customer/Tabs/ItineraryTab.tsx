@@ -17,7 +17,7 @@ import { History } from 'history'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
 import { connect } from 'react-redux'
-import { Itinerary , Menu} from '../../../../types/BackendTypes'
+import { Itinerary, Menu } from '../../../../typings/BackendTypes'
 
 import { setFormDetails } from '../../../../redux/actions/formActions'
 import AddItinerary from '../../modal/AddItinerary'

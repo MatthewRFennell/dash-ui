@@ -1,8 +1,8 @@
 import { Card, CardActionArea, CardContent } from '@material-ui/core'
 import * as React from 'react'
 
-import { Itinerary } from '../../../src/types/BackendTypes'
-import { Attendee } from '../../../src/types/BackendTypes'
+import { Itinerary } from '../../typings/BackendTypes'
+import { Attendee } from '../../typings/BackendTypes'
 import './Form.scss'
 import MenuSelector from './MenuSelector'
 

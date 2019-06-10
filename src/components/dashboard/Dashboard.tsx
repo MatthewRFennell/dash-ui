@@ -9,7 +9,7 @@ import { Header } from '../common/Header'
 import { CustomerView } from './customer/CustomerView'
 import EventPage from './customer/EventPage'
 
-import { Event } from '../../types/BackendTypes'
+import { Event } from '../../typings/BackendTypes'
 import Loader from '../misc/Loader'
 import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'

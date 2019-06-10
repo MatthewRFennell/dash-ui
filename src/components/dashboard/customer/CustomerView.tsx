@@ -5,7 +5,7 @@ import { History } from 'history'
 import { connect } from 'react-redux'
 import { loadEvents } from '../../..//redux/actions/eventActions'
 import fetchProtected from '../../../api/protected'
-import { EventRedued } from '../../../types/BackendTypes'
+import { EventRedued } from '../../../typings/BackendTypes'
 import EventCard from '../Card'
 import './CustomerView.scss'
 
