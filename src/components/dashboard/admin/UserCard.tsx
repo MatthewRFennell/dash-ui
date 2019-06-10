@@ -3,6 +3,7 @@ import * as React from 'react'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 
 import './UserCard.scss'
@@ -35,7 +36,9 @@ const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
       <div>
         <CardContent className='user-content'>
           <div className='user-image'>
-            <img className='user-placeholder' src={props.image || placeholder} draggable={false} />
+            <Tooltip title='hmm?' enterDelay={5000} placement='left-start'>
+              <img className='user-placeholder' src={props.image || placeholder} draggable={false} />
+            </Tooltip>
           </div>
           <CardActionArea className='user-details' onClick={props.onClick}>
             <Typography className='user-title'>
