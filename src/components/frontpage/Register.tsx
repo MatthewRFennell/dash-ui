@@ -134,9 +134,9 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
 }
 
 interface FormFields {
-  email: string,
-  fname: string,
-  sname: string,
+  email: string
+  fname: string
+  sname: string
   password: string
 }
 

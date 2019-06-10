@@ -1,5 +1,9 @@
+$surprise-delay: 5s;
+$surprise-time: 5s;
+$surprise-func: ease-out;
+$goodbye-time: 100ms;
 .user-card {
-  margin-bottom: 30px;
+  margin: 0 15px 30px 15px;
   .user-content {
     display: flex;
     padding: 0 !important;
@@ -9,16 +13,20 @@
       background-color: #cecece;
       .user-placeholder {
         height: 120px;
-        width: 115px;
-        margin-left: 5px;
+        width: 110px;
+        margin-left: 10px;
         object-position: 100% 0;
         object-fit: cover;
-        transition: object-position 1s ease-in-out 5s, margin-left 500ms ease 5s, width 500ms ease 5s;
+        transition: object-position $goodbye-time $surprise-func 0s,
+          margin-left 0ms linear calc( 0s + #{$goodbye-time}),
+          width 0ms linear calc( 0s + #{$goodbye-time});
       }
       .user-placeholder:hover {
         object-position: 0 0;
         margin-left: 0;
         width: 120px;
+        transition: object-position $surprise-time $surprise-func $surprise-delay, margin-left 0ms linear $surprise-delay,
+          width 0ms linear $surprise-delay;
       }
     }
     .user-details {

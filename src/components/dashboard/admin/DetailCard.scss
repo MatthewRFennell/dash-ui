@@ -1,0 +1,20 @@
+.detail-card {
+  margin: 0 15px 30px 15px;
+  max-height: calc(100vh - 156px);
+  min-width: 520px;
+  position: sticky;
+  top: 126px;
+  .pre-title {
+    font-size: 12pt;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.54);
+    text-transform: uppercase;
+    letter-spacing: 0.1564em;
+  }
+  .title {
+    letter-spacing: initial;
+    font-size: 24pt;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}

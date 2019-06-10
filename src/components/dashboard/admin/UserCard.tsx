@@ -11,9 +11,25 @@ import './UserCard.scss'
 const placeholder1 = require('../../../../assets/png/user-placeholder-1.png')
 // tslint:disable-next-line:no-var-requires
 const placeholder2 = require('../../../../assets/png/user-placeholder-2.png')
+// tslint:disable-next-line:no-var-requires
+const placeholder3 = require('../../../../assets/png/user-placeholder-3.png')
+// tslint:disable-next-line:no-var-requires
+const placeholder4 = require('../../../../assets/png/user-placeholder-4.png')
+// tslint:disable-next-line:no-var-requires
+const placeholder5 = require('../../../../assets/png/user-placeholder-5.png')
 
 const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
-  const placeholder = Math.random() < 0.5 ? placeholder1 : placeholder2
+  const chooser = Math.random()
+  const placeholder =
+    chooser < 0.2
+      ? placeholder1
+      : chooser < 0.4
+      ? placeholder2
+      : chooser < 0.6
+      ? placeholder3
+      : chooser < 0.8
+      ? placeholder4
+      : placeholder5
   return (
     <Card className='user-card'>
       <div>
@@ -21,7 +37,7 @@ const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
           <div className='user-image'>
             <img className='user-placeholder' src={props.image || placeholder} draggable={false} />
           </div>
-          <CardActionArea className='user-details'>
+          <CardActionArea className='user-details' onClick={props.onClick}>
             <Typography className='user-title'>
               {props.fname} {props.sname}
             </Typography>
@@ -38,6 +54,7 @@ interface UserCardProps {
   sname: string
   email: string
   image?: string
+  onClick: () => void
 }
 
 export default UserCard
