@@ -106,7 +106,6 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
     }
     if (errs.length > 0) {
       setErrors(errs)
-      console.log(errs)
       return
     }
 

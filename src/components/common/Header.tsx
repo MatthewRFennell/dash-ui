@@ -25,7 +25,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
     <div className='header'>
       <div className='header-title' onClick={props.onHome} style={{ cursor: 'pointer' }}>
         <img src={logo} className='logo' />
-        Dash
+        Dash{props.admin && <span style={{ fontWeight: 300 }}> Admin</span>}
       </div>
       {props.onTabChange && (
         <div style={{ width: '100vw', display: 'flex', justifyContent: 'center', position: 'fixed' }}>
@@ -70,6 +70,7 @@ interface HeaderProps {
   history?: History
   onTabChange?: (event, newValue) => void
   currentTab?: number
+  admin?: boolean
   onHome?: () => void
   onBack?: () => void
   onLogout: () => void

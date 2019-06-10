@@ -1,0 +1,38 @@
+.user-card {
+  margin-bottom: 30px;
+  .user-content {
+    display: flex;
+    padding: 0 !important;
+    .user-image {
+      height: 120px;
+      width: 120px;
+      background-color: #cecece;
+      .user-placeholder {
+        height: 120px;
+        width: 115px;
+        margin-left: 5px;
+        object-position: 100% 0;
+        object-fit: cover;
+        transition: object-position 1s ease-in-out 5s, margin-left 500ms ease 5s, width 500ms ease 5s;
+      }
+      .user-placeholder:hover {
+        object-position: 0 0;
+        margin-left: 0;
+        width: 120px;
+      }
+    }
+    .user-details {
+      padding: 15px 30px 15px 30px;
+      .user-title {
+        font-size: 24pt;
+        font-weight: bold;
+        text-transform: capitalize;
+      }
+      .user-subtitle {
+        font-size: 14pt;
+        font-weight: 300;
+        color: rgba(0, 0, 0, 0.54);
+      }
+    }
+  }
+}

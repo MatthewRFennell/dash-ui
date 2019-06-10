@@ -86,10 +86,8 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response)
         setSubmitting(false)
         if (response.success) {
-          console.log('Going to add event', response.event)
           props.onAddEvent(response.event)
 
           setName('')

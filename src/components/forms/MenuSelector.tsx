@@ -15,10 +15,7 @@ const MenuSelector: React.FunctionComponent<MenuSelectorProps> = (props) => {
     )
   }
 
-  console.log(props.form_id)
-
   const submitChoice = () => {
-    console.log('Your choice is saved')
     const body = {
       uuid: props.form_id,
       dish_ids: selection.map((s, i) => props.menu.menu.courses[i].dishes[s].dish_id),
@@ -33,7 +30,6 @@ const MenuSelector: React.FunctionComponent<MenuSelectorProps> = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res)
         if (res.success) {
           props.done()
         }

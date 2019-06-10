@@ -4,7 +4,6 @@ import fetchProtected from '../../api/protected'
 export const login = (email, password) => {
   return (dispatch) => {
     dispatch(loginRequest())
-    console.log('Dispatching login request')
     const body = {
       email: email.toLowerCase(),
       password,
@@ -19,17 +18,13 @@ export const login = (email, password) => {
       },
       body: stringy,
     })
-      .then(
-        (response) => response.json(),
-        (error) => console.log('An error occurred.', error),
-      )
+      .then((response) => response.json(), (error) => console.log('An error occurred.', error))
       .then((res) => {
         if (res.success) {
-          console.log('Dispatching login success')
           localStorage.setItem('userToken', res.token)
+          dispatch(admin(res.user.type === 1))
           dispatch(loginSuccess())
         } else {
-          console.log('Dispatching login failed')
           dispatch(loginFailed())
         }
       })
@@ -58,6 +53,13 @@ export const logout = () => {
   return (dispatch) => {
     localStorage.removeItem('userToken')
     dispatch(loginFailed())
+  }
+}
+
+export const admin = (val) => {
+  return {
+    type: 'admin',
+    admin: val,
   }
 }
 

@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography'
 import { Transport } from '../../../../typings/BackendTypes'
 
 const TransportSection: React.FunctionComponent<Transport> = (props) => {
-  console.log(props)
   return (
     <div className='event-page-detail'>
       <Typography className='event-page-block-title'>Transport</Typography>

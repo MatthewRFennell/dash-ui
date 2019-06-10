@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { connect } from 'react-redux'
 
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
@@ -11,6 +12,7 @@ import EventPage from './customer/EventPage'
 
 import { Event } from '../../typings/BackendTypes'
 import Loader from '../misc/Loader'
+import AdminView from './admin/AdminView'
 import './Dashboard.scss'
 import { CreateEvent } from './modal/CreateEvent'
 
@@ -47,7 +49,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const deleteAttendee = (attendeeID, callback) => {
     fetchProtected(DASH_API + '/attendee', null, { attendee_id: attendeeID }, 'DELETE', (res) => {
       if (res.success) {
-        console.log('Delete Success')
         if (callback) {
           callback()
         }
@@ -66,16 +67,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
 
   const handleSetEvent = (id?: number) => () => {
     setCurrentTab(0) // Reset tab
-    console.log('Set event', id)
     if (id !== undefined) {
       /* Fetch from endpoint */
       fetchProtected(`${DASH_API}/event?event_id=${id}`, null, null, 'GET', (res) => {
-        console.log(res)
         const newEvent = {
           ...res.event,
           date: new Date(res.event.date),
         }
-        console.log(newEvent)
         setOpenEvent(newEvent)
       })
     } else {
@@ -104,6 +102,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         <div key='main'>
           <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
             <Header
+              admin={props.admin}
               history={props.history}
               onBack={openEvent ? handleSetEvent() : undefined}
               onHome={openEvent ? handleSetEvent() : undefined}
@@ -112,17 +111,23 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               key='header'
             />
             {openEvent === undefined ? (
-              <div key='customer-view'>
-                <CustomerView
-                  history={props.history}
-                  setActiveEvent={handleSetEvent}
-                  onLoadComplete={handleLoadingFinish}
-                />
-                <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
-                  <AddIcon className='dashboard-add-icon' />
-                  Add event
-                </Fab>
-              </div>
+              props.admin ? (
+                <div key='admin-view'>
+                  <AdminView history={props.history} onLoadComplete={handleLoadingFinish} />
+                </div>
+              ) : (
+                <div key='customer-view'>
+                  <CustomerView
+                    history={props.history}
+                    setActiveEvent={handleSetEvent}
+                    onLoadComplete={handleLoadingFinish}
+                  />
+                  <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
+                    <AddIcon className='dashboard-add-icon' />
+                    Add event
+                  </Fab>
+                </div>
+              )
             ) : (
               <EventPage
                 event={openEvent}
@@ -144,6 +149,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
 
 interface DashboardProps {
   history: History
+  admin?: boolean
 }
 
-export default Dashboard
+const mapStateToProps = (state) => {
+  return {
+    admin: state.user.admin,
+  }
+}
+
+export default connect(mapStateToProps)(Dashboard)
