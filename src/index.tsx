@@ -7,6 +7,11 @@ import { Route, Router, Switch } from 'react-router-dom'
 import { PrivateRoute } from './components/router/privateRoute'
 import './style.scss'
 
+/* Google analytics */
+import * as ReactGA from 'react-ga'
+ReactGA.initialize('UA-141837333-1')
+ReactGA.pageview(window.location.pathname + window.location.search)
+
 import store from './redux/store'
 
 /* Component Imports */
