@@ -4,7 +4,7 @@ const initialState = {
   loggedIn: false,
   logginIn: false,
   admin: false,
-  error: false
+  error: false,
 }
 
 if (localStorage.getItem('userToken')) {
@@ -39,7 +39,7 @@ const user = (state = initialState, action) => {
         logginIn: false,
         loggedIn: false,
         admin: false,
-        error: action.error
+        error: action.error,
 
       }
     case 'fetchDetailSuccesss':

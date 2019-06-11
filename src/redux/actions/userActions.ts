@@ -47,7 +47,7 @@ export const loginSuccess = (admin = false) => {
 export const loginFailed = (error = true) => {
   return {
     type: 'loginFailed',
-    error
+    error,
   }
 }
 
