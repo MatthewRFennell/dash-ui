@@ -14,8 +14,6 @@ import PublishIcon from '@material-ui/icons/Publish'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
 import authHeader from '../../../api/authHeader'
 
-import { connect } from 'react-redux'
-import { addEvent } from '../../../../src/redux/actions/eventActions'
 import './Modal.scss'
 
 const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
@@ -76,6 +74,9 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
     formData.append('date', mergedDate.toISOString())
     formData.append('blurb', desc)
     formData.append('tickets', tickets.toString())
+    if (props.email) {
+      formData.append('email', props.email)
+    }
     fetch(url, {
       method: 'POST',
       headers: {
@@ -240,19 +241,9 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
 
 interface CreateEventProps {
   open: boolean
+  email?: string
   onClose: () => void
   onAddEvent: (event: any) => void
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAddEvent: (event) => dispatch(addEvent(event)),
-  }
-}
-
-const ConnectedCreateEvent = connect(
-  null,
-  mapDispatchToProps,
-)(CreateEvent)
-
-export { ConnectedCreateEvent as CreateEvent }
+export default CreateEvent

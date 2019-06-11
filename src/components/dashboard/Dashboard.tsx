@@ -2,8 +2,6 @@ import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { connect } from 'react-redux'
 
-import Fab from '@material-ui/core/Fab'
-import AddIcon from '@material-ui/icons/Add'
 import { History } from 'history'
 import fetchProtected from '../../../src/api/protected'
 import { Header } from '../common/Header'
@@ -14,7 +12,6 @@ import { Event, Menu } from '../../typings/BackendTypes'
 import Loader from '../misc/Loader'
 import AdminView from './admin/AdminView'
 import './Dashboard.scss'
-import { CreateEvent } from './modal/CreateEvent'
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [loading, setLoading] = React.useState<boolean>(true)
@@ -126,7 +123,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
                   <AdminView
                     history={props.history}
                     onLoadComplete={handleLoadingFinish}
-                    setActiveEvent={handleSetEvent}
+                    onSetEvent={handleSetEvent}
                   />
                 </div>
               ) : (
@@ -136,10 +133,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
                     setActiveEvent={handleSetEvent}
                     onLoadComplete={handleLoadingFinish}
                   />
-                  <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
-                    <AddIcon className='dashboard-add-icon' />
-                    Add event
-                  </Fab>
                 </div>
               )
             ) : (
@@ -155,7 +148,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               />
             )}
           </ReactCSSTransitionGroup>
-          <CreateEvent open={modalOpen} onClose={handleModalClose} />
         </div>
       </ReactCSSTransitionGroup>
     </div>
