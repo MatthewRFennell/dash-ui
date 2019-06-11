@@ -10,7 +10,7 @@ import { Header } from '../common/Header'
 import { CustomerView } from './customer/CustomerView'
 import EventPage from './customer/EventPage'
 
-import { Event } from '../../typings/BackendTypes'
+import { Event, Menu } from '../../typings/BackendTypes'
 import Loader from '../misc/Loader'
 import AdminView from './admin/AdminView'
 import './Dashboard.scss'
@@ -44,6 +44,16 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         })
       }
     })
+  }
+
+  const updateMenuChoice = (menu: Menu, itineraryID: number) => {
+    setOpenEvent((oldEvent) => ({
+      ...oldEvent,
+      itineraries: oldEvent.itineraries.map((it) => it.itinerary_id !== itineraryID ? it : {
+        ...it,
+        menu,
+      }),
+    }))
   }
 
   const deleteAttendee = (attendeeID, callback) => {
@@ -113,7 +123,11 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             {openEvent === undefined ? (
               props.admin ? (
                 <div key='admin-view'>
-                  <AdminView history={props.history} onLoadComplete={handleLoadingFinish} />
+                  <AdminView
+                    history={props.history}
+                    onLoadComplete={handleLoadingFinish}
+                    setActiveEvent={handleSetEvent}
+                  />
                 </div>
               ) : (
                 <div key='customer-view'>
@@ -137,6 +151,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
                 currentTab={currentTab}
                 onTabChange={setCurrentTab}
                 history={props.history}
+                updateMenu={updateMenuChoice}
               />
             )}
           </ReactCSSTransitionGroup>

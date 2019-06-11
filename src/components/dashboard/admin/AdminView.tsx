@@ -60,6 +60,7 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
 interface AdminViewProps {
   history: History
   onLoadComplete: () => void
+  setActiveEvent: (x: number) => () => void
 }
 
 export default AdminView

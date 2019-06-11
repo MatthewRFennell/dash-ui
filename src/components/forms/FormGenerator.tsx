@@ -62,7 +62,6 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
 
   const saveMenu = () => {
     const body = {
-      itinerary_id: props.itinerary_id,
       caterer,
       courses: menu,
     }
@@ -76,9 +75,6 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
     setCaterer(value)
   }
 
-  if (!done && props.itinerary_id === undefined) {
-    return <Redirect to='/' />
-  }
   if (done) {
     return <MenuThanks history={props.history} />
   }

@@ -24,6 +24,7 @@ const DetailCard: React.FunctionComponent<DetailCardProps> = (props) => {
       setLoading(false)
     })
   }, [props.account_id])
+
   const eventList = events.map((event, index) => {
     const date = new Date(event.date)
     return (

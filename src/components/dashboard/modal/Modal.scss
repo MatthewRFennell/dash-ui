@@ -1,4 +1,19 @@
 .modal {
+
+  .modal-paper {
+    padding: 10px;
+    margin: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+  }
+
+  .modal-paper-selected {
+    border-bottom: 1px blue solid;
+  }
+
   .modal-title {
     font-weight: bold;
     font-size: 24pt;

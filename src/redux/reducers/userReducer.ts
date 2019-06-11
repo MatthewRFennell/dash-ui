@@ -30,10 +30,10 @@ const user = (state = initialState, action) => {
         ...state,
         logginIn: false,
         loggedIn: true,
+        admin: action.admin
       }
     case 'loginFailed':
       return {
-        ...state,
         logginIn: false,
         loggedIn: false,
       }
@@ -43,11 +43,6 @@ const user = (state = initialState, action) => {
         email: action.email,
         fname: action.fname,
         sname: action.sname,
-      }
-    case 'admin':
-      return {
-        ...state,
-        admin: action.admin,
       }
     default:
       return state

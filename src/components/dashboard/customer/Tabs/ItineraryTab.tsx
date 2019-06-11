@@ -21,6 +21,7 @@ import { Itinerary, Menu } from '../../../../typings/BackendTypes'
 
 import { setFormDetails } from '../../../../redux/actions/formActions'
 import AddItinerary from '../../modal/AddItinerary'
+import SelectMenu from '../../modal/SelectMenu'
 import MenuModal from './MenuModal'
 
 const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
@@ -79,6 +80,10 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [modalContent, setModalContent] = React.useState<Menu>(undefined)
   const [modalName, setModalName] = React.useState<string>('')
+  const [selectModalOpen, setSelectModalOpen] = React.useState({
+    open: false,
+    itinerary_id: -1,
+  })
   const [addItineraryOpen, setAddItineraryOpen] = React.useState<boolean>(false)
   const [itineraryAddendum, setItineraryAddendum] = React.useState<Itinerary[]>([])
 
@@ -96,12 +101,25 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     }
   }
 
+  const handleSelectClose = () => {
+    setSelectModalOpen({
+      open: false,
+      itinerary_id: -1,
+    })
+  }
+
+  const updateMenu = (menu: Menu) => {
+    props.updateMenu(menu, selectModalOpen.itinerary_id)
+  }
+
   const handleModalOpen = (state) => () => setModalOpen(state)
   const handleAddItineraryOpen = (state) => () => setAddItineraryOpen(state)
 
-  const createMenu = (item) => () => {
-    props.createForm(item)
-    props.history.push('/form')
+  const createMenu = (id: number) => () => {
+    setSelectModalOpen({
+      open: true,
+      itinerary_id: id,
+    })
   }
 
   const viewMenu = (item: Itinerary) => () => {
@@ -144,9 +162,10 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
               </TableCell>
               <TableCell className='table-cell'>{item.description}</TableCell>
               <TableCell className='table-cell'>
-                <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item)}>
-                  {item.menu ? <RestaurantMenuIcon /> : <AddIcon />}
-                </IconButton>
+                {(props.admin || item.menu) &&
+                <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item.itinerary_id)}>
+                  {item.menu ? <RestaurantMenuIcon /> : (<AddIcon />)}
+                </IconButton>}
               </TableCell>
               <TableCell className='table-cell'>
                 <IconButton
@@ -203,6 +222,12 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
         )}
       </div>
       <MenuModal open={modalOpen} onClose={handleModalOpen(false)} name={modalName} menu={modalContent} />
+      <SelectMenu
+        open={selectModalOpen.open}
+        onClose={handleSelectClose}
+        itinerary_id={selectModalOpen.itinerary_id}
+        updateMenu={updateMenu}
+      />
       <AddItinerary
         open={addItineraryOpen}
         eventId={props.eventId}
@@ -215,20 +240,18 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
 
 interface ItineraryTabProps {
   itinerary: Itinerary[]
-  createForm: (x: Itinerary) => void
   eventId: number
   history: History
+  updateMenu: (m: Menu, id: number) => void
+  admin: boolean
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    createForm: (itinerary) => dispatch(setFormDetails(itinerary)),
+    admin: state.user.admin,
   }
 }
 
-const ConnectedItineraryTab = connect(
-  null,
-  mapDispatchToProps,
-)(ItineraryTab)
+const ConnectedItineraryTab = connect(mapStateToProps)(ItineraryTab)
 
 export { ConnectedItineraryTab as ItineraryTab }

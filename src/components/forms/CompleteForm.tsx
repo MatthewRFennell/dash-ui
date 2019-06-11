@@ -43,7 +43,12 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
   }
 
   if (selected >= 0) {
-    return <MenuSelector menu={data.itineraries[selected]} done={completed} form_id={form_id} />
+    return (
+    <MenuSelector
+      itinerary={data.itineraries[selected]}
+      done={completed}
+      form_id={form_id}
+    />)
   }
 
   if (invalid) {

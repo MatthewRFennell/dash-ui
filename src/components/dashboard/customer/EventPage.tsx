@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { History } from 'history'
 import SwipeableViews from 'react-swipeable-views'
-import { Attendee, Event } from '../../../typings/BackendTypes'
+import { Attendee, Event, Menu } from '../../../typings/BackendTypes'
 import './EventPage.scss'
 import AttendeesTab from './Tabs/AttendeesTab'
 import { ItineraryTab } from './Tabs/ItineraryTab'
@@ -25,6 +25,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           history={props.history}
           itinerary={props.event.itineraries}
           key='itinerary'
+          updateMenu={props.updateMenu}
         />
       </SwipeableViews>
     </div>
@@ -38,6 +39,7 @@ interface EventPageProps {
   history: History
   currentTab: number
   onTabChange: (index: number) => void
+  updateMenu: (m: Menu, id: number) => void
 }
 
 export default EventPage

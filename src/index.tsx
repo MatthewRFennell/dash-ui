@@ -46,7 +46,7 @@ ReactDOM.render(
           <Route exact={true} path='/register' component={Register} />
           <Route exact={true} path='/loader' component={Loader} />
           <Route exact={true} path='/completeform/:form_id' component={CompleteForm} />
-          <PrivateRoute exact={true} path='/form' component={FormGenerator} />
+          <PrivateRoute admin={true} exact={true} path='/createform' component={FormGenerator} />
           <Route component={NotFound} />
         </Switch>
       </Router>
