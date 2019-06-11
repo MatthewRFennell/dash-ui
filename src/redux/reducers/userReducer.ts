@@ -30,7 +30,7 @@ const user = (state = initialState, action) => {
         ...state,
         logginIn: false,
         loggedIn: true,
-        admin: action.admin
+        admin: action.admin,
       }
     case 'loginFailed':
       return {

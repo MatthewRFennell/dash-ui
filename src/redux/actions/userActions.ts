@@ -22,7 +22,7 @@ export const login = (email, password) => {
       .then((res) => {
         if (res.success) {
           localStorage.setItem('userToken', res.token)
-          console.log("Admin", res.user.type === 1)
+          console.log('Admin', res.user.type === 1)
           dispatch(loginSuccess(res.user.type === 1))
         } else {
           dispatch(loginFailed())
@@ -40,7 +40,7 @@ export const loginRequest = () => {
 export const loginSuccess = (admin = false) => {
   return {
     type: 'loginSuccess',
-    admin
+    admin,
   }
 }
 
@@ -54,13 +54,6 @@ export const logout = () => {
   return (dispatch) => {
     localStorage.removeItem('userToken')
     dispatch(loginFailed())
-  }
-}
-
-export const admin = (val) => {
-  return {
-    type: 'admin',
-    admin: val,
   }
 }
 
