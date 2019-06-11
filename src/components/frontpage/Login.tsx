@@ -19,6 +19,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
   const [visible, setVisibility] = React.useState<boolean>(false)
   const [password, setPassword] = React.useState<string>('')
   const [email, setEmail] = React.useState<string>('')
+  const [error, setError] = React.useState<boolean>(false)
 
   const handlePasswordChange: ChangeEventFunc = (e) => {
     setPassword(e.target.value)
@@ -53,6 +54,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
             label='Email'
             margin='normal'
             variant='outlined'
+            error={props.error}
             type='text'
             required={true}
             onChange={handleEmailChange}
@@ -63,6 +65,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
             variant='outlined'
             type={visible ? 'text' : 'password'}
             label='Password'
+            error={props.error}
             className='small-box'
             onChange={handlePasswordChange}
             onKeyDown={handleKeyPress}
@@ -95,6 +98,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
 interface LoginProps {
   waiting: boolean
   loggedIn: boolean
+  error: boolean
   onLogin: (email: string, password: string) => void
 }
 
@@ -102,6 +106,7 @@ const mapStateToProps = (state) => {
   return {
     waiting: state.user.logginIn,
     loggedIn: state.user.loggedIn,
+    error: state.user.error,
   }
 }
 

@@ -44,16 +44,17 @@ export const loginSuccess = (admin = false) => {
   }
 }
 
-export const loginFailed = () => {
+export const loginFailed = (error = true) => {
   return {
     type: 'loginFailed',
+    error
   }
 }
 
 export const logout = () => {
   return (dispatch) => {
     localStorage.removeItem('userToken')
-    dispatch(loginFailed())
+    dispatch(loginFailed(false))
   }
 }
 
