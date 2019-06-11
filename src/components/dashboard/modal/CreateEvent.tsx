@@ -76,6 +76,9 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
     formData.append('date', mergedDate.toISOString())
     formData.append('blurb', desc)
     formData.append('tickets', tickets.toString())
+    if (props.email) {
+      formData.append('email', props.email)
+    }
     fetch(url, {
       method: 'POST',
       headers: {
@@ -240,6 +243,7 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
 
 interface CreateEventProps {
   open: boolean
+  email?: string
   onClose: () => void
   onAddEvent: (event: any) => void
 }
@@ -255,4 +259,5 @@ const ConnectedCreateEvent = connect(
   mapDispatchToProps,
 )(CreateEvent)
 
-export { ConnectedCreateEvent as CreateEvent }
+export { ConnectedCreateEvent }
+export default CreateEvent

@@ -14,7 +14,7 @@ import { Event } from '../../typings/BackendTypes'
 import Loader from '../misc/Loader'
 import AdminView from './admin/AdminView'
 import './Dashboard.scss'
-import { CreateEvent } from './modal/CreateEvent'
+import { ConnectedCreateEvent as CreateEvent } from './modal/CreateEvent'
 
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [loading, setLoading] = React.useState<boolean>(true)
@@ -113,7 +113,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             {openEvent === undefined ? (
               props.admin ? (
                 <div key='admin-view'>
-                  <AdminView history={props.history} onLoadComplete={handleLoadingFinish} />
+                  <AdminView history={props.history} onLoadComplete={handleLoadingFinish} onSetEvent={handleSetEvent} />
                 </div>
               ) : (
                 <div key='customer-view'>
@@ -122,10 +122,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
                     setActiveEvent={handleSetEvent}
                     onLoadComplete={handleLoadingFinish}
                   />
-                  <Fab className='dashboard-fab' variant='extended' color='primary' onClick={handleModalOpen}>
-                    <AddIcon className='dashboard-add-icon' />
-                    Add event
-                  </Fab>
                 </div>
               )
             ) : (
@@ -140,7 +136,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               />
             )}
           </ReactCSSTransitionGroup>
-          <CreateEvent open={modalOpen} onClose={handleModalClose} />
         </div>
       </ReactCSSTransitionGroup>
     </div>

@@ -7,12 +7,15 @@ import Typography from '@material-ui/core/Typography'
 import fetchProtected from '../../../api/protected'
 import { User } from '../../../typings/BackendTypes'
 import '../../common/Header'
+import CreateEvent from '../modal/CreateEvent'
 import './AdminView.scss'
 import DetailCard from './DetailCard'
 import UserCard from './UserCard'
 
 const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
+  const [addEvent, setAddEvent] = React.useState<boolean>(false)
   const [users, setUsers] = React.useState<User[]>([])
+  const [refreshSymbol, setRefreshSymbol] = React.useState<symbol>(Symbol())
   React.useEffect(() => {
     fetchProtected(DASH_API + '/users', null, null, 'GET', (res) => {
       setUsers(res.accounts)
@@ -26,6 +29,12 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
     } else {
       return () => setFocusedUser(user)
     }
+  }
+  const handleAddEvent = (val) => () => {
+    setAddEvent(val)
+  }
+  const handleOnAdd = () => {
+    setRefreshSymbol(Symbol())
   }
   const UserCards = users.map((user, index) => (
     <li key={index}>
@@ -47,12 +56,23 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
           >
             {focusedUser && (
               <div key='detail' className='horizontal-grow-div'>
-                <DetailCard {...focusedUser} />
+                <DetailCard
+                  {...focusedUser}
+                  onAddEventClick={handleAddEvent(true)}
+                  onSetEvent={props.onSetEvent}
+                  refresh={refreshSymbol}
+                />
               </div>
             )}
           </ReactCSSTransitionGroup>
         </div>
       </div>
+      <CreateEvent
+        open={addEvent}
+        onClose={handleAddEvent(false)}
+        email={focusedUser ? focusedUser.email : undefined}
+        onAddEvent={handleOnAdd}
+      />
     </div>
   )
 }
@@ -60,6 +80,7 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
 interface AdminViewProps {
   history: History
   onLoadComplete: () => void
+  onSetEvent: (id: number) => () => void
 }
 
 export default AdminView

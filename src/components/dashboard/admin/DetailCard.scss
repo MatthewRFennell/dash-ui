@@ -13,6 +13,12 @@
     text-transform: uppercase;
     letter-spacing: 0.1564em;
   }
+  .add-event-button {
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
   .title {
     letter-spacing: initial;
     font-size: 24pt;
@@ -49,5 +55,14 @@
         color: rgba(0, 0, 0, 0.54);
       }
     }
+  }
+  .error-text {
+    font-size: 14pt;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .button {
+    margin-top: 10px;
+    font-weight: bold;
   }
 }
