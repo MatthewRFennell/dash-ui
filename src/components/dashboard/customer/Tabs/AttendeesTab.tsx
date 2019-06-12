@@ -8,10 +8,15 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive'
+import CheckIcon from '@material-ui/icons/Check'
+import CloseIcon from '@material-ui/icons/Close'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+
+import authHeader from '../../../../api/authHeader'
 import { Attendee, Transport } from '../../../../typings/BackendTypes'
 import AddAttendee from '../../modal/AddAttendee'
 import ConfirmDialog from '../../modal/ConfirmDialog'
@@ -21,17 +26,15 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
   const [confirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false)
   const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false)
-  const [detailActive, setdetailActive] = React.useState<boolean>(false)
-  const [attendeeTransport, setAttendeeTransport] = React.useState<number>(-1)
+  const [detailActive, setdetailActive] = React.useState<Attendee>(undefined)
   const [modalLoading, setModalLoading] = React.useState<boolean>(false)
+  const [confirmedAttendees, setConfirmedAttendees] = React.useState<number[]>([])
 
-  const setIndex = (id) => () => {
-    if (id === attendeeTransport) {
-      setAttendeeTransport(-1)
-      setdetailActive(false)
+  const setAttendee = (attendee: Attendee) => () => {
+    if (attendee.attendee_id === (detailActive || { attendee_id: -1 }).attendee_id) {
+      setdetailActive(undefined)
     } else {
-      setAttendeeTransport(id)
-      setdetailActive(true)
+      setdetailActive(attendee)
     }
   }
 
@@ -43,26 +46,12 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const handleDelete = (id) => () => {
     setModalLoading(true)
     props.deleteAttendee(id, () => {
-      setAttendeeTransport(-1)
-      setdetailActive(false)
+      setdetailActive(undefined)
       setModalLoading(false)
       setDeleteModalOpen(false)
     })
   }
-
-  let attendeeTransportDetails: Transport
-  let name
-  let formID
-  if (attendeeTransport >= 0) {
-    formID = props.attendees[attendeeTransport].form_id
-    name = props.attendees[attendeeTransport].fname + ' ' + props.attendees[attendeeTransport].sname
-    attendeeTransportDetails = props.attendees[attendeeTransport].transport
-      ? {
-          ...props.attendees[attendeeTransport].transport,
-          departTime: new Date(props.attendees[attendeeTransport].transport.departTime),
-        }
-      : undefined
-  }
+  const handleAddConfirmedAttendee = (id) => setConfirmedAttendees((old) => old.concat([id]))
 
   const attendeeTable =
     props.attendees.length !== 0 ? (
@@ -73,6 +62,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             <TableCell className='table-cell'>Last Name</TableCell>
             <TableCell className='table-cell'>Dietary Requirements</TableCell>
             <TableCell className='table-cell'>Miscellaneous</TableCell>
+            <TableCell className='table-cell'>Confirmed</TableCell>
             <TableCell className='table-cell'>Details</TableCell>
           </TableRow>
         </TableHead>
@@ -85,8 +75,26 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
               <TableCell className='table-cell'>
                 {attendee.transport !== null && <AirplanemodeActiveIcon style={{ opacity: 0.54 }} />}
               </TableCell>
+              <TableCell>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {attendee.confirmed || confirmedAttendees.includes(attendee.attendee_id) ? (
+                    <Tooltip title='Attendee is confirmed!'>
+                      <CheckIcon color='primary' style={{ padding: '12px' }} />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title='Attendee is not confirmed'>
+                      <CloseIcon style={{ padding: '12px', opacity: 0.54 }} />
+                    </Tooltip>
+                  )}
+                </div>
+              </TableCell>
               <TableCell className='table-cell'>
-                <IconButton onClick={setIndex(index)} color={index === attendeeTransport ? 'primary' : 'default'}>
+                <IconButton
+                  onClick={setAttendee(attendee)}
+                  color={
+                    attendee.attendee_id === (detailActive || { attendee_id: -1 }).attendee_id ? 'primary' : 'default'
+                  }
+                >
                   <MoreVertIcon />
                 </IconButton>
               </TableCell>
@@ -120,26 +128,49 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       >
         {detailActive && (
           <DetailsPanel
-            name={name}
-            transport={attendeeTransportDetails}
+            name={detailActive ? detailActive.fname + ' ' + detailActive.sname : 'ERROR'}
+            transport={detailActive.transport}
+            confirmed={detailActive.confirmed}
             confirm={handleConfirmModal(true)}
             delete={handleDeleteModal(true)}
-            form_id={formID}
+            form_id={detailActive.form_id}
           />
         )}
       </ReactCSSTransitionGroup>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
       <ConfirmDialog
         title='Confirm attendee'
-        content={`Confirm attendee ${name}'s attendance`}
+        content={`Confirm attendee ${
+          detailActive ? detailActive.fname + ' ' + detailActive.sname : 'ERROR'
+        }'s attendance`}
         open={confirmModalOpen}
         confirm={{
           text: 'Confirm',
           action: () => {
             setModalLoading(true)
-            setTimeout(() => {
-              setModalLoading(false)
-            }, 1000)
+            const url = DASH_API + '/confirmAttendee'
+            const body = {
+              attendee_id: detailActive ? detailActive.attendee_id : -1,
+            }
+            fetch(url, {
+              method: 'POST',
+              headers: {
+                ...authHeader(),
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(body),
+            })
+              .then((res) => res.json())
+              .then((res) => {
+                setModalLoading(false)
+                if (res.success) {
+                  handleAddConfirmedAttendee(detailActive ? detailActive.attendee_id : -1)
+                  setConfirmModalOpen(false)
+                }
+              })
+              .catch((err) => {
+                setModalLoading(false)
+              })
           },
         }}
         alt={{
@@ -150,17 +181,13 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       />
       <ConfirmDialog
         title='Delete attendee'
-        content={`Delete attendee ${name} and their associated details`}
+        content={`Delete attendee ${
+          detailActive ? detailActive.fname + ' ' + detailActive.sname : 'ERROR'
+        } and their associated details`}
         open={deleteModalOpen}
         confirm={{
           text: 'Delete',
-          action: handleDelete(
-            (
-              props.attendees[attendeeTransport] || {
-                attendee_id: -1,
-              }
-            ).attendee_id,
-          ),
+          action: handleDelete((detailActive || { attendee_id: -1 }).attendee_id),
         }}
         alt={{
           text: 'Cancel',

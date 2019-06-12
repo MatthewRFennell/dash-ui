@@ -18,7 +18,6 @@ if (localStorage.getItem('userToken')) {
 }
 
 const user = (state = initialState, action) => {
-  console.log(state, action)
   switch (action.type) {
     case 'loginRequest':
       return {

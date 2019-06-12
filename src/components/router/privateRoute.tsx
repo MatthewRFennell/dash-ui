@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 
 const PrivateRoute = ({ component: Component, user, admin = false, ...rest }) => {
-
   const renderComponent = (props) =>
     user.loggedIn && (!admin || user.admin) ? (
       <Component {...props} />
