@@ -8,6 +8,7 @@ import SwipeableViews from 'react-swipeable-views'
 import fetchProtected from '../../../api/protected'
 import { User } from '../../../typings/BackendTypes'
 import '../../common/Header'
+import FormGenerator from '../../forms/FormGenerator'
 import CreateEvent from '../modal/CreateEvent'
 import './AdminView.scss'
 import DetailCard from './DetailCard'
@@ -75,9 +76,7 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
             </div>
           </div>
         </div>
-        <div key='menu' className='admin-view'>
-          MeNUUUU
-        </div>
+        <FormGenerator history={props.history}/>
       </SwipeableViews>
       <CreateEvent
         open={addEvent}

@@ -1,11 +1,10 @@
 import Add from '@material-ui/icons/Add'
 import Save from '@material-ui/icons/Save'
+import { History } from 'history'
 import * as React from 'react'
 import { Header } from '../common/Header'
 
 import { IconButton } from '@material-ui/core'
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
 import fetchProtected from '../../../src/api/protected'
 import { NewCourse, NewDish } from '../../typings/CreationTypes'
 import CourseGenerator from './CourseGenerator'
@@ -81,7 +80,6 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
 
   return (
     <div>
-      <Header />
       <div className='page'>
         <h1 className='form-header'>Create a Menu</h1>
         <EditBox title='Caterer' setValue={updateCaterer} />
@@ -106,16 +104,7 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
 }
 
 interface FormGeneratorProps {
-  itinerary_id?: string
   history: History
 }
 
-const mapStateToProps = (state) => {
-  return {
-    itinerary_id: state.form.itinerary_id,
-  }
-}
-
-const ConnectedFormGenerator = connect(mapStateToProps)(FormGenerator)
-
-export { ConnectedFormGenerator as FormGenerator }
+export default FormGenerator
