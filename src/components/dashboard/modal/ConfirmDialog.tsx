@@ -17,9 +17,7 @@ const ConfirmDialog: React.FunctionComponent<ConfirmDialogProps> = (props) => {
         <Typography className='modal-title'>{props.title}</Typography>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Typography className='modal-body'>{props.content}</Typography>
-        </DialogContentText>
+        <Typography className='modal-body'>{props.content}</Typography>
       </DialogContent>
       <DialogActions>
         <Button color='primary' className='modal-button' onClick={props.alt.action}>

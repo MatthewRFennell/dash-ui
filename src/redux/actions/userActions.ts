@@ -22,7 +22,6 @@ export const login = (email, password) => {
       .then((res) => {
         if (res.success) {
           localStorage.setItem('userToken', res.token)
-          console.log('Admin', res.user.type === 1)
           dispatch(loginSuccess(res.user.type === 1))
         } else {
           dispatch(loginFailed())

@@ -162,10 +162,11 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
               </TableCell>
               <TableCell className='table-cell'>{item.description}</TableCell>
               <TableCell className='table-cell'>
-                {(props.admin || item.menu) &&
-                <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item.itinerary_id)}>
-                  {item.menu ? <RestaurantMenuIcon /> : (<AddIcon />)}
-                </IconButton>}
+                {(props.admin || item.menu) && (
+                  <IconButton onClick={item.menu ? viewMenu(item) : createMenu(item.itinerary_id)}>
+                    {item.menu ? <RestaurantMenuIcon /> : <AddIcon />}
+                  </IconButton>
+                )}
               </TableCell>
               <TableCell className='table-cell'>
                 <IconButton

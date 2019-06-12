@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import { IconButton } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
@@ -12,7 +13,6 @@ import '../../../forms/Form.scss'
 
 const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
   const link = 'http://dash-web-19.herokuapp.com/completeform/' + props.form_id
-
   return (
     <div className='event-page-aux-wrapper'>
       <div className='event-page-aux-paper'>
@@ -30,9 +30,11 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
         {props.transport && <TransportSection {...props.transport} />}
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Attendee Actions</Typography>
-          {/*<Button variant='outlined' color='primary' className='action-button' onClick={props.confirm}>
-            Confirm
-  </Button>*/}
+          {props.admin && (
+            <Button variant='outlined' color='primary' className='action-button' onClick={props.confirm}>
+              Confirm
+            </Button>
+          )}
           <Button color='primary' className='action-button' onClick={props.delete}>
             Delete
           </Button>
@@ -46,8 +48,12 @@ interface DetailsPanelProps {
   name: string
   form_id: string
   transport?: Transport
+  admin: boolean
+  confirmed: boolean
   confirm: () => void
   delete: () => void
 }
 
-export default DetailsPanel
+const mapStateToProps = ({ user }) => ({ admin: user.admin })
+
+export default connect(mapStateToProps)(DetailsPanel)

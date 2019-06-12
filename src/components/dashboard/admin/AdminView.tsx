@@ -2,7 +2,12 @@ import { History } from 'history'
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+import IconButton from '@material-ui/core/IconButton'
+import MenuItem from '@material-ui/core/MenuItem'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SwipeableViews from 'react-swipeable-views'
 
 import fetchProtected from '../../../api/protected'
@@ -18,6 +23,8 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
   const [addEvent, setAddEvent] = React.useState<boolean>(false)
   const [users, setUsers] = React.useState<User[]>([])
   const [refreshSymbol, setRefreshSymbol] = React.useState<symbol>(Symbol())
+  const [sortBy, setSortBy] = React.useState<'fname' | 'sname'>('fname')
+  const [sortDir, setSortDir] = React.useState<'up' | 'down'>('up')
   React.useEffect(() => {
     fetchProtected(DASH_API + '/users', null, null, 'GET', (res) => {
       setUsers(res.accounts)
@@ -25,28 +32,43 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
     })
   }, [])
   const [focusedUser, setFocusedUser] = React.useState<User>(undefined)
-  const handleFocus = (user: User) => {
-    if (focusedUser && user.account_id === focusedUser.account_id) {
-      return () => setFocusedUser(undefined)
-    } else {
-      return () => setFocusedUser(user)
-    }
-  }
-  const handleAddEvent = (val) => () => {
-    setAddEvent(val)
-  }
-  const handleOnAdd = () => {
-    setRefreshSymbol(Symbol())
-  }
-  const UserCards = users.map((user, index) => (
-    <li key={index}>
-      <UserCard {...user} onClick={handleFocus(user)} />
-    </li>
-  ))
+  const handleFocus = (user: User) =>
+    focusedUser && user.account_id === focusedUser.account_id
+      ? () => setFocusedUser(undefined)
+      : () => setFocusedUser(user)
+  const handleAddEvent = (val) => () => setAddEvent(val)
+  const handleOnAdd = () => setRefreshSymbol(Symbol())
+  const handleSortBy = (event) => setSortBy(event.target.value)
+  const handleSortDirToggle = () => setSortDir((old) => (old === 'up' ? 'down' : 'up'))
+  const UserCards = users
+    .sort((a, b) => (sortDir === 'up' ? a : b)[sortBy].localeCompare((sortDir === 'up' ? b : a)[sortBy]))
+    .map((user, index) => (
+      <li key={index}>
+        <UserCard {...user} onClick={handleFocus(user)} />
+      </li>
+    ))
   return (
     <div>
       <SwipeableViews index={props.currentTab} onChangeIndex={props.onTabChange}>
         <div key='customer' className='admin-view'>
+          <div className='sort'>
+            <Typography
+              component='span'
+              style={{
+                marginRight: '15px',
+                color: 'rgba(0, 0, 0, 0.54)',
+              }}
+            >
+              Sort by
+            </Typography>
+            <TextField variant='outlined' margin='dense' select={true} value={sortBy} onChange={handleSortBy}>
+              <MenuItem value='fname'>First Name</MenuItem>
+              <MenuItem value='sname'>Surname</MenuItem>
+            </TextField>
+            <IconButton onClick={handleSortDirToggle}>
+              {sortDir === 'up' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+            </IconButton>
+          </div>
           <div className='content-wrapper'>
             <Typography className='headline'>Customers</Typography>
             <div className='user-div'>
