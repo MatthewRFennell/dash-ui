@@ -13,32 +13,16 @@ import '../../../forms/Form.scss'
 
 const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
   const link = 'http://dash-web-19.herokuapp.com/completeform/' + props.form_id
+  const transportProps = props.transport
+    ? {
+        ...props.transport,
+        departTime: new Date(props.transport.departTime),
+      }
+    : undefined
   return (
     <div className='event-page-aux-wrapper'>
       <div className='event-page-aux-paper'>
-        <Typography className='event-page-block-title'>Details for</Typography>
-        <Typography className='event-page-body'>{props.name}</Typography>
-        <div className='event-page-detail'>
-          <Typography className='event-page-block-title'>Attendee form link</Typography>
-          <Typography className='event-page-body inline'>Copy to clipboard</Typography>
-          <CopyToClipboard text={link}>
-            <IconButton>
-              <Link />
-            </IconButton>
-          </CopyToClipboard>
-        </div>
-        {props.transport && <TransportSection {...props.transport} />}
-        <div className='event-page-detail'>
-          <Typography className='event-page-block-title'>Attendee Actions</Typography>
-          {props.admin && (
-            <Button variant='outlined' color='primary' className='action-button' onClick={props.confirm}>
-              Confirm
-            </Button>
-          )}
-          <Button color='primary' className='action-button' onClick={props.delete}>
-            Delete
-          </Button>
-        </div>
+        {props.transport ? <TransportSection {...transportProps} /> : 'No transport details'}
       </div>
     </div>
   )
