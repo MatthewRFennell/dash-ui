@@ -18,8 +18,10 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const [openEvent, setOpenEvent] = React.useState<Event>(undefined)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [currentTab, setCurrentTab] = React.useState<number>(0)
+  const [currentAdminTab, setCurrentAdminTab] = React.useState<number>(0)
 
   const handleTabChange = (_, newValue) => setCurrentTab(newValue)
+  const handleAdminTabChange = (_, newValue) => setCurrentAdminTab(newValue)
 
   const addAttendee = (attendee) => {
     const newAttendees = openEvent.attendees
@@ -46,10 +48,14 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const updateMenuChoice = (menu: Menu, itineraryID: number) => {
     setOpenEvent((oldEvent) => ({
       ...oldEvent,
-      itineraries: oldEvent.itineraries.map((it) => it.itinerary_id !== itineraryID ? it : {
-        ...it,
-        menu,
-      }),
+      itineraries: oldEvent.itineraries.map((it) =>
+        it.itinerary_id !== itineraryID
+          ? it
+          : {
+              ...it,
+              menu,
+            },
+      ),
     }))
   }
 
@@ -114,7 +120,9 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               onBack={openEvent ? handleSetEvent() : undefined}
               onHome={openEvent ? handleSetEvent() : undefined}
               onTabChange={openEvent ? handleTabChange : undefined}
+              onAdminTabChange={props.admin && !openEvent ? handleAdminTabChange : undefined}
               currentTab={currentTab}
+              currentAdminTab={currentAdminTab}
               key='header'
             />
             {openEvent === undefined ? (
@@ -124,6 +132,8 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
                     history={props.history}
                     onLoadComplete={handleLoadingFinish}
                     onSetEvent={handleSetEvent}
+                    currentTab={currentAdminTab}
+                    onTabChange={setCurrentAdminTab}
                   />
                 </div>
               ) : (

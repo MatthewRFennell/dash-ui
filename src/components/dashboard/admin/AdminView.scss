@@ -1,6 +1,15 @@
 .admin-view {
   display: flex;
   justify-content: center;
+  height: calc(100vh - 96px);
+  width: 100vw;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  .content-wrapper {
+    overflow-y: auto;
+    width: 100vw;
+  }
   .headline {
     font-size: 36px;
     font-weight: bold;
@@ -9,6 +18,7 @@
   }
   .user-div {
     display: flex;
+    justify-content: center;
     .user-list {
       ul {
         list-style: none;
@@ -16,13 +26,13 @@
         padding: 0;
       }
     }
-  }
+  } 
   .horizontal-grow-div {
     overflow: hidden;
     position: sticky;
     padding: 6px;
     margin: -6px;
-    top: 126px;
+    top: 30px;
   }
   .horizontal-grow-enter {
     width: 0px !important;

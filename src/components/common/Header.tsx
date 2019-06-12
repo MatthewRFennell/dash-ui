@@ -44,6 +44,22 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
           </div>
         </div>
       )}
+      {props.onAdminTabChange && (
+        <div style={{ width: '100vw', display: 'flex', justifyContent: 'center', position: 'fixed' }}>
+          <div className='tabs-paper'>
+            <Tabs
+              value={props.currentAdminTab || 0}
+              onChange={props.onAdminTabChange}
+              indicatorColor='primary'
+              textColor='primary'
+              centered={true}
+            >
+              <Tab label='Customers' style={{ fontWeight: 'bold' }} />
+              <Tab label='Menus' style={{ fontWeight: 'bold' }} />
+            </Tabs>
+          </div>
+        </div>
+      )}
       <div>
         {props.onBack && (
           <Button className='account-button' color='primary' onClick={props.onBack}>
@@ -69,7 +85,9 @@ const mapDispatchToProps = (dispatch) => {
 interface HeaderProps {
   history?: History
   onTabChange?: (event, newValue) => void
+  onAdminTabChange?: (event, newValue) => void
   currentTab?: number
+  currentAdminTab?: number
   admin?: boolean
   onHome?: () => void
   onBack?: () => void

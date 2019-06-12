@@ -3,6 +3,7 @@ import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Typography from '@material-ui/core/Typography'
+import SwipeableViews from 'react-swipeable-views'
 
 import fetchProtected from '../../../api/protected'
 import { User } from '../../../typings/BackendTypes'
@@ -42,31 +43,42 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
     </li>
   ))
   return (
-    <div className='admin-view'>
-      <div>
-        <Typography className='headline'>Customers</Typography>
-        <div className='user-div'>
-          <div className='user-list'>
-            <ul>{UserCards}</ul>
-          </div>
-          <ReactCSSTransitionGroup
-            transitionName='horizontal-grow'
-            transitionEnterTimeout={300}
-            transitionLeaveTimeout={300}
-          >
-            {focusedUser && (
-              <div key='detail' className='horizontal-grow-div'>
-                <DetailCard
-                  {...focusedUser}
-                  onAddEventClick={handleAddEvent(true)}
-                  onSetEvent={props.onSetEvent}
-                  refresh={refreshSymbol}
-                />
+    <div>
+      <SwipeableViews index={props.currentTab} onChangeIndex={props.onTabChange}>
+        <div key='customer' className='admin-view'>
+          <div className='content-wrapper'>
+            <Typography className='headline'>Customers</Typography>
+            <div className='user-div'>
+              <div className='user-list'>
+                <ul>{UserCards}</ul>
               </div>
-            )}
-          </ReactCSSTransitionGroup>
+              <ReactCSSTransitionGroup
+                transitionName='horizontal-grow'
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}
+                style={{
+                  position: 'sticky',
+                  top: 0,
+                }}
+              >
+                {focusedUser && (
+                  <div key='detail' className='horizontal-grow-div'>
+                    <DetailCard
+                      {...focusedUser}
+                      onAddEventClick={handleAddEvent(true)}
+                      onSetEvent={props.onSetEvent}
+                      refresh={refreshSymbol}
+                    />
+                  </div>
+                )}
+              </ReactCSSTransitionGroup>
+            </div>
+          </div>
         </div>
-      </div>
+        <div key='menu' className='admin-view'>
+          MeNUUUU
+        </div>
+      </SwipeableViews>
       <CreateEvent
         open={addEvent}
         onClose={handleAddEvent(false)}
@@ -79,6 +91,8 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
 
 interface AdminViewProps {
   history: History
+  currentTab: number
+  onTabChange: (index: number) => void
   onLoadComplete: () => void
   onSetEvent: (id: number) => () => void
 }
