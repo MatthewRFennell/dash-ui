@@ -1,5 +1,5 @@
 .tabs-paper {
-  z-index: 9999!important;
+  z-index: 9999 !important;
   position: fixed;
   top: 24px;
 }
@@ -93,6 +93,9 @@
     margin: 30px;
     padding: 30px;
     width: 300px;
+    .text-field-disabled {
+      color: rgba(0, 0, 0, 1);
+    }
     .action-button {
       margin-top: 10px;
       margin-right: 10px;
