@@ -37,7 +37,7 @@ interface DetailsPanelProps {
   attendeeId: any
   confirm: () => void
   delete: () => void
-  onPropsUpdate: () => void
+  onPropsUpdate: (attendeeId, transport) => void
 }
 
 const mapStateToProps = ({ user }) => ({ admin: user.admin })

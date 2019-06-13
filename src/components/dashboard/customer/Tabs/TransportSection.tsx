@@ -89,7 +89,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
       .then((res) => {
         setSubmitting(false)
         if (res.success) {
-          props.onPropsUpdate()
+          props.onPropsUpdate(props.attendeeId, body)
           setEditable(false)
         } else {
           setError(res.message)
@@ -297,7 +297,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
 
 interface TransportSectionProps extends Transport {
   attendeeId: any
-  onPropsUpdate: () => void
+  onPropsUpdate: (attendeeId, transport) => void
 }
 
 export default TransportSection

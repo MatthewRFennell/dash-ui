@@ -28,6 +28,7 @@ import ConfirmDialog from '../../modal/ConfirmDialog'
 import DetailsPanel from './DetailsPanel'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
+  const [attendees, setAttendees] = React.useState<Attendee[]>(props.attendees)
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
   const [confirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false)
   const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false)
@@ -35,7 +36,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [modalLoading, setModalLoading] = React.useState<boolean>(false)
   const [confirmedAttendees, setConfirmedAttendees] = React.useState<number[]>([])
   const [snackbarOpen, setSnackbarOpen] = React.useState<string>(undefined)
-
+  React.useEffect(() => {
+    setAttendees(props.attendees)
+  }, [props.attendees])
   const setAttendee = (attendee: Attendee) => () => {
     if (attendee.attendee_id === (detailActive || { attendee_id: -1 }).attendee_id) {
       setDetailActive(undefined)
@@ -43,7 +46,6 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
       setDetailActive(attendee)
     }
   }
-
   const handleSnackbarOpen = (phrase) => () => setSnackbarOpen(phrase)
   const handleSnackbarClose = (_, reason?) => reason !== 'clickaway' && setSnackbarOpen(undefined)
   const handleModalOpen = () => setAttendeeModalOpen(true)
@@ -54,7 +56,16 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const handleDeleteModal = (state, attendee?) => () => (
     attendee && setDetailActive(attendee), setDeleteModalOpen(state)
   )
-
+  const handleTransportUpdate = (attendeeId, transport) => {
+    const newAttendees = attendees.concat([])
+    for (const attendee of newAttendees) {
+      if (attendee.attendee_id === attendeeId) {
+        attendee.transport = transport
+        break
+      }
+    }
+    setAttendees(newAttendees)
+  }
   const handleDelete = (id) => () => {
     setModalLoading(true)
     props.deleteAttendee(id, () => {
@@ -66,7 +77,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const handleAddConfirmedAttendee = (id) => setConfirmedAttendees((old) => old.concat([id]))
 
   const attendeeTable =
-    props.attendees.length !== 0 ? (
+    attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
         <TableHead>
           <TableRow>
@@ -80,7 +91,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.attendees.map((attendee, index) => (
+          {attendees.map((attendee, index) => (
             <TableRow key={attendee.attendee_id}>
               <TableCell className='table-cell'>{attendee.fname}</TableCell>
               <TableCell className='table-cell'>{attendee.sname} </TableCell>
@@ -166,7 +177,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             delete={handleDeleteModal(true)}
             form_id={detailActive.form_id}
             attendeeId={detailActive.attendee_id}
-            onPropsUpdate={props.onPropsUpdate}
+            onPropsUpdate={handleTransportUpdate}
           />
         )}
       </ReactCSSTransitionGroup>
