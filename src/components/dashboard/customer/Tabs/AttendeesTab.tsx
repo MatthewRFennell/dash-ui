@@ -85,7 +85,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             <TableCell className='table-cell'>Last Name</TableCell>
             <TableCell className='table-cell'>Dietary Requirements</TableCell>
             <TableCell className='table-cell'>Travel</TableCell>
-            <TableCell className='table-cell'>Link</TableCell>
+            <TableCell className='table-cell'>Menu Form Link</TableCell>
             <TableCell className='table-cell'>Confirmed</TableCell>
             <TableCell className='table-cell'>Delete</TableCell>
           </TableRow>
