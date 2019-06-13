@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -24,6 +25,7 @@ import authHeader from '../../../../api/authHeader'
 import { Attendee } from '../../../../typings/BackendTypes'
 import AddAttendee from '../../modal/AddAttendee'
 import ConfirmDialog from '../../modal/ConfirmDialog'
+import DetailsPanel from './DetailsPanel'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [attendees, setAttendees] = React.useState<Attendee[]>(props.attendees)
