@@ -11,9 +11,12 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
+import LocationPicker from 'react-location-picker'
 
 import authHeader from '../../../api/authHeader'
+const mapsUrl = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
+import { withGoogleMap, withScriptjs } from 'react-google-maps'
 import './Modal.scss'
 
 const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
@@ -24,8 +27,8 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
   const [useEndTime, setUseEndTime] = React.useState<boolean>(false)
   const [endDate, setEndDate] = React.useState<Date | undefined>()
   const [endTime, setEndTime] = React.useState<Date | undefined>()
-  const [lat, setLat] = React.useState<number | undefined>()
-  const [lng, setLng] = React.useState<number | undefined>()
+  const [position, setPosition] = React.useState<{ lat: number; lng: number }>({ lat: 36.1627, lng: -86.7816 })
+  const [address, setAddress] = React.useState<string>('')
   const [errors, setErrors] = React.useState<string[]>([])
   const [submitting, setSubmitting] = React.useState<boolean>(false)
   const [sendError, setSendError] = React.useState<boolean>(false)
@@ -56,8 +59,12 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
   }
   const handleChangeEndDate = (newDate) => (removeError('endDate'), setEndDate(newDate))
   const handleChangeEndTime = (newTime) => (removeError('endDate'), setEndTime(newTime))
-  const handleChangeLatitude = (event) => (removeError('latitude'), setLat(event.target.value))
-  const handleChangeLongitude = (event) => (removeError('longitude'), setLng(event.target.value))
+  const handleChangeLatitude = (event) => (
+    removeError('latitude'), setPosition((pos) => ({ ...pos, lat: Number(event.target.value) }))
+  )
+  const handleChangeLongitude = (event) => (
+    removeError('longitude'), setPosition((pos) => ({ ...pos, lng: Number(event.target.value) }))
+  )
   const handleSubmit = () => {
     /* Check for errors */
     const errs = []
@@ -98,10 +105,10 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
     if (useEndTime && (end && end < start)) {
       errs.push('endDate')
     }
-    if (lat < -90 || lat > 90) {
+    if (position.lat < -90 || position.lat > 90) {
       errs.push('latitude')
     }
-    if (lng < -180 || lng > 180) {
+    if (position.lng < -180 || position.lng > 180) {
       errs.push('longitude')
     }
     if (errs.length > 0) {
@@ -117,8 +124,8 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
       description,
       start_date: start,
       end_date: end,
-      long: lng,
-      lat,
+      long: position.lng,
+      lat: position.lat,
     }
     const url = DASH_API + '/itinerary'
     fetch(url, {
@@ -142,15 +149,24 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
         }
       })
   }
-
+  const handleLocationChange = ({ pos, addr, places }) => {
+    console.log(pos)
+    console.log(addr)
+    setPosition(pos)
+    setAddress(addr)
+  }
   return (
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
       <DialogTitle>
         <Typography className='modal-title'>Add Itinerary Event</Typography>
         <Typography style={{ opacity: 0.54 }}>Fields marked with * are required</Typography>
       </DialogTitle>
-      <DialogContent>
-        <div className='modal-flex'>
+      <DialogContent
+        style={{
+          padding: 0,
+        }}
+      >
+        <div className='modal-flex' style={{ padding: '24px' }}>
           <div style={{ width: '280px', marginRight: '15px' }}>
             <TextField
               className='modal-form-field'
@@ -184,7 +200,7 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
               color='primary'
               label='Latitude'
               variant='outlined'
-              value={lat}
+              value={position.lat}
               onChange={handleChangeLatitude}
               fullWidth={true}
               type='number'
@@ -203,7 +219,7 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
               color='primary'
               label='Longitude'
               variant='outlined'
-              value={lng}
+              value={position.lng}
               onChange={handleChangeLongitude}
               fullWidth={true}
               type='number'
@@ -270,6 +286,12 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
           </div>
         </div>
         {sendError && <Typography>Sorry, something went wrong</Typography>}
+        <LocationPicker
+          containerElement={<div style={{ height: '420px' }} />}
+          mapElement={<div style={{ height: '420px' }} />}
+          defaultPosition={position}
+          onChange={handleLocationChange}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose} className='modal-button' color='primary' disabled={submitting}>
