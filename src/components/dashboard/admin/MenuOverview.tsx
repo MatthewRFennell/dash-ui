@@ -22,7 +22,7 @@ const MenuOverview = (props) => {
     React.useEffect(() => {
         fetchProtected(DASH_API + '/menu', null, null, 'GET', (res) => {
             if (res.success) {
-                setMenus(res.menus)
+                setMenus(res.menus.sort((a: Menu, b: Menu) => a.caterer.localeCompare(b.caterer)))
             } else {
                 console.log('Failed to load menus')
             }

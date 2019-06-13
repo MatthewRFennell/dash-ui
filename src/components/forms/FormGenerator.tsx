@@ -3,7 +3,8 @@ import Save from '@material-ui/icons/Save'
 import { History } from 'history'
 import * as React from 'react'
 
-import { Button, IconButton } from '@material-ui/core'
+import { Button, IconButton, Snackbar } from '@material-ui/core'
+import Close from '@material-ui/icons/Close'
 import fetchProtected from '../../../src/api/protected'
 import { NewDish, NewMenu } from '../../typings/CreationTypes'
 import '../frontpage/Login.scss'
@@ -14,10 +15,11 @@ import MenuThanks from './MenuThanks'
 
 const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
   const [menu, setMenu] = React.useState<NewMenu>(props.presetMenu)
-
+  const [snackbarOpen, setSnackbarOpen] = React.useState<boolean>(undefined)
   const [done, setDone] = React.useState<boolean>(false)
 
-  console.log('Menu is', menu)
+  const handleSnackbarOpen = (phrase) => () => setSnackbarOpen(phrase)
+  const handleSnackbarClose = (_, reason?) => reason !== 'clickaway' && setSnackbarOpen(undefined)
 
   const handleAddDish = (index: number) => (dish: NewDish) => {
     setMenu((oldMenu) => ({
@@ -75,8 +77,11 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
       console.log('Choosing edit with put')
       console.log(menu)
       fetchProtected(DASH_API + '/menu', null, menu, 'PUT', (res) => {
-        console.log('Tried to update menu', menu)
-        console.log('Updated', res)
+        if (res.success) {
+          handleSnackbarOpen('Updated successfully')()
+        } else {
+          handleSnackbarOpen('Update failed')()
+        }
       })
     } else {
       fetchProtected(DASH_API + '/menu', null, menu, 'POST', () => {
@@ -124,6 +129,25 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
             <Save />
           </IconButton>
         </div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={snackbarOpen !== undefined}
+          autoHideDuration={2000}
+          onClose={handleSnackbarClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id='message-id'>{snackbarOpen}</span>}
+          action={[
+            <IconButton onClick={handleSnackbarClose} key='close'>
+              <Close style={{ color: '#ffffff' }} />
+            </IconButton>,
+          ]}
+          style={{ position: 'fixed', left: 'calc(100vw + 24px)' }}
+        />
       </div>
   )
 }
