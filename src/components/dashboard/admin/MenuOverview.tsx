@@ -1,11 +1,14 @@
-import Fab from '@material-ui/core/Fab'
-import Add from '@material-ui/icons/Add'
-import Edit from '@material-ui/icons/Edit'
 import * as React from 'react'
 import fetchProtected from '../../../api/protected'
 import { Menu } from '../../../typings/BackendTypes'
 
-import { Button, Card, CardActionArea, CardContent, IconButton, Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import EditIcon from '@material-ui/icons/Edit'
 
 import MenuModal from '../customer/Tabs/MenuModal'
 import './AdminView.scss'
@@ -44,16 +47,16 @@ const MenuOverview = (props) => {
 
   const menuCards = menus.map((m, i) => (
     <Card className='user-card' key={i}>
-      <CardContent className='user-content'>
+      <CardContent className='user-content' style={{ alignItems: 'flex-end' }}>
         <CardActionArea className='user-details' onClick={viewMenu(m)}>
           <Typography className='user-title'>{m.caterer}</Typography>
           <Typography className='user-subtitle'>{m.courses.map((c) => c.name).join(' - ')}</Typography>
-          <div className='edit-container'>
-            <IconButton color='primary' onClick={editMenu(m)}>
-              <Edit />
-            </IconButton>
-          </div>
         </CardActionArea>
+        <CardActions>
+          <Button variant='outlined' color='primary' onClick={editMenu(m)} style={{ fontWeight: 'bold' }}>
+            <EditIcon style={{ marginRight: '10px' }} /> Edit
+          </Button>
+        </CardActions>
       </CardContent>
     </Card>
   ))

@@ -49,10 +49,23 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
       <br />
       <Card className='newDish'>
         <div className='dishField'>
-          <TextField label='Dish Name' value={dishName} onChange={handleNameChange} />
+          <TextField
+            variant='outlined'
+            label='Dish Name'
+            value={dishName}
+            onChange={handleNameChange}
+            fullWidth={true}
+          />
         </div>
         <div className='dishField'>
-          <TextField label='Dish Description' value={dishDescription} onChange={handleDescChange} />
+          <TextField
+            variant='outlined'
+            multiline={true}
+            label='Dish Description'
+            value={dishDescription}
+            fullWidth={true}
+            onChange={handleDescChange}
+          />
         </div>
         <div className='buttonContainer'>
           <IconButton onClick={add}>

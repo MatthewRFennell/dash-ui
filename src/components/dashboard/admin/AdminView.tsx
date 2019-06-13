@@ -2,16 +2,16 @@ import { History } from 'history'
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import AddIcon from '@material-ui/icons/Add'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SwipeableViews from 'react-swipeable-views'
 
-import Fab from '@material-ui/core/Fab'
-import Add from '@material-ui/icons/Add'
 import fetchProtected from '../../../api/protected'
 import { Menu, User } from '../../../typings/BackendTypes'
 import '../../common/Header'
@@ -112,25 +112,38 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
             </div>
           </div>
         </div>
-        {createMenu ? (
-          <div key='menu' className='admin-view'>
-            <div className='content-wrapper'>
-              <FormGenerator
-                edit={currentMenu !== undefined}
-                presetMenu={currentMenu}
-                onBack={moveToMenu(false)()}
-                history={props.history}
-              />
-            </div>
-          </div>
-        ) : (
-          <div key='menu' className='admin-view'>
-            <MenuOverview move={moveToMenu(true)} />
-            <Fab variant='extended' id='fab' onClick={moveToMenu(true)()}>
-              Add Menu <Add />
-            </Fab>
-          </div>
-        )}
+        <div key='menu' className='admin-view'>
+          <ReactCSSTransitionGroup
+            transitionName='fade'
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}
+            style={{ overflowY: 'auto', overflowX: 'hidden' }}
+          >
+            {createMenu ? (
+              <div className='content-wrapper' key='editor'>
+                <FormGenerator
+                  edit={currentMenu !== undefined}
+                  presetMenu={currentMenu}
+                  onBack={moveToMenu(false)()}
+                  history={props.history}
+                />
+              </div>
+            ) : (
+              <div key='selector'>
+                <MenuOverview move={moveToMenu(true)} />
+                <Fab
+                  variant='extended'
+                  id='fab'
+                  onClick={moveToMenu(true)()}
+                  style={{ fontWeight: 'bold' }}
+                  color='primary'
+                >
+                  <AddIcon style={{ marginRight: '10px' }} /> Add Menu
+                </Fab>
+              </div>
+            )}
+          </ReactCSSTransitionGroup>
+        </div>
       </SwipeableViews>
       <CreateEvent
         open={addEvent}

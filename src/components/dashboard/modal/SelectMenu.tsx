@@ -1,6 +1,8 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -64,17 +66,18 @@ const SelectMenu: React.FunctionComponent<SelectMenuProps> = (props) => {
       </DialogTitle>
       <DialogContent>
         {menus.map((m, i) => (
-          <Paper
-            onClick={select(i)}
-            key={i}
-            className={'modal-paper' + (i === selected ? ' modal-paper-selected' : '')}
-          >
-            <h3>{m.caterer}</h3>
-          </Paper>
+          <Card key={i} style={{ margin: '15px 0 15px 0' }} raised={i === selected}>
+            <CardActionArea onClick={select(i)} style={{ padding: '15px' }}>
+              <Typography style={{ fontSize: '18pt', fontWeight: 'bold' }}>{m.caterer}</Typography>
+            </CardActionArea>
+          </Card>
         ))}
       </DialogContent>
       <DialogActions>
-        <Button disabled={disabled} onClick={save} color='primary'>
+        <Button onClick={props.onClose} color='primary' style={{ fontWeight: 'bold' }}>
+          Cancel
+        </Button>
+        <Button variant='outlined' disabled={disabled} onClick={save} color='primary' style={{ fontWeight: 'bold' }}>
           Save
         </Button>
       </DialogActions>

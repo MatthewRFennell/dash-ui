@@ -104,7 +104,14 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
 
   return (
     <div className='page'>
-      <Button variant='outlined' color='primary' onClick={props.onBack} className='chang-blue-font' id='back'>
+      <Button
+        variant='outlined'
+        color='primary'
+        onClick={props.onBack}
+        style={{ fontWeight: 'bold' }}
+        className='chang-blue-font'
+        id='back'
+      >
         Back
       </Button>
       <h1 className='form-header'>Create a Menu</h1>
@@ -118,18 +125,17 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
           remove={handleRemoveDish(index)}
         />
       ))}
-      <div className='addCourse'>
-        <h2 className='inline'>Add new Course</h2>
-        <IconButton onClick={addNewCourse}>
-          <Add />
-        </IconButton>
-      </div>
-      <div className='addCourse'>
-        <h2 className='inline'>{props.edit ? 'Update' : 'Save'} Menu</h2>
-        <IconButton onClick={saveMenu}>
-          <Save />
-        </IconButton>
-      </div>
+      <Button
+        color='primary'
+        variant='outlined'
+        onClick={addNewCourse}
+        style={{ marginRight: '15px', fontWeight: 'bold' }}
+      >
+        <Add style={{ marginRight: '10px' }} /> Add new course
+      </Button>
+      <Button color='primary' variant='outlined' onClick={saveMenu} style={{ marginRight: '15px', fontWeight: 'bold' }}>
+        <Save style={{ marginRight: '10px' }} /> {props.edit ? 'Update' : 'Save'} Menu
+      </Button>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

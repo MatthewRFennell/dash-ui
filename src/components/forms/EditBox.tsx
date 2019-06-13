@@ -23,11 +23,19 @@ const EditBox: React.FunctionComponent<EditBoxProps> = (props) => {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
       {saved ? (
-        <h2 className='inline'>{value}</h2>
+        <h2 className='inline' style={{ marginRight: '10px' }}>
+          {value}
+        </h2>
       ) : (
-        <TextField value={value} onChange={handleChange} label={props.title} />
+        <TextField
+          variant='outlined'
+          value={value}
+          onChange={handleChange}
+          label={props.title}
+          style={{ marginRight: '10px' }}
+        />
       )}
       <IconButton onClick={saved ? edit : save}>{saved ? <Edit /> : <Save />}</IconButton>
     </div>
