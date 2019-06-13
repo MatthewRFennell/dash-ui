@@ -12,17 +12,17 @@ import TransportSection from './TransportSection'
 import '../../../forms/Form.scss'
 
 const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
+  const [transport, setTransport] = React.useState<any>(props.transport)
+  React.useEffect(() => setTransport(props.transport), [props.transport])
   const link = 'http://dash-web-19.herokuapp.com/completeform/' + props.form_id
-  const transportProps = props.transport
-    ? {
-        ...props.transport,
-        departTime: new Date(props.transport.departTime),
-      }
-    : undefined
   return (
     <div className='event-page-aux-wrapper'>
       <div className='event-page-aux-paper'>
-        {props.transport ? <TransportSection {...transportProps} /> : 'No transport details'}
+        {transport ? (
+          <TransportSection {...transport} attendeeId={props.attendeeId} onPropsUpdate={props.onPropsUpdate} />
+        ) : (
+          'No transport details'
+        )}
       </div>
     </div>
   )
@@ -34,8 +34,10 @@ interface DetailsPanelProps {
   transport?: Transport
   admin: boolean
   confirmed: boolean
+  attendeeId: any
   confirm: () => void
   delete: () => void
+  onPropsUpdate: () => void
 }
 
 const mapStateToProps = ({ user }) => ({ admin: user.admin })

@@ -1,23 +1,27 @@
 import * as React from 'react'
 
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import EditIcon from '@material-ui/icons/Edit'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
 
+import authHeader from '../../../../api/authHeader'
 import { Transport } from '../../../../typings/BackendTypes'
 
-const TransportSection: React.FunctionComponent<Transport> = (props) => {
+const TransportSection: React.FunctionComponent<TransportSectionProps> = (props) => {
   const [editable, setEditable] = React.useState<boolean>(false)
   const [operator, setOperator] = React.useState<string>(props.operator)
   const [vesselId, setVesselId] = React.useState<string>(props.vessel_id)
   const [durationHours, setDurationHours] = React.useState<number>(Math.floor(props.duration / 3600))
   const [durationMinutes, setDurationMinutes] = React.useState<number>(Math.floor((props.duration % 3600) / 60))
-  const [durationSeconds, setDurationSeconds] = React.useState<number>(Math.floor(props.duration % 60))
-  const [departTime, setDepartTime] = React.useState<Date>(props.departTime)
+  const [durationSeconds, setDurationSeconds] = React.useState<number>(props.duration % 60)
+  const [departTime, setDepartTime] = React.useState<Date>(new Date(props.departTime))
   const [departFrom, setDepartFrom] = React.useState<string>(props.departFrom)
   const [arriveAt, setArriveAt] = React.useState<string>(props.arriveAt)
+  const [submitting, setSubmitting] = React.useState<boolean>(false)
+  const [error, setError] = React.useState<string>('')
   const handleChange = (element) => ({ target }) => {
     const { value }: { value: string } = target
     switch (element) {
@@ -46,21 +50,66 @@ const TransportSection: React.FunctionComponent<Transport> = (props) => {
         throw new Error('We have a bad programmer, sorry.')
     }
   }
+  const handleEditable = (value) => () => setEditable(value)
   const handleChangeTime = (newTime) => setDepartTime(newTime)
-  console.log({
-    editable,
-    operator,
-    vesselId,
-    durationHours,
-    durationMinutes,
-    durationSeconds,
-    departTime,
-    departFrom,
-    arriveAt,
-  })
+  const resetChanges = () => {
+    setEditable(false)
+    setOperator(props.operator)
+    setVesselId(props.vessel_id)
+    setDurationHours(Math.floor(props.duration / 3600))
+    setDurationMinutes(Math.floor((props.duration % 3600) / 60))
+    setDurationSeconds(props.duration % 60)
+    setDepartTime(new Date(props.departTime))
+    setDepartFrom(props.departFrom)
+    setArriveAt(props.arriveAt)
+    setError('')
+  }
+  const handleSubmit = () => {
+    setSubmitting(true)
+    const body = {
+      attendee_id: props.attendeeId,
+      operator,
+      vessel_id: vesselId,
+      duration: durationHours * 3600 + durationMinutes * 60 + durationSeconds,
+      departTime: departTime.toISOString(),
+      departFrom,
+      arriveAt,
+      transport_id: props.transport_id,
+    }
+    const url = DASH_API + '/transport'
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        ...authHeader(),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setSubmitting(false)
+        if (res.success) {
+          props.onPropsUpdate()
+          setEditable(false)
+        } else {
+          setError(res.message)
+        }
+      })
+      .catch((err) => {
+        setSubmitting(false)
+        setError(err.message)
+        resetChanges()
+      })
+  }
+  React.useEffect(resetChanges, [props])
   return (
     <div className='event-page-detail'>
-      <Typography className='event-page-block-title'>Transport</Typography>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography className='event-page-block-title'>Transport</Typography>
+        <IconButton color={editable ? 'primary' : 'default'} onClick={handleEditable(true)} disabled={editable}>
+          <EditIcon />
+        </IconButton>
+      </div>
       <TextField
         name='operator'
         variant='outlined'
@@ -220,8 +269,35 @@ const TransportSection: React.FunctionComponent<Transport> = (props) => {
           },
         }}
       />
+      {editable && (
+        <div style={{ display: 'flex' }}>
+          <Button
+            variant='outlined'
+            color='primary'
+            style={{ marginTop: '10px', fontWeight: 'bold' }}
+            disabled={submitting}
+            onClick={handleSubmit}
+          >
+            Save changes
+          </Button>
+          <Button
+            color='primary'
+            style={{ marginTop: '10px', marginLeft: '15px', fontWeight: 'bold' }}
+            onClick={resetChanges}
+            disabled={submitting}
+          >
+            Cancel
+          </Button>
+        </div>
+      )}
+      {error !== '' && <Typography>{error}</Typography>}
     </div>
   )
+}
+
+interface TransportSectionProps extends Transport {
+  attendeeId: any
+  onPropsUpdate: () => void
 }
 
 export default TransportSection

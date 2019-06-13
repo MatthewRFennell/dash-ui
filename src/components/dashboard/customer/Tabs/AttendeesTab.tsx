@@ -165,6 +165,8 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             confirm={handleConfirmModal(true)}
             delete={handleDeleteModal(true)}
             form_id={detailActive.form_id}
+            attendeeId={detailActive.attendee_id}
+            onPropsUpdate={props.onPropsUpdate}
           />
         )}
       </ReactCSSTransitionGroup>
@@ -253,6 +255,7 @@ interface AttendeesTabProps {
   attendees: Attendee[]
   deleteAttendee: (id: number, callback: () => void) => void
   addAttendee: (x: Attendee) => void
+  onPropsUpdate: () => void
 }
 
 export default AttendeesTab

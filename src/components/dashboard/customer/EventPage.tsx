@@ -19,6 +19,7 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           deleteAttendee={props.deleteAttendee}
           addAttendee={props.addAttendee}
           key='attendees'
+          onPropsUpdate={props.onPropsUpdate}
         />
         <ItineraryTab
           eventId={props.event.event_id}
@@ -40,6 +41,7 @@ interface EventPageProps {
   currentTab: number
   onTabChange: (index: number) => void
   updateMenu: (m: Menu, id: number) => void
+  onPropsUpdate: () => void
 }
 
 export default EventPage

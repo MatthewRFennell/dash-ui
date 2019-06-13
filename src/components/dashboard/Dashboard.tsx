@@ -8,6 +8,7 @@ import { Header } from '../common/Header'
 import { CustomerView } from './customer/CustomerView'
 import EventPage from './customer/EventPage'
 
+import authHeader from '../../api/authHeader'
 import { Event, Menu } from '../../typings/BackendTypes'
 import Loader from '../misc/Loader'
 import AdminView from './admin/AdminView'
@@ -94,6 +95,24 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     }
   }
 
+  const handleReloadEvent = () => {
+    const url = DASH_API + '/event?event_id=' + openEvent.event_id
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        ...authHeader(),
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const newEvent = {
+          ...res.event,
+          date: new Date(res.event.date),
+        }
+        setOpenEvent(newEvent)
+      })
+  }
+
   return (
     <div className='dashboard-view'>
       <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={500} transitionLeaveTimeout={500}>
@@ -155,6 +174,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
                 onTabChange={setCurrentTab}
                 history={props.history}
                 updateMenu={updateMenuChoice}
+                onPropsUpdate={handleReloadEvent}
               />
             )}
           </ReactCSSTransitionGroup>
