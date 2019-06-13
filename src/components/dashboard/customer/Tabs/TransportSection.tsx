@@ -12,16 +12,30 @@ import { Transport } from '../../../../typings/BackendTypes'
 
 const TransportSection: React.FunctionComponent<TransportSectionProps> = (props) => {
   const [editable, setEditable] = React.useState<boolean>(false)
-  const [operator, setOperator] = React.useState<string>(props.operator)
-  const [vesselId, setVesselId] = React.useState<string>(props.vessel_id)
-  const [durationHours, setDurationHours] = React.useState<number>(Math.floor(props.duration / 3600))
-  const [durationMinutes, setDurationMinutes] = React.useState<number>(Math.floor((props.duration % 3600) / 60))
-  const [durationSeconds, setDurationSeconds] = React.useState<number>(props.duration % 60)
-  const [departTime, setDepartTime] = React.useState<Date>(new Date(props.departTime))
-  const [departFrom, setDepartFrom] = React.useState<string>(props.departFrom)
-  const [arriveAt, setArriveAt] = React.useState<string>(props.arriveAt)
+  const [operator, setOperator] = React.useState<string>(props.operator || '')
+  const [vesselId, setVesselId] = React.useState<string>(props.vessel_id || '')
+  const [durationHours, setDurationHours] = React.useState<number>(Math.floor((props.duration || 0) / 3600))
+  const [durationMinutes, setDurationMinutes] = React.useState<number>(Math.floor(((props.duration || 0) % 3600) / 60))
+  const [durationSeconds, setDurationSeconds] = React.useState<number>((props.duration || 0) % 60)
+  const [departTime, setDepartTime] = React.useState<Date>(props.departTime ? new Date(props.departTime) : new Date())
+  const [departFrom, setDepartFrom] = React.useState<string>(props.departFrom || '')
+  const [arriveAt, setArriveAt] = React.useState<string>(props.arriveAt || '')
   const [submitting, setSubmitting] = React.useState<boolean>(false)
   const [error, setError] = React.useState<string>('')
+  console.log({
+    create: props.create,
+    editable,
+    operator,
+    vesselId,
+    durationHours,
+    durationMinutes,
+    durationSeconds,
+    departTime,
+    departFrom,
+    arriveAt,
+    submitting,
+    error,
+  })
   const handleChange = (element) => ({ target }) => {
     const { value }: { value: string } = target
     switch (element) {
@@ -54,14 +68,14 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
   const handleChangeTime = (newTime) => setDepartTime(newTime)
   const resetChanges = () => {
     setEditable(false)
-    setOperator(props.operator)
-    setVesselId(props.vessel_id)
-    setDurationHours(Math.floor(props.duration / 3600))
-    setDurationMinutes(Math.floor((props.duration % 3600) / 60))
-    setDurationSeconds(props.duration % 60)
-    setDepartTime(new Date(props.departTime))
-    setDepartFrom(props.departFrom)
-    setArriveAt(props.arriveAt)
+    setOperator(props.operator || '')
+    setVesselId(props.vessel_id || '')
+    setDurationHours(Math.floor((props.duration || 0) / 3600))
+    setDurationMinutes(Math.floor(((props.duration || 0) % 3600) / 60))
+    setDurationSeconds((props.duration || 0) % 60)
+    setDepartTime(props.departTime ? new Date(props.departTime) : new Date())
+    setDepartFrom(props.departFrom || '')
+    setArriveAt(props.arriveAt || '')
     setError('')
   }
   const handleSubmit = () => {
@@ -78,7 +92,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
     }
     const url = DASH_API + '/transport'
     fetch(url, {
-      method: 'PUT',
+      method: props.create ? 'POST' : 'PUT',
       headers: {
         ...authHeader(),
         'Content-Type': 'application/json',
@@ -298,6 +312,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
 interface TransportSectionProps extends Transport {
   attendeeId: any
   onPropsUpdate: (attendeeId, transport) => void
+  create: boolean
 }
 
 export default TransportSection
