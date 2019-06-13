@@ -67,13 +67,6 @@ const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
           <Typography className='modal-block-title'>Courses</Typography>
           <Typography>{courses}</Typography>
         </div>
-        <div className='modal-detail'>
-          <Typography className='modal-block-title'>Link</Typography>
-          <Button color='primary' variant='outlined' className='modal-button' style={{ marginTop: '10px' }}>
-            <LinkIcon style={{ marginRight: '10px' }} />
-            Generate Link
-          </Button>
-        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose} className='modal-button' color='primary'>
