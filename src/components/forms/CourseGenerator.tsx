@@ -1,6 +1,8 @@
 import { Card, IconButton, Paper, TextField } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
+import Close from '@material-ui/icons/Close'
 import * as React from 'react'
+import { Course } from '../../typings/BackendTypes'
 import { NewCourse, NewDish } from '../../typings/CreationTypes'
 import EditBox from './EditBox'
 
@@ -16,7 +18,16 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
     setDishName(event.target.value)
   }
 
+  const handleRemoveDish = (index: number) => () => {
+    props.remove(index)
+  }
+
   const add = () => {
+
+    if (dishName === '' || dishDescription === '') {
+      return
+    }
+
     props.add({
       name: dishName,
       description: dishDescription,
@@ -32,7 +43,15 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
 
   return (
     <Paper className='newCourse'>
-      <EditBox title='Course Title' setValue={setTitle} />
+      <IconButton id='close'>
+        <Close />
+      </IconButton>
+      <EditBox
+        preset={props.course.name}
+        saved={props.course.name !== ''}
+        title='Course Title'
+        setValue={setTitle}
+      />
       <br />
       <Card className='newDish'>
         <div className='dishField'>
@@ -49,7 +68,10 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
       </Card>
       {props.course.dishes.map((d, i) => {
         return (
-          <Card className='dish' key={i}>
+          <Card className='dish' key={i} onClick={handleRemoveDish(i)}>
+            <IconButton id='close'>
+              <Close />
+            </IconButton>
             <h1>{d.name}</h1>
             <p>{d.description}</p>
           </Card>
@@ -62,6 +84,7 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
 interface CourseGeneratorProps {
   course: NewCourse
   add: (d: NewDish) => void
+  remove: (index: number) => void
   setTitle: (title: string) => void
 }
 

@@ -23,7 +23,7 @@ const fetchProtected = (path, headers, body, method, callBack) => {
     method,
   }
   if (method.toLowerCase() !== 'get') {
-    data.body =  JSON.stringify(body)
+    data.body = JSON.stringify(body)
   }
   fetch(path, data)
     .then((res) => {

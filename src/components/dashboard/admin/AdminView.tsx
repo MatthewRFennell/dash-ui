@@ -10,12 +10,16 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SwipeableViews from 'react-swipeable-views'
 
+import Fab from '@material-ui/core/Fab'
+import Add from '@material-ui/icons/Add'
 import fetchProtected from '../../../api/protected'
-import { User } from '../../../typings/BackendTypes'
+import { Menu, User } from '../../../typings/BackendTypes'
 import '../../common/Header'
+import FormGenerator from '../../forms/FormGenerator'
 import CreateEvent from '../modal/CreateEvent'
 import './AdminView.scss'
 import DetailCard from './DetailCard'
+import MenuOverview from './MenuOverview'
 import UserCard from './UserCard'
 
 const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
@@ -24,6 +28,11 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
   const [refreshSymbol, setRefreshSymbol] = React.useState<symbol>(Symbol())
   const [sortBy, setSortBy] = React.useState<'fname' | 'sname'>('fname')
   const [sortDir, setSortDir] = React.useState<'up' | 'down'>('up')
+  const [createMenu, setCreateMenu] = React.useState<boolean>(false)
+  const [currentMenu, setCurrentMenu] = React.useState<Menu>(undefined)
+
+  console.log('Current menu', currentMenu)
+
   React.useEffect(() => {
     fetchProtected(DASH_API + '/users', null, null, 'GET', (res) => {
       setUsers(res.accounts)
@@ -31,6 +40,12 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
     })
   }, [])
   const [focusedUser, setFocusedUser] = React.useState<User>(undefined)
+
+  const moveToMenu = (state: boolean) => (menu: Menu = undefined) => () => {
+    setCurrentMenu(menu)
+    setCreateMenu(state)
+  }
+
   const handleFocus = (user: User) =>
     focusedUser && user.account_id === focusedUser.account_id
       ? () => setFocusedUser(undefined)
@@ -97,9 +112,24 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
             </div>
           </div>
         </div>
+        {createMenu ?
         <div key='menu' className='admin-view'>
-          MeNUUUU
+          <div className='content-wrapper'>
+              <FormGenerator
+                edit={currentMenu !== undefined}
+                presetMenu={currentMenu}
+                onBack={moveToMenu(false)()}
+                history={props.history}
+              />
+          </div>
         </div>
+        : (
+          <div key='menu' className='admin-view'>
+            <MenuOverview move={moveToMenu(true)}/>
+            <Fab variant='extended' id='fab' onClick={moveToMenu(true)()}>
+              Add Menu <Add/>
+            </Fab>
+          </div>)}
       </SwipeableViews>
       <CreateEvent
         open={addEvent}

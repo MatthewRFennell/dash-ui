@@ -1,92 +1,116 @@
 import Add from '@material-ui/icons/Add'
 import Save from '@material-ui/icons/Save'
+import { History } from 'history'
 import * as React from 'react'
-import { Header } from '../common/Header'
 
-import { IconButton } from '@material-ui/core'
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
+import { Button, IconButton } from '@material-ui/core'
 import fetchProtected from '../../../src/api/protected'
-import { NewCourse, NewDish } from '../../typings/CreationTypes'
+import { NewDish, NewMenu } from '../../typings/CreationTypes'
+import '../frontpage/Login.scss'
 import CourseGenerator from './CourseGenerator'
 import EditBox from './EditBox'
 import './Form.scss'
 import MenuThanks from './MenuThanks'
 
 const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
-  const [menu, setMenu] = React.useState<NewCourse[]>([
-    {
-      name: 'starters',
-      dishes: [],
-    },
-  ])
+  const [menu, setMenu] = React.useState<NewMenu>(props.presetMenu)
 
   const [done, setDone] = React.useState<boolean>(false)
 
-  const [caterer, setCaterer] = React.useState<string>('')
+  console.log('Menu is', menu)
 
   const handleAddDish = (index: number) => (dish: NewDish) => {
-    setMenu((oldMenu) =>
-      oldMenu.map((c, i) =>
+    setMenu((oldMenu) => ({
+      ...oldMenu,
+      courses: oldMenu.courses.map((c, i) =>
         i !== index
           ? c
           : {
-              name: c.name,
-              dishes: c.dishes.concat(dish),
-            },
+            name: c.name,
+            dishes: c.dishes.concat(dish),
+          },
       ),
+    }),
+
     )
+  }
+
+  const handleRemoveDish = (courseIndex: number) => (dishIndex: number) => {
+    setMenu((oldMenu) => ({
+      ...oldMenu,
+      courses: oldMenu.courses.map((c, i) => (i !== courseIndex) ? c : {
+        ...c,
+        dishes: c.dishes.filter((d, di) => di !== dishIndex),
+      }),
+    }))
   }
 
   const setCourseName = (index) => (name) => {
-    setMenu((oldMenu) =>
-      oldMenu.map((c, i) =>
+    setMenu((oldMenu) => ({
+      ...oldMenu,
+      courses: oldMenu.courses.map((c, i) =>
         i !== index
           ? c
           : {
-              name,
-              dishes: c.dishes,
-            },
+            name,
+            dishes: c.dishes,
+          },
       ),
-    )
+    }))
   }
 
   const addNewCourse = () => {
-    setMenu((oldMenu) =>
-      oldMenu.concat({
+    setMenu((oldMenu) => ({
+      ...oldMenu,
+      courses: oldMenu.courses.concat({
         name: '',
         dishes: [],
       }),
-    )
+    }))
   }
 
   const saveMenu = () => {
-    const body = {
-      caterer,
-      courses: menu,
-    }
 
-    fetchProtected(DASH_API + '/menu', null, body, 'POST', () => {
-      setDone(true)
-    })
+    if (props.edit) {
+      console.log('Choosing edit with put')
+      console.log(menu)
+      fetchProtected(DASH_API + '/menu', null, menu, 'PUT', (res) => {
+        console.log('Tried to update menu', menu)
+        console.log('Updated', res)
+      })
+    } else {
+      fetchProtected(DASH_API + '/menu', null, menu, 'POST', () => {
+        setDone(true)
+      })
+    }
   }
 
   const updateCaterer = (value) => {
-    setCaterer(value)
+    setMenu((oldMenu) => ({
+      ...oldMenu,
+      caterer: value,
+    }))
   }
 
   if (done) {
-    return <MenuThanks history={props.history} />
+    return <MenuThanks onBack={props.onBack} history={props.history} />
   }
 
   return (
-    <div>
-      <Header />
       <div className='page'>
+        <Button variant='outlined' color='primary' onClick={props.onBack} className='chang-blue-font' id='back'>
+          Back
+        </Button>
         <h1 className='form-header'>Create a Menu</h1>
-        <EditBox title='Caterer' setValue={updateCaterer} />
-        {menu.map((course, index) => (
-          <CourseGenerator course={course} key={index} add={handleAddDish(index)} setTitle={setCourseName(index)} />
+        <EditBox saved={true} preset={menu.caterer} title='Caterer' setValue={updateCaterer} />
+        {menu.courses.map((course, index) => (
+          <CourseGenerator
+            course={course}
+            key={index}
+            add={handleAddDish(index)}
+            setTitle={setCourseName(index)}
+            remove={handleRemoveDish(index)}
+          />
         ))}
         <div className='addCourse'>
           <h2 className='inline'>Add new Course</h2>
@@ -95,27 +119,32 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
           </IconButton>
         </div>
         <div className='addCourse'>
-          <h2 className='inline'>Save Menu</h2>
+        <h2 className='inline'>{props.edit ? 'Update' : 'Save'} Menu</h2>
           <IconButton onClick={saveMenu}>
             <Save />
           </IconButton>
         </div>
       </div>
-    </div>
   )
 }
 
 interface FormGeneratorProps {
-  itinerary_id?: string
   history: History
+  onBack: () => void
+  presetMenu?: NewMenu
+  edit: boolean
 }
 
-const mapStateToProps = (state) => {
-  return {
-    itinerary_id: state.form.itinerary_id,
-  }
+FormGenerator.defaultProps = {
+  presetMenu: {
+    caterer: 'Example',
+      courses: [
+        {
+          name: 'Starters',
+          dishes: [],
+        },
+      ],
+  },
 }
 
-const ConnectedFormGenerator = connect(mapStateToProps)(FormGenerator)
-
-export { ConnectedFormGenerator as FormGenerator }
+export default FormGenerator
