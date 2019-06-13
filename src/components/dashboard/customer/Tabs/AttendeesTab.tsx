@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -36,13 +37,20 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [modalLoading, setModalLoading] = React.useState<boolean>(false)
   const [confirmedAttendees, setConfirmedAttendees] = React.useState<number[]>([])
   const [snackbarOpen, setSnackbarOpen] = React.useState<string>(undefined)
+  const [detailOpen, setDetailOpen] = React.useState<boolean>(false)
   React.useEffect(() => {
     setAttendees(props.attendees)
   }, [props.attendees])
   const setAttendee = (attendee: Attendee) => () => {
     if (attendee.attendee_id === (detailActive || { attendee_id: -1 }).attendee_id) {
-      setDetailActive(undefined)
+      if (detailOpen) {
+        setDetailOpen(false)
+        setDetailActive(undefined)
+      } else {
+        setDetailOpen(true)
+      }
     } else {
+      setDetailOpen(true)
       setDetailActive(attendee)
     }
   }
@@ -100,7 +108,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                 <IconButton
                   onClick={setAttendee(attendee)}
                   color={
-                    (detailActive || { attendee_id: -1 }).attendee_id === attendee.attendee_id ? 'primary' : 'default'
+                    (detailActive || { attendee_id: -1 }).attendee_id === attendee.attendee_id && detailOpen
+                      ? 'primary'
+                      : 'default'
                   }
                 >
                   {attendee.transport !== null ? <AirplanemodeActiveIcon /> : <AddIcon />}
@@ -125,9 +135,11 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                     </Tooltip>
                   ) : (
                     <Tooltip title='Attendee is not confirmed'>
-                      <IconButton onClick={handleConfirmModal(true, attendee)}>
-                        <CloseIcon />
-                      </IconButton>
+                      <span>
+                        <IconButton onClick={handleConfirmModal(true, attendee)} disabled={!props.admin}>
+                          <CloseIcon />
+                        </IconButton>
+                      </span>
                     </Tooltip>
                   )}
                 </div>
@@ -168,7 +180,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           top: 0,
         }}
       >
-        {detailActive && (
+        {detailOpen && (
           <DetailsPanel
             name={detailActive ? detailActive.fname + ' ' + detailActive.sname : 'ERROR'}
             transport={detailActive.transport}
@@ -262,6 +274,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
 }
 
 interface AttendeesTabProps {
+  admin: boolean
   event_id: number
   attendees: Attendee[]
   deleteAttendee: (id: number, callback: () => void) => void
@@ -269,4 +282,6 @@ interface AttendeesTabProps {
   onPropsUpdate: () => void
 }
 
-export default AttendeesTab
+const mapStateToProps = ({ user }) => ({ admin: user.admin })
+
+export default connect(mapStateToProps)(AttendeesTab)
