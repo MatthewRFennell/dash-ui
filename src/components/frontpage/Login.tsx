@@ -88,7 +88,7 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
               </Button>
             )}
           </div>
-          <Link href='/register'>Don't have an account?</Link>
+          <Link href='/register'>Don't have an account? Create one here</Link>
         </div>
       </div>
     </div>
