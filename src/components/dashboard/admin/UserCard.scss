@@ -4,6 +4,7 @@ $surprise-func: ease-out;
 $goodbye-time: 100ms;
 .user-card {
   margin: 0 15px 30px 15px;
+  position: relative;
   .user-content {
     display: flex;
     padding: 0 !important;
@@ -42,5 +43,17 @@ $goodbye-time: 100ms;
         color: rgba(0, 0, 0, 0.54);
       }
     }
+
+    .edit-container {
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+    }
   }
+}
+
+#fab {
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
 }

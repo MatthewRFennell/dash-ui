@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
@@ -21,10 +20,9 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircleOutline'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import authHeader from '../../../../api/authHeader'
-import { Attendee, Transport } from '../../../../typings/BackendTypes'
+import { Attendee } from '../../../../typings/BackendTypes'
 import AddAttendee from '../../modal/AddAttendee'
 import ConfirmDialog from '../../modal/ConfirmDialog'
-import DetailsPanel from './DetailsPanel'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
@@ -193,7 +191,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           horizontal: 'left',
         }}
         open={snackbarOpen !== undefined}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={handleSnackbarClose}
         ContentProps={{
           'aria-describedby': 'message-id',

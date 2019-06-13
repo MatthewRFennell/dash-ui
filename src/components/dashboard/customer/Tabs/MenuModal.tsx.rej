@@ -1,0 +1,4 @@
+diff a/src/components/dashboard/customer/Tabs/MenuModal.tsx b/src/components/dashboard/customer/Tabs/MenuModal.tsx	(rejected hunks)
+@@ -89 +89 @@ MenuModal.defaultProps = {
+-  forItinerary: true
++  forItinerary: true,

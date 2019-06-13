@@ -55,7 +55,7 @@ const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
       <DialogTitle>
         <Typography className='modal-title'>Menu</Typography>
-        <Typography className='modal-subtitle'>for {props.name}</Typography>
+        {props.forItinerary &&  <Typography className='modal-subtitle'>for {props.name}</Typography>}
       </DialogTitle>
       <DialogContent>
         {props.menu.image ? <img src={props.menu.image} /> : undefined}
@@ -66,13 +66,6 @@ const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
         <div className='modal-detail'>
           <Typography className='modal-block-title'>Courses</Typography>
           <Typography>{courses}</Typography>
-        </div>
-        <div className='modal-detail'>
-          <Typography className='modal-block-title'>Link</Typography>
-          <Button color='primary' variant='outlined' className='modal-button' style={{ marginTop: '10px' }}>
-            <LinkIcon style={{ marginRight: '10px' }} />
-            Generate Link
-          </Button>
         </div>
       </DialogContent>
       <DialogActions>
@@ -88,7 +81,12 @@ interface MenuModalProps {
   name: string
   open: boolean
   onClose: () => void
+  forItinerary?: boolean
   menu: Menu
+}
+
+MenuModal.defaultProps = {
+  forItinerary: true,
 }
 
 export default MenuModal

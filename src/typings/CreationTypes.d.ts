@@ -7,3 +7,8 @@ export interface NewDish {
     description: string
     warnings: string[]
 }
+
+export interface NewMenu {
+    courses: NewCourse[]
+    caterer:  string
+}
