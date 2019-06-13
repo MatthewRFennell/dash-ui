@@ -12,8 +12,10 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { DateFormatInput, TimeFormatInput } from 'material-ui-next-pickers'
 import LocationPicker from 'react-location-picker'
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 import authHeader from '../../../api/authHeader'
+import MuiGeosuggestion from '../../common/MuiGeosuggestion'
 const mapsUrl = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
 import { withGoogleMap, withScriptjs } from 'react-google-maps'
@@ -28,10 +30,10 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
   const [endDate, setEndDate] = React.useState<Date | undefined>()
   const [endTime, setEndTime] = React.useState<Date | undefined>()
   const [position, setPosition] = React.useState<{ lat: number; lng: number }>({ lat: 36.1627, lng: -86.7816 })
-  const [address, setAddress] = React.useState<string>('')
   const [errors, setErrors] = React.useState<string[]>([])
   const [submitting, setSubmitting] = React.useState<boolean>(false)
   const [sendError, setSendError] = React.useState<boolean>(false)
+  const [geoSearch, setGeoSearch] = React.useState<string>('Nashville, Tennessee')
 
   const removeError = (err) => {
     if (errors.includes(err)) {
@@ -59,12 +61,6 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
   }
   const handleChangeEndDate = (newDate) => (removeError('endDate'), setEndDate(newDate))
   const handleChangeEndTime = (newTime) => (removeError('endDate'), setEndTime(newTime))
-  const handleChangeLatitude = (event) => (
-    removeError('latitude'), setPosition((pos) => ({ ...pos, lat: Number(event.target.value) }))
-  )
-  const handleChangeLongitude = (event) => (
-    removeError('longitude'), setPosition((pos) => ({ ...pos, lng: Number(event.target.value) }))
-  )
   const handleSubmit = () => {
     /* Check for errors */
     const errs = []
@@ -149,12 +145,21 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
         }
       })
   }
-  const handleLocationChange = ({ pos, addr, places }) => {
-    console.log(pos)
-    console.log(addr)
-    setPosition(pos)
-    setAddress(addr)
+  const handleLocationChange = (event) => {
+    setPosition(event.position)
+    setGeoSearch(event.address)
   }
+  const handleSuggestionChange = (addr) => {
+    setGeoSearch(addr)
+  }
+  const handleSuggestionSelect = (addr) => {
+    setGeoSearch(addr)
+    geocodeByAddress(addr)
+      .then((results) => getLatLng(results[0]))
+      .then((latLng) => setPosition(latLng))
+      .catch((error) => console.error('ERR: ', error))
+  }
+
   return (
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
       <DialogTitle>
@@ -167,7 +172,7 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
         }}
       >
         <div className='modal-flex' style={{ padding: '24px' }}>
-          <div style={{ width: '280px', marginRight: '15px' }}>
+          <div style={{ width: '320px', marginRight: '15px' }}>
             <TextField
               className='modal-form-field'
               color='primary'
@@ -195,46 +200,9 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
                 errors.includes('description') ? 'Please input a valid description' : 'Itinerary event description'
               }
             />
-            <TextField
-              className='modal-form-field'
-              color='primary'
-              label='Latitude'
-              variant='outlined'
-              value={position.lat}
-              onChange={handleChangeLatitude}
-              fullWidth={true}
-              type='number'
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <Typography style={{ fontWeight: 'bold', opacity: 0.54 }}>°N</Typography>
-                  </InputAdornment>
-                ),
-              }}
-              error={errors.includes('latitude')}
-              helperText={errors.includes('latitude') ? 'Please input a valid latitude' : 'Itinerary event latitude'}
-            />
-            <TextField
-              className='modal-form-field'
-              color='primary'
-              label='Longitude'
-              variant='outlined'
-              value={position.lng}
-              onChange={handleChangeLongitude}
-              fullWidth={true}
-              type='number'
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <Typography style={{ fontWeight: 'bold', opacity: 0.54 }}>°E</Typography>
-                  </InputAdornment>
-                ),
-              }}
-              error={errors.includes('longitude')}
-              helperText={errors.includes('longitude') ? 'Please input a valid longitude' : 'Itinerary event longitude'}
-            />
+            <MuiGeosuggestion address={geoSearch} onChange={handleSuggestionChange} onSelect={handleSuggestionSelect} />
           </div>
-          <div style={{ width: '280px', marginLeft: '15px' }}>
+          <div style={{ width: '320px', marginLeft: '15px' }}>
             <DateFormatInput
               className='modal-form-field'
               error={errors.includes('startDate') ? 'Date is in the past' : undefined}
@@ -287,8 +255,8 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
         </div>
         {sendError && <Typography>Sorry, something went wrong</Typography>}
         <LocationPicker
-          containerElement={<div style={{ height: '420px' }} />}
-          mapElement={<div style={{ height: '420px' }} />}
+          containerElement={<div style={{ height: '360px' }} />}
+          mapElement={<div style={{ height: '360px' }} />}
           defaultPosition={position}
           onChange={handleLocationChange}
         />

@@ -25,54 +25,52 @@ import MenuModal from './MenuModal'
 
 const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
-const MapPanel = withScriptjs(
-  withGoogleMap((props: any) => {
-    const centerFocus = props.markers.filter(({ id }) => id === props.focus)[0]
-    const markers = props.markers.map(({ lat, long, name, id, description, index }) => (
-      <Marker position={{ lat, lng: long }} key={index} label={{ color: 'white', text: String(index + 1) }}>
-        {props.focus === id ? (
-          <InfoBox
-            defaultPosition={new google.maps.LatLng(lat, long)}
-            options={{ closeBoxURL: ``, enableEventPropagation: true }}
-          >
-            <Paper style={{ padding: `12px`, margin: '5px' }} key='paper'>
-              <div style={{ fontSize: `16px`, fontFamily: 'Lato', fontWeight: 'bold' }}>{name}</div>
-              <div style={{ fontSize: `16px`, fontFamily: 'Lato', fontWeight: 300 }}>{description}</div>
-            </Paper>
-          </InfoBox>
-        ) : (
-          undefined
-        )}
-      </Marker>
-    ))
-    const markerSum = props.markers.reduce((a, b) => ({ lat: a.lat + b.lat, long: a.long + b.long }), {
-      lat: 0,
-      long: 0,
-    })
-    const bounds = new google.maps.LatLngBounds()
-    props.markers.forEach(({ lat, long }) => {
-      bounds.extend({ lat, lng: long })
-    })
-    const center = { lat: markerSum.lat / markers.length, long: markerSum.long / markers.length }
-    return (
-      <GoogleMap
-        defaultZoom={8}
-        defaultCenter={{ lat: center.lat, lng: center.long }}
-        zoom={centerFocus ? 14 : 8}
-        center={centerFocus ? { lat: centerFocus.lat, lng: centerFocus.long } : { lat: center.lat, lng: center.long }}
-        ref={(map) => {
-          if (map) {
-            if (!centerFocus) {
-              map.fitBounds(bounds)
-            }
+const MapPanel = withGoogleMap((props: any) => {
+  const centerFocus = props.markers.filter(({ id }) => id === props.focus)[0]
+  const markers = props.markers.map(({ lat, long, name, id, description, index }) => (
+    <Marker position={{ lat, lng: long }} key={index} label={{ color: 'white', text: String(index + 1) }}>
+      {props.focus === id ? (
+        <InfoBox
+          defaultPosition={new google.maps.LatLng(lat, long)}
+          options={{ closeBoxURL: ``, enableEventPropagation: true }}
+        >
+          <Paper style={{ padding: `12px`, margin: '5px' }} key='paper'>
+            <div style={{ fontSize: `16px`, fontFamily: 'Lato', fontWeight: 'bold' }}>{name}</div>
+            <div style={{ fontSize: `16px`, fontFamily: 'Lato', fontWeight: 300 }}>{description}</div>
+          </Paper>
+        </InfoBox>
+      ) : (
+        undefined
+      )}
+    </Marker>
+  ))
+  const markerSum = props.markers.reduce((a, b) => ({ lat: a.lat + b.lat, long: a.long + b.long }), {
+    lat: 0,
+    long: 0,
+  })
+  const bounds = new google.maps.LatLngBounds()
+  props.markers.forEach(({ lat, long }) => {
+    bounds.extend({ lat, lng: long })
+  })
+  const center = { lat: markerSum.lat / markers.length, long: markerSum.long / markers.length }
+  return (
+    <GoogleMap
+      defaultZoom={8}
+      defaultCenter={{ lat: center.lat, lng: center.long }}
+      zoom={centerFocus ? 14 : 8}
+      center={centerFocus ? { lat: centerFocus.lat, lng: centerFocus.long } : { lat: center.lat, lng: center.long }}
+      ref={(map) => {
+        if (map) {
+          if (!centerFocus) {
+            map.fitBounds(bounds)
           }
-        }}
-      >
-        {props.isMarkerShown && markers}
-      </GoogleMap>
-    )
-  }),
-)
+        }
+      }}
+    >
+      {props.isMarkerShown && markers}
+    </GoogleMap>
+  )
+})
 
 const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   const [focus, setFocus] = React.useState<number>(-1)
