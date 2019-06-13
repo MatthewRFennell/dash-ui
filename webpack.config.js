@@ -15,7 +15,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   optimization: {
     minimizer: [
@@ -111,16 +111,22 @@ module.exports = {
         environment === 'development'
           ? JSON.stringify('http://localhost:3000')
           : JSON.stringify('http://dash-api-19.herokuapp.com'),
-      GMAPS_API_KEY: JSON.stringify('AIzaSyBH47Nhu4cB_ynRUwmIXrQHxQIXrBUIp1Y')
+      GMAPS_API_KEY: JSON.stringify('AIzaSyBH47Nhu4cB_ynRUwmIXrQHxQIXrBUIp1Y'),
     }),
     new CopyPlugin([
       {
-        from: path.resolve(__dirname, 'node_modules', 'react', 'umd', 'react.development.js'),
-        to: path.resolve(__dirname, 'dist', 'react.development.js'),
+        from: path.resolve(
+          __dirname,
+          'node_modules',
+          'react',
+          'umd',
+          environment === 'development' ? 'react.development.js' : 'react.production.min.js',
+        ),
+        to: path.resolve(__dirname, 'dist', 'react.js'),
       },
       {
-        from: path.resolve(__dirname, 'node_modules', 'react-dom', 'umd', 'react-dom.development.js'),
-        to: path.resolve(__dirname, 'dist', 'react-dom.development.js'),
+        from: path.resolve(__dirname, 'node_modules', 'react-dom', 'umd', environment === 'development' ? 'react-dom.development.js' : 'react-dom.production.min.js'),
+        to: path.resolve(__dirname, 'dist', 'react-dom.js'),
       },
     ]),
   ],

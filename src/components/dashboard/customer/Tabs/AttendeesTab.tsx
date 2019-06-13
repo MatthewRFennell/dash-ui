@@ -10,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import AddIcon from '@material-ui/icons/Add'
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive'
 import CheckIcon from '@material-ui/icons/Check'
 import CloseIcon from '@material-ui/icons/Close'
@@ -25,6 +26,7 @@ import AddAttendee from '../../modal/AddAttendee'
 import ConfirmDialog from '../../modal/ConfirmDialog'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
+  const [attendees, setAttendees] = React.useState<Attendee[]>(props.attendees)
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
   const [confirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false)
   const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false)
@@ -32,9 +34,18 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [modalLoading, setModalLoading] = React.useState<boolean>(false)
   const [confirmedAttendees, setConfirmedAttendees] = React.useState<number[]>([])
   const [snackbarOpen, setSnackbarOpen] = React.useState<string>(undefined)
-
-  const handleSnackbarOpen = (phrase) => () => (console.log(phrase), setSnackbarOpen(phrase))
-  const handleSnackbarClose = () => setSnackbarOpen(undefined)
+  React.useEffect(() => {
+    setAttendees(props.attendees)
+  }, [props.attendees])
+  const setAttendee = (attendee: Attendee) => () => {
+    if (attendee.attendee_id === (detailActive || { attendee_id: -1 }).attendee_id) {
+      setDetailActive(undefined)
+    } else {
+      setDetailActive(attendee)
+    }
+  }
+  const handleSnackbarOpen = (phrase) => () => setSnackbarOpen(phrase)
+  const handleSnackbarClose = (_, reason?) => reason !== 'clickaway' && setSnackbarOpen(undefined)
   const handleModalOpen = () => setAttendeeModalOpen(true)
   const handleModalClose = () => setAttendeeModalOpen(false)
   const handleConfirmModal = (state, attendee?) => () => (
@@ -43,7 +54,16 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const handleDeleteModal = (state, attendee?) => () => (
     attendee && setDetailActive(attendee), setDeleteModalOpen(state)
   )
-
+  const handleTransportUpdate = (attendeeId, transport) => {
+    const newAttendees = attendees.concat([])
+    for (const attendee of newAttendees) {
+      if (attendee.attendee_id === attendeeId) {
+        attendee.transport = transport
+        break
+      }
+    }
+    setAttendees(newAttendees)
+  }
   const handleDelete = (id) => () => {
     setModalLoading(true)
     props.deleteAttendee(id, () => {
@@ -55,7 +75,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const handleAddConfirmedAttendee = (id) => setConfirmedAttendees((old) => old.concat([id]))
 
   const attendeeTable =
-    props.attendees.length !== 0 ? (
+    attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
         <TableHead>
           <TableRow>
@@ -69,18 +89,27 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.attendees.map((attendee, index) => (
+          {attendees.map((attendee, index) => (
             <TableRow key={attendee.attendee_id}>
               <TableCell className='table-cell'>{attendee.fname}</TableCell>
               <TableCell className='table-cell'>{attendee.sname} </TableCell>
               <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
               <TableCell className='table-cell'>
-                {attendee.transport !== null && <AirplanemodeActiveIcon style={{ opacity: 0.54 }} />}
+                <IconButton
+                  onClick={setAttendee(attendee)}
+                  color={
+                    (detailActive || { attendee_id: -1 }).attendee_id === attendee.attendee_id ? 'primary' : 'default'
+                  }
+                >
+                  {attendee.transport !== null ? <AirplanemodeActiveIcon /> : <AddIcon />}
+                </IconButton>
               </TableCell>
               <TableCell>
                 <Tooltip title={`Get attendee's unique link`}>
                   <CopyToClipboard text={'http://dash-web-19.herokuapp.com/completeform/' + attendee.form_id}>
-                    <IconButton onClick={handleSnackbarOpen('Link copied to clipboard!')}>
+                    <IconButton
+                      onClick={handleSnackbarOpen(`Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`)}
+                    >
                       <LinkIcon />
                     </IconButton>
                   </CopyToClipboard>
@@ -128,6 +157,28 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
         </div>
       </div>
       <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
+      <ReactCSSTransitionGroup
+        transitionName='horizontal-grow'
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+        style={{
+          position: 'sticky',
+          top: 0,
+        }}
+      >
+        {detailActive && (
+          <DetailsPanel
+            name={detailActive ? detailActive.fname + ' ' + detailActive.sname : 'ERROR'}
+            transport={detailActive.transport}
+            confirmed={detailActive.confirmed}
+            confirm={handleConfirmModal(true)}
+            delete={handleDeleteModal(true)}
+            form_id={detailActive.form_id}
+            attendeeId={detailActive.attendee_id}
+            onPropsUpdate={handleTransportUpdate}
+          />
+        )}
+      </ReactCSSTransitionGroup>
       <ConfirmDialog
         title='Confirm attendee'
         content={`Confirm attendee ${
@@ -213,6 +264,7 @@ interface AttendeesTabProps {
   attendees: Attendee[]
   deleteAttendee: (id: number, callback: () => void) => void
   addAttendee: (x: Attendee) => void
+  onPropsUpdate: () => void
 }
 
 export default AttendeesTab
