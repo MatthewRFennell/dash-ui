@@ -4,7 +4,7 @@ const app = express()
 
 const port = process.env.PORT || 8080
 
-app.use(express.static(__dirname))
+app.use(express.static(path.join(__dirname, 'dist')))
 
 const time = () => {
   const date = new Date()
@@ -22,6 +22,7 @@ app.get(/\.js$/, (req, res) => {
 })
 
 app.get('/*', (req, res) => {
+  console.log(time() + ' \x1b[36mi\x1b[0m index requested, url: ' + req.url)
   res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
