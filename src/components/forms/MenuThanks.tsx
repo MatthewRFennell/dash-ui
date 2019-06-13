@@ -4,7 +4,6 @@ import * as React from 'react'
 import '../frontpage/Login.scss'
 
 const MenuThanks = (props) => {
-
   return (
     <div className='centered-panel'>
       <div className='login-panel'>

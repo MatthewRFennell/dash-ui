@@ -112,24 +112,25 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
             </div>
           </div>
         </div>
-        {createMenu ?
-        <div key='menu' className='admin-view'>
-          <div className='content-wrapper'>
+        {createMenu ? (
+          <div key='menu' className='admin-view'>
+            <div className='content-wrapper'>
               <FormGenerator
                 edit={currentMenu !== undefined}
                 presetMenu={currentMenu}
                 onBack={moveToMenu(false)()}
                 history={props.history}
               />
+            </div>
           </div>
-        </div>
-        : (
+        ) : (
           <div key='menu' className='admin-view'>
-            <MenuOverview move={moveToMenu(true)}/>
+            <MenuOverview move={moveToMenu(true)} />
             <Fab variant='extended' id='fab' onClick={moveToMenu(true)()}>
-              Add Menu <Add/>
+              Add Menu <Add />
             </Fab>
-          </div>)}
+          </div>
+        )}
       </SwipeableViews>
       <CreateEvent
         open={addEvent}

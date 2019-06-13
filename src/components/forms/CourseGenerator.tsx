@@ -23,7 +23,6 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
   }
 
   const add = () => {
-
     if (dishName === '' || dishDescription === '') {
       return
     }
@@ -46,12 +45,7 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
       <IconButton id='close'>
         <Close />
       </IconButton>
-      <EditBox
-        preset={props.course.name}
-        saved={props.course.name !== ''}
-        title='Course Title'
-        setValue={setTitle}
-      />
+      <EditBox preset={props.course.name} saved={props.course.name !== ''} title='Course Title' setValue={setTitle} />
       <br />
       <Card className='newDish'>
         <div className='dishField'>

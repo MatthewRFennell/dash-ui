@@ -55,7 +55,7 @@ const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
       <DialogTitle>
         <Typography className='modal-title'>Menu</Typography>
-        {props.forItinerary &&  <Typography className='modal-subtitle'>for {props.name}</Typography>}
+        {props.forItinerary && <Typography className='modal-subtitle'>for {props.name}</Typography>}
       </DialogTitle>
       <DialogContent>
         {props.menu.image ? <img src={props.menu.image} /> : undefined}

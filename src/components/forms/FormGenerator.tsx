@@ -28,22 +28,24 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
         i !== index
           ? c
           : {
-            name: c.name,
-            dishes: c.dishes.concat(dish),
-          },
+              name: c.name,
+              dishes: c.dishes.concat(dish),
+            },
       ),
-    }),
-
-    )
+    }))
   }
 
   const handleRemoveDish = (courseIndex: number) => (dishIndex: number) => {
     setMenu((oldMenu) => ({
       ...oldMenu,
-      courses: oldMenu.courses.map((c, i) => (i !== courseIndex) ? c : {
-        ...c,
-        dishes: c.dishes.filter((d, di) => di !== dishIndex),
-      }),
+      courses: oldMenu.courses.map((c, i) =>
+        i !== courseIndex
+          ? c
+          : {
+              ...c,
+              dishes: c.dishes.filter((d, di) => di !== dishIndex),
+            },
+      ),
     }))
   }
 
@@ -54,9 +56,9 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
         i !== index
           ? c
           : {
-            name,
-            dishes: c.dishes,
-          },
+              name,
+              dishes: c.dishes,
+            },
       ),
     }))
   }
@@ -72,7 +74,6 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
   }
 
   const saveMenu = () => {
-
     if (props.edit) {
       console.log('Choosing edit with put')
       console.log(menu)
@@ -102,53 +103,53 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
   }
 
   return (
-      <div className='page'>
-        <Button variant='outlined' color='primary' onClick={props.onBack} className='chang-blue-font' id='back'>
-          Back
-        </Button>
-        <h1 className='form-header'>Create a Menu</h1>
-        <EditBox saved={true} preset={menu.caterer} title='Caterer' setValue={updateCaterer} />
-        {menu.courses.map((course, index) => (
-          <CourseGenerator
-            course={course}
-            key={index}
-            add={handleAddDish(index)}
-            setTitle={setCourseName(index)}
-            remove={handleRemoveDish(index)}
-          />
-        ))}
-        <div className='addCourse'>
-          <h2 className='inline'>Add new Course</h2>
-          <IconButton onClick={addNewCourse}>
-            <Add />
-          </IconButton>
-        </div>
-        <div className='addCourse'>
-        <h2 className='inline'>{props.edit ? 'Update' : 'Save'} Menu</h2>
-          <IconButton onClick={saveMenu}>
-            <Save />
-          </IconButton>
-        </div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          open={snackbarOpen !== undefined}
-          autoHideDuration={2000}
-          onClose={handleSnackbarClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id='message-id'>{snackbarOpen}</span>}
-          action={[
-            <IconButton onClick={handleSnackbarClose} key='close'>
-              <Close style={{ color: '#ffffff' }} />
-            </IconButton>,
-          ]}
-          style={{ position: 'fixed', left: 'calc(100vw + 24px)' }}
+    <div className='page'>
+      <Button variant='outlined' color='primary' onClick={props.onBack} className='chang-blue-font' id='back'>
+        Back
+      </Button>
+      <h1 className='form-header'>Create a Menu</h1>
+      <EditBox saved={true} preset={menu.caterer} title='Caterer' setValue={updateCaterer} />
+      {menu.courses.map((course, index) => (
+        <CourseGenerator
+          course={course}
+          key={index}
+          add={handleAddDish(index)}
+          setTitle={setCourseName(index)}
+          remove={handleRemoveDish(index)}
         />
+      ))}
+      <div className='addCourse'>
+        <h2 className='inline'>Add new Course</h2>
+        <IconButton onClick={addNewCourse}>
+          <Add />
+        </IconButton>
       </div>
+      <div className='addCourse'>
+        <h2 className='inline'>{props.edit ? 'Update' : 'Save'} Menu</h2>
+        <IconButton onClick={saveMenu}>
+          <Save />
+        </IconButton>
+      </div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={snackbarOpen !== undefined}
+        autoHideDuration={2000}
+        onClose={handleSnackbarClose}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id='message-id'>{snackbarOpen}</span>}
+        action={[
+          <IconButton onClick={handleSnackbarClose} key='close'>
+            <Close style={{ color: '#ffffff' }} />
+          </IconButton>,
+        ]}
+        style={{ position: 'fixed', left: 'calc(100vw + 24px)' }}
+      />
+    </div>
   )
 }
 
@@ -162,12 +163,12 @@ interface FormGeneratorProps {
 FormGenerator.defaultProps = {
   presetMenu: {
     caterer: 'Example',
-      courses: [
-        {
-          name: 'Starters',
-          dishes: [],
-        },
-      ],
+    courses: [
+      {
+        name: 'Starters',
+        dishes: [],
+      },
+    ],
   },
 }
 
