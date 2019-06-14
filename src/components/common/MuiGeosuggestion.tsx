@@ -1,8 +1,10 @@
 import * as React from 'react'
 
+import InputAdornment from '@material-ui/core/InputAdornment'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
+import SearchIcon from '@material-ui/icons/Search'
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 const MuiGeosuggestion: React.FunctionComponent<MuiGeosuggestionProps> = (props) => {
@@ -18,6 +20,13 @@ const MuiGeosuggestion: React.FunctionComponent<MuiGeosuggestionProps> = (props)
               variant: 'outlined',
               fullWidth: true,
               helperText: 'Address of location',
+              InputProps: {
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <SearchIcon style={{ opacity: 0.54 }} />
+                  </InputAdornment>
+                ),
+              },
             })}
           />
           <Paper style={{ position: 'fixed', zIndex: 9999 }}>

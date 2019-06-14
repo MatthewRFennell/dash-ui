@@ -58,33 +58,43 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
     .sort((a, b) => (sortDir === 'up' ? a : b)[sortBy].localeCompare((sortDir === 'up' ? b : a)[sortBy]))
     .map((user, index) => (
       <li key={index}>
-        <UserCard {...user} onClick={handleFocus(user)} />
+        <UserCard
+          {...user}
+          onClick={handleFocus(user)}
+          raised={focusedUser && user.account_id === focusedUser.account_id}
+        />
       </li>
     ))
   return (
     <div>
       <SwipeableViews index={props.currentTab} onChangeIndex={props.onTabChange}>
         <div key='customer' className='admin-view'>
-          <div className='sort'>
-            <Typography
-              component='span'
-              style={{
-                marginRight: '15px',
-                color: 'rgba(0, 0, 0, 0.54)',
-              }}
-            >
-              Sort by
-            </Typography>
-            <TextField variant='outlined' margin='dense' select={true} value={sortBy} onChange={handleSortBy}>
-              <MenuItem value='fname'>First Name</MenuItem>
-              <MenuItem value='sname'>Surname</MenuItem>
-            </TextField>
-            <IconButton onClick={handleSortDirToggle}>
-              {sortDir === 'up' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
-            </IconButton>
-          </div>
           <div className='content-wrapper'>
-            <Typography className='headline'>Customers</Typography>
+            <div
+              className='title-box'
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            >
+              <div style={{ width: '240px', marginLeft: '30px', opacity: 0 }}>search</div>
+              <Typography className='headline'>Customers</Typography>
+              <div className='sort'>
+                <Typography
+                  component='span'
+                  style={{
+                    marginRight: '15px',
+                    color: 'rgba(0, 0, 0, 0.54)',
+                  }}
+                >
+                  Sort by
+                </Typography>
+                <TextField variant='outlined' margin='dense' select={true} value={sortBy} onChange={handleSortBy}>
+                  <MenuItem value='fname'>First Name</MenuItem>
+                  <MenuItem value='sname'>Surname</MenuItem>
+                </TextField>
+                <IconButton onClick={handleSortDirToggle}>
+                  {sortDir === 'up' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+                </IconButton>
+              </div>
+            </div>
             <div className='user-div'>
               <div className='user-list'>
                 <ul>{UserCards}</ul>

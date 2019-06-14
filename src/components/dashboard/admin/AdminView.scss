@@ -8,12 +8,11 @@
   top: 0;
   left: 0;
   .sort {
-    position: absolute;
-    top: 30px;
-    right: 30px;
+    width: 240px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    margin-right: 30px;
   }
   .content-wrapper {
     overflow-y: auto;

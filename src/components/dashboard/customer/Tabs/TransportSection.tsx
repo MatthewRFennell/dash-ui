@@ -14,9 +14,8 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
   const [editable, setEditable] = React.useState<boolean>(false)
   const [operator, setOperator] = React.useState<string>(props.operator || '')
   const [vesselId, setVesselId] = React.useState<string>(props.vessel_id || '')
-  const [durationHours, setDurationHours] = React.useState<number>(Math.floor((props.duration || 0) / 3600))
-  const [durationMinutes, setDurationMinutes] = React.useState<number>(Math.floor(((props.duration || 0) % 3600) / 60))
-  const [durationSeconds, setDurationSeconds] = React.useState<number>((props.duration || 0) % 60)
+  const [durationHours, setDurationHours] = React.useState<number>(Math.floor((props.duration || 0) / 60))
+  const [durationMinutes, setDurationMinutes] = React.useState<number>((props.duration || 0) % 60)
   const [departTime, setDepartTime] = React.useState<Date>(props.departTime ? new Date(props.departTime) : new Date())
   const [departFrom, setDepartFrom] = React.useState<string>(props.departFrom || '')
   const [arriveAt, setArriveAt] = React.useState<string>(props.arriveAt || '')
@@ -29,7 +28,6 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
     vesselId,
     durationHours,
     durationMinutes,
-    durationSeconds,
     departTime,
     departFrom,
     arriveAt,
@@ -51,9 +49,6 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
       case 'durationMinutes':
         setDurationMinutes(Number(value))
         break
-      case 'durationSeconds':
-        setDurationSeconds(Number(value))
-        break
       case 'departFrom':
         setDepartFrom(value)
         break
@@ -70,9 +65,8 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
     setEditable(false)
     setOperator(props.operator || '')
     setVesselId(props.vessel_id || '')
-    setDurationHours(Math.floor((props.duration || 0) / 3600))
-    setDurationMinutes(Math.floor(((props.duration || 0) % 3600) / 60))
-    setDurationSeconds((props.duration || 0) % 60)
+    setDurationHours(Math.floor((props.duration || 0) / 60))
+    setDurationMinutes((props.duration || 0) % 60)
     setDepartTime(props.departTime ? new Date(props.departTime) : new Date())
     setDepartFrom(props.departFrom || '')
     setArriveAt(props.arriveAt || '')
@@ -84,7 +78,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
       attendee_id: props.attendeeId,
       operator,
       vessel_id: vesselId,
-      duration: durationHours * 3600 + durationMinutes * 60 + durationSeconds,
+      duration: durationHours * 60 + durationMinutes,
       departTime: departTime.toISOString(),
       departFrom,
       arriveAt,
@@ -182,7 +176,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
             },
           }}
           style={{
-            marginRight: '10px',
+            marginRight: '15px',
           }}
         />
         <TextField
@@ -192,24 +186,6 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
           label='Minutes'
           margin='normal'
           onChange={handleChange('durationMinutes')}
-          disabled={!editable}
-          type='number'
-          InputProps={{
-            classes: {
-              disabled: 'text-field-disabled',
-            },
-          }}
-          style={{
-            marginRight: '10px',
-          }}
-        />
-        <TextField
-          name='durationSeconds'
-          variant='outlined'
-          value={durationSeconds}
-          label='Seconds'
-          margin='normal'
-          onChange={handleChange('durationSeconds')}
           disabled={!editable}
           type='number'
           InputProps={{

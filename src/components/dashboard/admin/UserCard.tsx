@@ -32,7 +32,7 @@ const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
       ? placeholder4
       : placeholder5
   return (
-    <Card className='user-card'>
+    <Card className='user-card' raised={props.raised}>
       <div>
         <CardContent className='user-content'>
           <div className='user-image'>
@@ -57,6 +57,7 @@ interface UserCardProps {
   sname: string
   email: string
   image?: string
+  raised: boolean
   onClick: () => void
 }
 
