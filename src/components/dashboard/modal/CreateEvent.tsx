@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -116,6 +117,14 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
         style: { width: '350px' },
       }}
     >
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          Add new event
+          <button className='close-button' onClick={props.onClose}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <DialogTitle>
         <Typography className='modal-title'>New event</Typography>
       </DialogTitle>
@@ -242,8 +251,11 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
 interface CreateEventProps {
   open: boolean
   email?: string
+  vaporwave: boolean
   onClose: () => void
   onAddEvent: (event: any) => void
 }
 
-export default CreateEvent
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(CreateEvent)

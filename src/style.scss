@@ -8,6 +8,35 @@ body {
   font-weight: bold;
 }
 
+.window-title-bar {
+  height: 24px;
+  background: #000080;
+  padding: 4px 4px 0px 10px;
+  color: white;
+  font-family: 'MS Sans Serif';
+  font-weight: bold;
+  display: flex;
+  text-transform: capitalize;
+  justify-content: space-between;
+  .close-button {
+    margin-bottom: 4px;
+    background: #c0c0c0;
+    border-width: 1px;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    font-weight: bold;
+    font-size: 9px;
+    padding: 2px;
+    .maximize {
+      font-size: 12pt;
+      position: relative;
+      top: -6px;
+    }
+  }
+  .close-button:focus {
+    outline: none;
+  }
+}
+
 .view {
   margin: 0;
   font-family: 'Lato', sans-serif;

@@ -4,28 +4,49 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
+import Sound from 'react-sound'
 
 import { History } from 'history'
 import { connect } from 'react-redux'
+import { toggleAesthetic } from '../../redux/actions/memeActions'
 import { logout } from '../../redux/actions/userActions'
 import './styles.scss'
 
 // tslint:disable-next-line:no-var-requires
 const logo = require('../../../assets/png/DashLogo-Black@4x.png')
+// tslint:disable-next-line:no-var-requires
+const w95 = require('../../../assets/png/w95.png')
+// tslint:disable-next-line:no-var-requires
+const startup = require('../../../assets/mp3/w95.mp3')
 
 /**
  * Dash Header
  */
 
 const Header: React.FunctionComponent<HeaderProps> = (props) => {
+  const [playing, setPlaying] = React.useState<string>(Sound.status.STOPPED)
   const handleLogout = () => {
     props.onLogout()
   }
+  const handleVaporify = () => {
+    if (props.vaporwave) {
+      setPlaying(Sound.status.STOPPED)
+    } else {
+      setPlaying(Sound.status.PLAYING)
+    }
+    props.onVaporwave()
+  }
+  const handleStopPlaying = () => {
+    setPlaying(Sound.status.STOPPED)
+  }
   return (
-    <div className='header'>
-      <div className='header-title' onClick={props.onHome} style={{ cursor: 'pointer' }}>
-        <img src={logo} className='logo' />
-        Dash{props.admin && <span style={{ fontWeight: 300 }}> Admin</span>}
+    <div className={'header' + (props.vaporwave ? ' header-vaporwave' : '')}>
+      <div className='header-title' style={{ cursor: 'pointer' }}>
+        <img src={props.vaporwave ? w95 : logo} className='logo' onClick={handleVaporify} />
+        <span onClick={props.onHome}>
+          Dash{props.vaporwave && '95'}
+          {props.admin && <span style={{ fontWeight: 300 }}> Admin</span>}
+        </span>
       </div>
       {props.onTabChange && (
         <div style={{ width: '100vw', display: 'flex', justifyContent: 'center', position: 'fixed' }}>
@@ -60,6 +81,9 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
           </div>
         </div>
       )}
+      <div style={{ display: 'none' }}>
+        <Sound url={startup} playStatus={playing} onFinishedPlaying={handleStopPlaying} />
+      </div>
       <div>
         {props.onBack && (
           <Button className='account-button' color='primary' onClick={props.onBack}>
@@ -74,10 +98,19 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    vaporwave: state.meme.vaporwave,
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onLogout: () => {
       dispatch(logout())
+    },
+    onVaporwave: () => {
+      dispatch(toggleAesthetic())
     },
   }
 }
@@ -89,13 +122,15 @@ interface HeaderProps {
   currentTab?: number
   currentAdminTab?: number
   admin?: boolean
+  vaporwave: boolean
   onHome?: () => void
   onBack?: () => void
   onLogout: () => void
+  onVaporwave: () => void
 }
 
 const ConnectedHeader = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Header)
 

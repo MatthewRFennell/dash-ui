@@ -114,7 +114,12 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   return (
-    <div className='dashboard-view'>
+    <div
+      className={
+        (props.vaporwave ? (openEvent ? 'dashboard-vaporwave-backdrop ' : 'dashboard-view-vaporwave ') : '') +
+        'dashboard-view'
+      }
+    >
       <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={500} transitionLeaveTimeout={500}>
         {loading && (
           <Loader
@@ -187,11 +192,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
 interface DashboardProps {
   history: History
   admin?: boolean
+  vaporwave: boolean
 }
 
 const mapStateToProps = (state) => {
   return {
     admin: state.user.admin,
+    vaporwave: state.meme.vaporwave,
   }
 }
 

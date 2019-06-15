@@ -1,6 +1,15 @@
+.dashboard-view-vaporwave {
+  background-color: #008080 !important;
+}
+
+.dashboard-vaporwave-backdrop {
+  background-color: #c0c0c0 !important;
+}
+
 .dashboard-view {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #ffffff;
   .dashboard-fab {
     position: fixed;
     bottom: 30px;

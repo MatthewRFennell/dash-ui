@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -33,6 +34,14 @@ const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
       : placeholder5
   return (
     <Card className='user-card' raised={props.raised}>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          {props.fname} {props.sname}
+          <button className='close-button' onClick={props.onClick}>
+            <div className='maximize'>{props.raised ? '🗕' : '🗖'}</div>
+          </button>
+        </div>
+      )}
       <div>
         <CardContent className='user-content'>
           <div className='user-image'>
@@ -52,13 +61,16 @@ const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({ vaporwave: state.meme.vaporwave })
+
 interface UserCardProps {
   fname: string
   sname: string
   email: string
   image?: string
   raised: boolean
+  vaporwave: boolean
   onClick: () => void
 }
 
-export default UserCard
+export default connect(mapStateToProps)(UserCard)

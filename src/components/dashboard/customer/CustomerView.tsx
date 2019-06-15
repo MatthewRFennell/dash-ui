@@ -3,6 +3,7 @@ import * as React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { History } from 'history'
 import { connect } from 'react-redux'
+import WordArt from 'react-wordart'
 import { loadEvents } from '../../..//redux/actions/eventActions'
 import fetchProtected from '../../../api/protected'
 import { EventRedued } from '../../../typings/BackendTypes'
@@ -18,6 +19,18 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
       setTimeout(props.onLoadComplete, 750)
     })
   }, [])
+  const wordartChoices = [
+    'rainbow',
+    'blues',
+    'superhero',
+    'radial',
+    'tilt',
+    'purple',
+    'horizon',
+    'italicOutline',
+    'slate',
+  ]
+  const wordArtStyle = wordartChoices[Math.floor(Math.random() * wordartChoices.length)]
 
   const eventCards = props.events.map((event, index) => (
     <EventCard {...event} action={props.setActiveEvent(event.event_id)} key={index} />
@@ -31,7 +44,13 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
   }
   return (
     <div className='customer-view'>
-      <Typography className='headline'>Your New Upcoming Events</Typography>
+      {props.vaporwave ? (
+        <div style={{ textAlign: 'center', margin: '30px' }}>
+          <WordArt text='Your Upcoming Events!' theme={wordArtStyle} fontSize={48} />
+        </div>
+      ) : (
+        <Typography className='headline'>Your Upcoming Events</Typography>
+      )}
       <div className='customer-cards'>
         {columns.map((col, index) => (
           <ul key={index}>{col}</ul>
@@ -43,6 +62,7 @@ const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: Custome
 
 interface CustomerViewProps {
   history: History
+  vaporwave: boolean
   setActiveEvent: (id?: number) => () => void
   onReceiveEvents: (x: any) => void
   onLoadComplete: () => void
@@ -52,6 +72,7 @@ interface CustomerViewProps {
 const mapStateToProps = (state) => {
   return {
     events: state.events.events,
+    vaporwave: state.meme.vaporwave,
   }
 }
 

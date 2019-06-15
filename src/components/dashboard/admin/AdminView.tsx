@@ -1,6 +1,7 @@
 import { History } from 'history'
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { connect } from 'react-redux'
 
 import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import SwipeableViews from 'react-swipeable-views'
+import WordArt from 'react-wordart'
 
 import fetchProtected from '../../../api/protected'
 import { Menu, User } from '../../../typings/BackendTypes'
@@ -30,6 +32,18 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
   const [sortDir, setSortDir] = React.useState<'up' | 'down'>('up')
   const [createMenu, setCreateMenu] = React.useState<boolean>(false)
   const [currentMenu, setCurrentMenu] = React.useState<Menu>(undefined)
+  const wordartChoices = [
+    'rainbow',
+    'blues',
+    'superhero',
+    'radial',
+    'tilt',
+    'purple',
+    'horizon',
+    'italicOutline',
+    'slate',
+  ]
+  const wordArtStyle = wordartChoices[Math.floor(Math.random() * wordartChoices.length)]
 
   console.log('Current menu', currentMenu)
 
@@ -75,7 +89,13 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
               style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
               <div style={{ width: '240px', marginLeft: '30px', opacity: 0 }}>search</div>
-              <Typography className='headline'>Customers</Typography>
+              {props.vaporwave ? (
+                <div style={{ margin: '30px' }}>
+                  <WordArt text='Customers' theme={wordArtStyle} fontSize={48} />
+                </div>
+              ) : (
+                <Typography className='headline'>Customers</Typography>
+              )}
               <div className='sort'>
                 <Typography
                   component='span'
@@ -115,6 +135,7 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
                       onAddEventClick={handleAddEvent(true)}
                       onSetEvent={props.onSetEvent}
                       refresh={refreshSymbol}
+                      onClose={handleFocus(focusedUser)}
                     />
                   </div>
                 )}
@@ -165,12 +186,15 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({ vaporwave: state.meme.vaporwave })
+
 interface AdminViewProps {
   history: History
   currentTab: number
+  vaporwave: boolean
   onTabChange: (index: number) => void
   onLoadComplete: () => void
   onSetEvent: (id: number) => () => void
 }
 
-export default AdminView
+export default connect(mapStateToProps)(AdminView)

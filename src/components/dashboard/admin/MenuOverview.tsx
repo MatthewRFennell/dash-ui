@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import fetchProtected from '../../../api/protected'
 import { Menu } from '../../../typings/BackendTypes'
 
@@ -9,6 +10,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import EditIcon from '@material-ui/icons/Edit'
+import WordArt from 'react-wordart'
 
 import MenuModal from '../customer/Tabs/MenuModal'
 import './AdminView.scss'
@@ -16,10 +18,21 @@ import './UserCard.scss'
 
 const MenuOverview = (props) => {
   const [menus, setMenus] = React.useState<Menu[]>([])
-
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [modalContent, setModalContent] = React.useState<Menu>(undefined)
   const [modalName, setModalName] = React.useState<string>('')
+  const wordartChoices = [
+    'rainbow',
+    'blues',
+    'superhero',
+    'radial',
+    'tilt',
+    'purple',
+    'horizon',
+    'italicOutline',
+    'slate',
+  ]
+  const wordArtStyle = wordartChoices[Math.floor(Math.random() * wordartChoices.length)]
 
   React.useEffect(() => {
     fetchProtected(DASH_API + '/menu', null, null, 'GET', (res) => {
@@ -47,6 +60,14 @@ const MenuOverview = (props) => {
 
   const menuCards = menus.map((m, i) => (
     <Card className='user-card' key={i}>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          {m.caterer}
+          <button className='close-button' onClick={viewMenu(m)}>
+            <div className='maximize'>🗖</div>
+          </button>
+        </div>
+      )}
       <CardContent className='user-content' style={{ alignItems: 'flex-end' }}>
         <CardActionArea className='user-details' onClick={viewMenu(m)}>
           <Typography className='user-title'>{m.caterer}</Typography>
@@ -63,7 +84,13 @@ const MenuOverview = (props) => {
 
   return (
     <div className='content-wrapper'>
-      <Typography className='headline'>Menus</Typography>
+      {props.vaporwave ? (
+        <div style={{ margin: '30px', textAlign: 'center' }}>
+          <WordArt text='Menus' theme={wordArtStyle} fontSize={48} />
+        </div>
+      ) : (
+        <Typography className='headline'>Menus</Typography>
+      )}
       <div className='user-div'>
         <div className='user-list'>{menuCards}</div>
       </div>
@@ -78,4 +105,6 @@ const MenuOverview = (props) => {
   )
 }
 
-export default MenuOverview
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(MenuOverview)

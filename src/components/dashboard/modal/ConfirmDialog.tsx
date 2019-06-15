@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -13,6 +14,14 @@ import './Modal.scss'
 const ConfirmDialog: React.FunctionComponent<ConfirmDialogProps> = (props) => {
   return (
     <Dialog open={props.open} onClose={props.onClose || props.alt.action} className='modal'>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          {props.title}
+          <button className='close-button' onClick={props.onClose || props.alt.action}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <DialogTitle>
         <Typography className='modal-title'>{props.title}</Typography>
       </DialogTitle>
@@ -44,6 +53,7 @@ interface ConfirmDialogProps {
   loading: boolean
   confirm: ActionLabel
   alt: ActionLabel
+  vaporwave: boolean
   onClose?: () => void
 }
 
@@ -52,4 +62,6 @@ interface ActionLabel {
   action: () => void
 }
 
-export default ConfirmDialog
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(ConfirmDialog)
