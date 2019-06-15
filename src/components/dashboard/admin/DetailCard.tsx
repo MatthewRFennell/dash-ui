@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -72,12 +73,14 @@ const DetailCard: React.FunctionComponent<DetailCardProps> = (props) => {
   return (
     <Card className='detail-card'>
       {loading && <LinearProgress />}
-      <div className='window-title-bar'>
-        Customer
-        <button className='close-button' onClick={props.onClose}>
-          X
-        </button>
-      </div>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          Customer
+          <button className='close-button' onClick={props.onClose}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <CardContent>
         <Typography className='pre-title'>Events for</Typography>
         <Typography className='title'>{useEllipsis ? props.fname + '...' : props.fname + ' ' + props.sname}</Typography>
@@ -101,14 +104,17 @@ const DetailCard: React.FunctionComponent<DetailCardProps> = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({ vaporwave: state.meme.vaporwave })
+
 interface DetailCardProps {
   account_id: number
   refresh: any
   fname: string
   sname: string
+  vaporwave: boolean
   onClose: () => void
   onAddEventClick: () => void
   onSetEvent: (id: number) => () => void
 }
 
-export default DetailCard
+export default connect(mapStateToProps)(DetailCard)

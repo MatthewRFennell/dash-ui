@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -53,6 +54,14 @@ const MenuModal: React.FunctionComponent<MenuModalProps> = (props) => {
   )
   return props.menu ? (
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          {props.menu.caterer}
+          <button className='close-button' onClick={props.onClose}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <DialogTitle>
         <Typography className='modal-title'>Menu</Typography>
         {props.forItinerary && <Typography className='modal-subtitle'>for {props.name}</Typography>}
@@ -83,10 +92,13 @@ interface MenuModalProps {
   onClose: () => void
   forItinerary?: boolean
   menu: Menu
+  vaporwave: boolean
 }
 
 MenuModal.defaultProps = {
   forItinerary: true,
 }
 
-export default MenuModal
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(MenuModal)

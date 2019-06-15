@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -162,6 +163,14 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
 
   return (
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          Add itinerary event
+          <button className='close-button' onClick={props.onClose}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <DialogTitle>
         <Typography className='modal-title'>Add Itinerary Event</Typography>
         <Typography style={{ opacity: 0.54 }}>Fields marked with * are required</Typography>
@@ -282,8 +291,11 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
 interface AddItineraryProps {
   open: boolean
   eventId: number
+  vaporwave: boolean
   onClose: () => void
   onSuccess: (deets) => void
 }
 
-export default AddItinerary
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(AddItinerary)

@@ -45,6 +45,7 @@
     "react-redux": "^7.0.3",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
+    "react-sound": "^1.2.0",
     "react-swipeable-views": "^0.13.3",
     "react-testing-library": "^7.0.1",
     "react-wordart": "^1.9.0",

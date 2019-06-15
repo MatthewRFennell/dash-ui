@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -10,7 +11,15 @@ import './Card.scss'
 
 const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProps) => {
   return (
-    <Card className='card'>
+    <Card className={'card' + (props.vaporwave ? ' card-tall' : '')}>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          {props.name}
+          <button className='close-button' onClick={props.action}>
+            <div className='maximize'>🗖</div>
+          </button>
+        </div>
+      )}
       <CardActionArea onClick={props.action}>
         <img src={props.image} className='card-header' />
         <CardContent className='card-content'>
@@ -26,7 +35,10 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
 }
 
 export interface EventCardProps extends EventRedued {
+  vaporwave: boolean
   action: () => void
 }
 
-export default EventCard
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(EventCard)

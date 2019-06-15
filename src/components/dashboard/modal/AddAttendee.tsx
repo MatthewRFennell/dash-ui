@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -67,6 +68,14 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
   const snameError = errors.includes('sname')
   return (
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          Add attendee
+          <button className='close-button' onClick={props.onClose}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <DialogTitle>
         <Typography className='modal-title'>Add Attendee</Typography>
       </DialogTitle>
@@ -127,7 +136,10 @@ interface AddAttendeeProps {
   open: boolean
   onClose: () => void
   add: (x: Attendee) => void
+  vaporwave: boolean
   id: number
 }
 
-export default AddAttendee
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(AddAttendee)

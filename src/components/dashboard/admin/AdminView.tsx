@@ -1,6 +1,7 @@
 import { History } from 'history'
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { connect } from 'react-redux'
 
 import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
@@ -88,9 +89,13 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
               style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
               <div style={{ width: '240px', marginLeft: '30px', opacity: 0 }}>search</div>
-              <div style={{ margin: '30px' }}>
-                <WordArt text='Customers' theme={wordArtStyle} fontSize={48} />
-              </div>
+              {props.vaporwave ? (
+                <div style={{ margin: '30px' }}>
+                  <WordArt text='Customers' theme={wordArtStyle} fontSize={48} />
+                </div>
+              ) : (
+                <Typography className='headline'>Customers</Typography>
+              )}
               <div className='sort'>
                 <Typography
                   component='span'
@@ -181,12 +186,15 @@ const AdminView: React.FunctionComponent<AdminViewProps> = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({ vaporwave: state.meme.vaporwave })
+
 interface AdminViewProps {
   history: History
   currentTab: number
+  vaporwave: boolean
   onTabChange: (index: number) => void
   onLoadComplete: () => void
   onSetEvent: (id: number) => () => void
 }
 
-export default AdminView
+export default connect(mapStateToProps)(AdminView)

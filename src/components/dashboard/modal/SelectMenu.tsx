@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -61,6 +62,14 @@ const SelectMenu: React.FunctionComponent<SelectMenuProps> = (props) => {
 
   return (
     <Dialog open={props.open} onClose={props.onClose} className='modal'>
+      {props.vaporwave && (
+        <div className='window-title-bar'>
+          Select a menu
+          <button className='close-button' onClick={props.onClose}>
+            <div className='maximize'>🗙</div>
+          </button>
+        </div>
+      )}
       <DialogTitle>
         <Typography className='modal-title'>Select A Menu</Typography>
       </DialogTitle>
@@ -89,7 +98,10 @@ interface SelectMenuProps {
   open: boolean
   onClose: () => void
   itinerary_id: number
+  vaporwave: boolean
   updateMenu: (menu: Menu) => void
 }
 
-export default SelectMenu
+const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })
+
+export default connect(mapStateToProps)(SelectMenu)
