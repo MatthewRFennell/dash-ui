@@ -72,6 +72,12 @@ const DetailCard: React.FunctionComponent<DetailCardProps> = (props) => {
   return (
     <Card className='detail-card'>
       {loading && <LinearProgress />}
+      <div className='window-title-bar'>
+        Customer
+        <button className='close-button' onClick={props.onClose}>
+          X
+        </button>
+      </div>
       <CardContent>
         <Typography className='pre-title'>Events for</Typography>
         <Typography className='title'>{useEllipsis ? props.fname + '...' : props.fname + ' ' + props.sname}</Typography>
@@ -100,6 +106,7 @@ interface DetailCardProps {
   refresh: any
   fname: string
   sname: string
+  onClose: () => void
   onAddEventClick: () => void
   onSetEvent: (id: number) => () => void
 }

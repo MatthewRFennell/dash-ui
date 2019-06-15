@@ -6,6 +6,27 @@
   top: 126px;
   overflow-y: auto !important;
   padding: 0;
+  .window-title-bar {
+    height: 24px;
+    background: #000080;
+    padding: 4px 4px 0px 10px;
+    color: white;
+    font-family: 'MS Sans Serif';
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    .close-button {
+      margin-bottom: 4px;
+      background: #c0c0c0;
+      border-width: 1px;
+      border-color: #ffffff #808080 #808080 #ffffff;
+      font-weight: bold;
+      font-size: 9px;
+    }
+    .close-button:focus {
+      outline: none;
+    }
+  }
   .pre-title {
     font-size: 12pt;
     font-weight: bold;
@@ -16,7 +37,7 @@
   .add-event-button {
     font-weight: bold;
     position: absolute;
-    top: 15px;
+    top: 43px;
     right: 15px;
   }
   .title {

@@ -22,7 +22,7 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
     props.onLogout()
   }
   return (
-    <div className='header'>
+    <div className={'header' + (true ? ' header-vaporwave' : '')}>
       <div className='header-title' onClick={props.onHome} style={{ cursor: 'pointer' }}>
         <img src={logo} className='logo' />
         Dash{props.admin && <span style={{ fontWeight: 300 }}> Admin</span>}
@@ -89,6 +89,7 @@ interface HeaderProps {
   currentTab?: number
   currentAdminTab?: number
   admin?: boolean
+  vaporwave?: boolean
   onHome?: () => void
   onBack?: () => void
   onLogout: () => void

@@ -25,12 +25,34 @@ import Loader from './components/misc/Loader'
 import NotFound from './components/misc/NotFound'
 
 const theme = createMuiTheme({
+  overrides: {
+    MuiPaper: {
+      root: {
+        backgroundColor: '#c0c0c0',
+        borderWidth: '1px',
+        borderColor: '#ffffff #808080 #808080 #ffffff',
+        borderStyle: 'solid',
+        borderRadius: 0,
+      },
+    },
+    MuiButton: {
+      root: {
+        fontFamily: 'MS Sans Serif',
+        fontSize: '11px',
+        outline: '1px solid #000000',
+        background: '#c0c0c0',
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: '#ffffff #808080 #808080 #ffffff',
+      },
+    },
+  },
   typography: {
-    fontFamily: 'Lato',
+    fontFamily: 'MS Sans Serif',
   },
   palette: {
     primary: {
-      main: '#0066ff',
+      main: '#000080',
     },
   },
 })
