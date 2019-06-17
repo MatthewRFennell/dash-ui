@@ -52,7 +52,7 @@ const CreateEvent: React.FunctionComponent<CreateEventProps> = (props) => {
     if (comp === '') {
       allErrors.push('comp')
     }
-    if (tickets === 0) {
+    if (tickets <= 0) {
       allErrors.push('tickets')
     }
     if (image === null) {
