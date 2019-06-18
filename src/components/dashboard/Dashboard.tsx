@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { connect } from 'react-redux'
+import useInterval from 'react-useinterval'
 
 import { History } from 'history'
 import fetchProtected from '../../../src/api/protected'
@@ -14,9 +15,19 @@ import Loader from '../misc/Loader'
 import AdminView from './admin/AdminView'
 import './Dashboard.scss'
 
+interface OpenEventDetails {
+  event: Event,
+  open: boolean,
+  id: number
+}
+
 const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProps) => {
   const [loading, setLoading] = React.useState<boolean>(true)
-  const [openEvent, setOpenEvent] = React.useState<Event>(undefined)
+  const [openEvent, setOpenEvent] = React.useState<OpenEventDetails>({
+    event: undefined,
+    open: false,
+    id: -1,
+  })
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [currentTab, setCurrentTab] = React.useState<number>(0)
   const [currentAdminTab, setCurrentAdminTab] = React.useState<number>(0)
@@ -25,21 +36,27 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const handleAdminTabChange = (_, newValue) => setCurrentAdminTab(newValue)
 
   const addAttendee = (attendee) => {
-    const newAttendees = openEvent.attendees
+    const newAttendees = openEvent.event.attendees
     newAttendees.push(attendee)
     setOpenEvent({
       ...openEvent,
-      attendees: newAttendees,
+      event: {
+        ...openEvent.event,
+        attendees: newAttendees,
+      },
     })
   }
 
   const editEvent = (event) => {
-    fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event_id }, 'PUT', (res) => {
+    fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event.event_id }, 'PUT', (res) => {
       if (res.success) {
-        setOpenEvent((currentEvent: Event) => {
+        setOpenEvent((currentEvent: openEventDetails) => {
           return {
             ...currentEvent,
-            ...event,
+            event: {
+              ...currentEvent.event,
+              ...event,
+            },
           }
         })
       }
@@ -47,16 +64,19 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const updateMenuChoice = (menu: Menu, itineraryID: number) => {
-    setOpenEvent((oldEvent) => ({
+    setOpenEvent((oldEvent: openEventDetails) => ({
       ...oldEvent,
-      itineraries: oldEvent.itineraries.map((it) =>
-        it.itinerary_id !== itineraryID
-          ? it
-          : {
+      event: {
+        ...oldEvent.event,
+        itineraries: oldEvent.event.itineraries.map((it) =>
+          it.itinerary_id !== itineraryID
+            ? it
+            : {
               ...it,
               menu,
             },
-      ),
+        ),
+      },
     }))
   }
 
@@ -66,10 +86,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         if (callback) {
           callback()
         }
-        const newAttendees = openEvent.attendees.filter((a) => a.attendee_id !== attendeeID)
+        const newAttendees = openEvent.event.attendees.filter((a) => a.attendee_id !== attendeeID)
         setOpenEvent({
           ...openEvent,
-          attendees: newAttendees,
+          event: {
+            ...openEvent.event,
+            attendees: newAttendees,
+          },
         })
       }
     })
@@ -83,20 +106,49 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     setCurrentTab(0) // Reset tab
     if (id !== undefined) {
       /* Fetch from endpoint */
+      console.log('Setting open event id to', id)
+
       fetchProtected(`${DASH_API}/event?event_id=${id}`, null, null, 'GET', (res) => {
-        const newEvent = {
+        const newEvent: Event = {
           ...res.event,
           date: new Date(res.event.date),
         }
-        setOpenEvent(newEvent)
+        console.log('res')
+        console.log(newEvent)
+        setOpenEvent({
+          event: newEvent,
+          open: true,
+          id: newEvent.event_id,
+        })
       })
     } else {
-      setOpenEvent(undefined)
+      setOpenEvent({
+        event: undefined,
+        open: false,
+        id: -1,
+      })
+    }
+  }
+
+  const fetchOpenEventDetails = () => {
+    if (openEvent.open) {
+      fetchProtected(`${DASH_API}/event?event_id=${openEvent.id}`, null, null, 'GET', (res) => {
+
+          const newEvent: Event = {
+            ...res.event,
+            date: new Date(res.event.date),
+          }
+          setOpenEvent({
+            event: newEvent,
+            open: true,
+            id: newEvent.event_id,
+          })
+      })
     }
   }
 
   const handleReloadEvent = () => {
-    const url = DASH_API + '/event?event_id=' + openEvent.event_id
+    const url = DASH_API + '/event?event_id=' + openEvent.id
     fetch(url, {
       method: 'GET',
       headers: {
@@ -109,14 +161,22 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           ...res.event,
           date: new Date(res.event.date),
         }
+        console.log('Yeet0')
         setOpenEvent(newEvent)
       })
   }
 
+  React.useEffect(() => {
+    const interval = setInterval(fetchOpenEventDetails, 2000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [openEvent])
+
   return (
     <div
       className={
-        (props.vaporwave ? (openEvent ? 'dashboard-vaporwave-backdrop ' : 'dashboard-view-vaporwave ') : '') +
+        (props.vaporwave ? (openEvent.open ? 'dashboard-vaporwave-backdrop ' : 'dashboard-view-vaporwave ') : '') +
         'dashboard-view'
       }
     >
@@ -149,7 +209,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               currentAdminTab={currentAdminTab}
               key='header'
             />
-            {openEvent === undefined ? (
+            {!openEvent.open ? (
               props.admin ? (
                 <div key='admin-view'>
                   <AdminView
@@ -171,7 +231,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               )
             ) : (
               <EventPage
-                event={openEvent}
+                event={openEvent.event}
                 deleteAttendee={deleteAttendee}
                 addAttendee={addAttendee}
                 key='event-page'

@@ -14,11 +14,16 @@ const NUM_COLS = 2
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
   React.useEffect(() => {
+    setInterval(fetchEvents, 2000)
+  }, [])
+
+  const fetchEvents = () => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
-      setTimeout(props.onLoadComplete, 750)
+      props.onLoadComplete()
     })
-  }, [])
+  }
+
   const wordartChoices = [
     'rainbow',
     'blues',
