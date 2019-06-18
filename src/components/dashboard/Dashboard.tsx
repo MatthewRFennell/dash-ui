@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { connect } from 'react-redux'
-import useInterval from 'react-useinterval'
 
 import { History } from 'history'
 import fetchProtected from '../../../src/api/protected'
@@ -16,8 +15,8 @@ import AdminView from './admin/AdminView'
 import './Dashboard.scss'
 
 interface OpenEventDetails {
-  event: Event,
-  open: boolean,
+  event: Event
+  open: boolean
   id: number
 }
 
@@ -72,9 +71,9 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           it.itinerary_id !== itineraryID
             ? it
             : {
-              ...it,
-              menu,
-            },
+                ...it,
+                menu,
+              },
         ),
       },
     }))
@@ -133,16 +132,15 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const fetchOpenEventDetails = () => {
     if (openEvent.open) {
       fetchProtected(`${DASH_API}/event?event_id=${openEvent.id}`, null, null, 'GET', (res) => {
-
-          const newEvent: Event = {
-            ...res.event,
-            date: new Date(res.event.date),
-          }
-          setOpenEvent({
-            event: newEvent,
-            open: true,
-            id: newEvent.event_id,
-          })
+        const newEvent: Event = {
+          ...res.event,
+          date: new Date(res.event.date),
+        }
+        setOpenEvent({
+          event: newEvent,
+          open: true,
+          id: newEvent.event_id,
+        })
       })
     }
   }

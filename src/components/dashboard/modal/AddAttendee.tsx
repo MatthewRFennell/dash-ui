@@ -55,6 +55,7 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
 
     setSubmitting(true)
     fetchProtected(DASH_API + '/attendee', null, body, 'POST', (res) => {
+      console.log(res)
       setSubmitting(false)
       if (res.success) {
         setFname('')
