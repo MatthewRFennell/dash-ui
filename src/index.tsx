@@ -78,7 +78,7 @@ const vaporwaveTheme = createMuiTheme({
           'outline-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms' +
           ', background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
         '&:hover': {
-          backgroundColor: '#a0a0a0',
+          backgroundColor: '#b0b0b0',
         },
       },
       outlined: {
@@ -95,8 +95,15 @@ const vaporwaveTheme = createMuiTheme({
           borderLeft: 'ridge 3px #ffffff',
           borderRight: 'ridge 3px #808080',
           borderBottom: 'ridge 3px #808080',
-          backgroundColor: '#a0a0a0',
-          outline: '2px solid black',
+          backgroundColor: '#b0b0b0',
+          outline: '1px solid black',
+        },
+        padding: 0,
+        '&.Mui-disabled': {
+          borderTop: 'ridge 3px #ffffff !important',
+          borderLeft: 'ridge 3px #ffffff !important',
+          borderRight: 'ridge 3px #808080 !important',
+          borderBottom: 'ridge 3px #808080 !important',
         },
       },
       text: {
@@ -113,11 +120,14 @@ const vaporwaveTheme = createMuiTheme({
           borderLeft: 'ridge 3px #ffffff',
           borderRight: 'ridge 3px #808080',
           borderBottom: 'ridge 3px #808080',
-          outline: '2px solid black',
+          outline: '1px solid black',
         },
       },
     },
     MuiOutlinedInput: {
+      input: {
+        padding: '6px 8px',
+      },
       root: {
         backgroundColor: '#ffffff',
       },

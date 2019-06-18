@@ -50,7 +50,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const editEvent = (event) => {
     fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event.event_id }, 'PUT', (res) => {
       if (res.success) {
-        setOpenEvent((currentEvent: openEventDetails) => {
+        setOpenEvent((currentEvent: OpenEventDetails) => {
           return {
             ...currentEvent,
             event: {
@@ -64,7 +64,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   const updateMenuChoice = (menu: Menu, itineraryID: number) => {
-    setOpenEvent((oldEvent: openEventDetails) => ({
+    setOpenEvent((oldEvent: OpenEventDetails) => ({
       ...oldEvent,
       event: {
         ...oldEvent.event,
@@ -201,8 +201,8 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             <Header
               admin={props.admin}
               history={props.history}
-              onBack={openEvent ? handleSetEvent() : undefined}
-              onHome={openEvent ? handleSetEvent() : undefined}
+              onBack={openEvent.open ? handleSetEvent() : undefined}
+              onHome={openEvent.open ? handleSetEvent() : undefined}
               onTabChange={openEvent ? handleTabChange : undefined}
               onAdminTabChange={props.admin && !openEvent ? handleAdminTabChange : undefined}
               currentTab={currentTab}

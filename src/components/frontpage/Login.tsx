@@ -28,6 +28,34 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
   const [email, setEmail] = React.useState<string>('')
   const [error, setError] = React.useState<boolean>(false)
 
+  if (props.vaporwave) {
+    React.useEffect(() => {
+      document.addEventListener('keydown', (event) => {
+        const usernameElem = document.getElementById('username')
+        const passwordElem = document.getElementById('password')
+        const okElem = document.getElementById('ok')
+        if (
+          document.activeElement !== usernameElem &&
+          document.activeElement !== passwordElem &&
+          document.activeElement !== okElem
+        ) {
+          event.preventDefault()
+          switch (event.code) {
+            case 'KeyU':
+              document.getElementById('username').focus()
+              break
+            case 'KeyP':
+              document.getElementById('password').focus()
+              break
+            case 'KeyO':
+              document.getElementById('ok').focus()
+              break
+          }
+        }
+      })
+    })
+  }
+
   const handlePasswordChange: ChangeEventFunc = (e) => {
     setPassword(e.target.value)
   }
@@ -63,39 +91,68 @@ const Login: React.FunctionComponent<LoginProps> = (props) => {
     >
       <Paper>
         <div className='window-title-bar'>Enter Dash Password</div>
-        <div style={{ margin: '30px' }}>
+        <div style={{ margin: '30px', display: 'flex' }}>
           <div>
             <Typography>Type a user name and password to log on to Dash.</Typography>
             <Typography>
               Tip: if you don't have an account, you can <Link href='/register'>create one here</Link>.
             </Typography>
             <div style={{ marginTop: '30px', display: 'flex', alignItems: 'center' }}>
-              <Typography component='span'>User name</Typography>
+              <Typography component='span' style={{ whiteSpace: 'nowrap', textDecoration: 'underline' }}>
+                U
+              </Typography>
+              <Typography component='span' style={{ whiteSpace: 'nowrap' }}>
+                ser name
+              </Typography>
               <TextField
-                style={{ marginLeft: '15px' }}
+                style={{ marginLeft: '22px' }}
                 variant='outlined'
                 type='text'
                 required={true}
                 error={props.error}
                 onChange={handleEmailChange}
+                fullWidth={true}
+                id='username'
               />
             </div>
-            <div style={{ marginTop: '30px', display: 'flex', alignItems: 'center' }}>
-              <Typography component='span'>Pasword</Typography>
+            <div style={{ marginTop: '15px', display: 'flex', alignItems: 'center' }}>
+              <Typography component='span' style={{ whiteSpace: 'nowrap', textDecoration: 'underline' }}>
+                P
+              </Typography>
+              <Typography component='span' style={{ whiteSpace: 'nowrap' }}>
+                assword
+              </Typography>
               <TextField
-                style={{ marginLeft: '15px' }}
+                style={{ marginLeft: '30px' }}
                 variant='outlined'
                 type={visible ? 'text' : 'password'}
                 required={true}
                 error={props.error}
                 onChange={handlePasswordChange}
                 onKeyDown={handleKeyPress}
+                fullWidth={true}
+                id='password'
               />
             </div>
           </div>
-          <Button variant='outlined' onClick={submit} color='primary' style={{ marginTop: '30px' }}>
-            Login
-          </Button>
+          <div style={{ marginLeft: '30px' }}>
+            <div>
+              <Button variant='outlined' onClick={submit} color='primary' fullWidth={true} id='ok'>
+                OK
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant='outlined'
+                color='primary'
+                style={{ marginTop: '10px', width: '80px' }}
+                fullWidth={true}
+                disabled={true}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
         </div>
       </Paper>
     </div>
