@@ -38,6 +38,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [confirmedAttendees, setConfirmedAttendees] = React.useState<number[]>([])
   const [snackbarOpen, setSnackbarOpen] = React.useState<string>(undefined)
   const [detailOpen, setDetailOpen] = React.useState<boolean>(false)
+  console.log(attendees)
   React.useEffect(() => {
     setAttendees(props.attendees)
   }, [props.attendees])
@@ -113,7 +114,11 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                       : 'default'
                   }
                 >
-                  {attendee.transport !== null ? <AirplanemodeActiveIcon /> : <AddIcon />}
+                  {attendee.transport !== null && attendee.transport !== undefined ? (
+                    <AirplanemodeActiveIcon />
+                  ) : (
+                    <AddIcon />
+                  )}
                 </IconButton>
               </TableCell>
               <TableCell>

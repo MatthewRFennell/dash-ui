@@ -62,6 +62,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
   const handleEditable = (value) => () => setEditable(value)
   const handleChangeTime = (newTime) => setDepartTime(newTime)
   const resetChanges = () => {
+    console.log(props)
     setEditable(false)
     setOperator(props.operator || '')
     setVesselId(props.vessel_id || '')
@@ -79,7 +80,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
       operator,
       vessel_id: vesselId,
       duration: durationHours * 60 + durationMinutes,
-      departTime: departTime.toISOString(),
+      departTime: departTime.toUTCString(),
       departFrom,
       arriveAt,
       transport_id: props.transport_id,
@@ -97,7 +98,7 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
       .then((res) => {
         setSubmitting(false)
         if (res.success) {
-          props.onPropsUpdate(props.attendeeId, body)
+          props.onPropsUpdate(props.attendeeId, res.transport)
           setEditable(false)
         } else {
           setError(res.message)
@@ -109,7 +110,17 @@ const TransportSection: React.FunctionComponent<TransportSectionProps> = (props)
         resetChanges()
       })
   }
-  React.useEffect(resetChanges, [props])
+  React.useEffect(resetChanges, [
+    props.arriveAt,
+    props.attendeeId,
+    props.create,
+    props.departFrom,
+    props.departTime,
+    props.duration,
+    props.operator,
+    props.transport_id,
+    props.vessel_id,
+  ])
   return (
     <div className='event-page-detail'>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

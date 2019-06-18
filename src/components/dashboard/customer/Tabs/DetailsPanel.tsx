@@ -20,7 +20,7 @@ const DetailsPanel: React.FunctionComponent<DetailsPanelProps> = (props) => {
           {...props.transport}
           attendeeId={props.attendeeId}
           onPropsUpdate={props.onPropsUpdate}
-          create={props.transport === null}
+          create={props.transport === null || props.transport === undefined}
         />
       </div>
     </div>

@@ -13,7 +13,6 @@ import './CustomerView.scss'
 const NUM_COLS = 2
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
-
   const fetchEvents = () => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
