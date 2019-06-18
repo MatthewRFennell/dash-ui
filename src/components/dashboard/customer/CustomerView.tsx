@@ -13,10 +13,17 @@ import './CustomerView.scss'
 const NUM_COLS = 2
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
+  const fetchEvents = () => {
+    fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
+      props.onReceiveEvents(res.events)
+      setTimeout(fetchEvents, 5000)
+    })
+  }
   React.useEffect(() => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
       setTimeout(props.onLoadComplete, 750)
+      fetchEvents()
     })
   }, [])
   const wordartChoices = [
