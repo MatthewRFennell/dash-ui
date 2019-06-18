@@ -167,7 +167,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   React.useEffect(() => {
-    const interval = setInterval(fetchOpenEventDetails, 2000)
+    const interval = setInterval(fetchOpenEventDetails, 500)
     return () => {
       clearInterval(interval)
     }
