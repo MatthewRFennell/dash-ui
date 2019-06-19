@@ -27,9 +27,6 @@ import MenuModal from './MenuModal'
 const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
 const MapPanel = withGoogleMap((props: any) => {
-  const [bounds, setBounds] = React.useState<google.maps.LatLngBounds>(
-    (console.log('new call'), new google.maps.LatLngBounds()),
-  )
   const centerFocus = props.markers.filter(({ id }) => id === props.focus)[0]
   const markers = props.markers.map(({ lat, long, name, id, description, index }) => (
     <Marker position={{ lat, lng: long }} key={index} label={{ color: 'white', text: String(index + 1) }}>
@@ -52,12 +49,15 @@ const MapPanel = withGoogleMap((props: any) => {
     lat: 0,
     long: 0,
   })
-  React.useEffect(() => {
-    console.log('effect call')
+  const bounds = new google.maps.LatLngBounds()
+  if (props.markers.length > 0) {
     props.markers.forEach(({ lat, long }) => {
       bounds.extend({ lat, lng: long })
     })
-  }, [])
+  } else {
+    bounds.extend({ lat: -90, lng: 0 })
+    bounds.extend({ lat: 90, lng: 0 })
+  }
   const center = { lat: markerSum.lat / markers.length, long: markerSum.long / markers.length }
   return (
     <GoogleMap
@@ -204,19 +204,17 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
       </div>
       <div className='event-page-mock-panel' />
       <div className='event-page-right-panel' style={{ padding: 0, width: '50vw', overflow: 'hidden' }}>
-        {markers.length > 0 && (
-          <MapPanel
-            isMarkerShown={true}
-            googleMapURL={url}
-            loadingElement={<div style={{ height: `100vh` }} />}
-            containerElement={<div style={{ height: `100vh` }} />}
-            mapElement={<div style={{ height: `100vh` }} />}
-            lat={itinerary[0] ? itinerary[0].lat || 0 : 0}
-            long={itinerary[0] ? itinerary[0].long || 0 : 0}
-            markers={markers}
-            focus={focus}
-          />
-        )}
+        <MapPanel
+          isMarkerShown={true}
+          googleMapURL={url}
+          loadingElement={<div style={{ height: `100vh` }} />}
+          containerElement={<div style={{ height: `100vh` }} />}
+          mapElement={<div style={{ height: `100vh` }} />}
+          lat={itinerary[0] ? itinerary[0].lat || 0 : 0}
+          long={itinerary[0] ? itinerary[0].long || 0 : 0}
+          markers={markers}
+          focus={focus}
+        />
       </div>
       <MenuModal open={modalOpen} onClose={handleModalOpen(false)} name={modalName} menu={modalContent} />
       <SelectMenu
