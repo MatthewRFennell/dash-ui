@@ -68,7 +68,7 @@ const MenuSelector: React.FunctionComponent<MenuSelectorProps> = (props) => {
       </div>
       {props.itinerary.menu.courses.map((course, cIndex) => (
         <div key={cIndex}>
-          {cIndex > 0 && <Divider />}
+          {cIndex > 0 && <Divider style={{ margin: '30px 0 30px 0' }} />}
           <Typography style={{ fontSize: '24pt', fontWeight: 'bold', marginTop: '30px' }}>{course.name}</Typography>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
             {course.dishes.map((dish, dIndex) => (
@@ -90,7 +90,7 @@ const MenuSelector: React.FunctionComponent<MenuSelectorProps> = (props) => {
         variant='outlined'
         disabled={disabled}
         onClick={submitChoice}
-        style={{ fontWeight: 'bold', marginTop: '30px' }}
+        style={{ fontWeight: 'bold', margin: '30px 0 30px 0' }}
       >
         <Save style={{ marginRight: '10px' }} />
         Save selection

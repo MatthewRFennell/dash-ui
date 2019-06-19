@@ -1,4 +1,5 @@
-import { Card, IconButton, Paper, TextField } from '@material-ui/core'
+import { Card, IconButton, Paper, TextField, Typography } from '@material-ui/core'
+import Divider from '@material-ui/core/Divider'
 import Add from '@material-ui/icons/Add'
 import Close from '@material-ui/icons/Close'
 import * as React from 'react'
@@ -41,12 +42,13 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
   }
 
   return (
-    <Paper className='newCourse'>
+    <div className='new-course' style={{ margin: 0, padding: 0 }}>
+      <Divider style={{ marginTop: '15px' }} />
       <IconButton id='close'>
         <Close />
       </IconButton>
-      <EditBox preset={props.course.name} saved={props.course.name !== ''} title='Course Title' setValue={setTitle} />
-      <br />
+      <Typography className='block-title'>Course Name</Typography>
+      <EditBox preset={props.course.name} saved={props.course.name !== ''} title='Course Name' setValue={setTitle} />
       <Card className='newDish'>
         <div className='dishField'>
           <TextField
@@ -84,7 +86,7 @@ const CourseGenerator: React.FunctionComponent<CourseGeneratorProps> = (props) =
           </Card>
         )
       })}
-    </Paper>
+    </div>
   )
 }
 

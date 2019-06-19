@@ -1,9 +1,10 @@
+import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import Save from '@material-ui/icons/Save'
 import { History } from 'history'
 import * as React from 'react'
 
-import { Button, IconButton, Snackbar } from '@material-ui/core'
+import { Button, Divider, IconButton, Snackbar } from '@material-ui/core'
 import Close from '@material-ui/icons/Close'
 import fetchProtected from '../../../src/api/protected'
 import { NewDish, NewMenu } from '../../typings/CreationTypes'
@@ -108,13 +109,14 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
         variant='outlined'
         color='primary'
         onClick={props.onBack}
-        style={{ fontWeight: 'bold' }}
+        style={{ fontWeight: 'bold', top: '30px', right: '30px' }}
         className='chang-blue-font'
         id='back'
       >
         Back
       </Button>
-      <h1 className='form-header'>Create a Menu</h1>
+      <Typography style={{ fontSize: '36pt', fontWeight: 'bold' }}>Create a Menu</Typography>
+      <Typography className='block-title'>caterer</Typography>
       <EditBox saved={true} preset={menu.caterer} title='Caterer' setValue={updateCaterer} />
       {menu.courses.map((course, index) => (
         <CourseGenerator
@@ -125,6 +127,7 @@ const FormGenerator: React.FunctionComponent<FormGeneratorProps> = (props) => {
           remove={handleRemoveDish(index)}
         />
       ))}
+      <Divider style={{ margin: '15px 0 15px 0' }} />
       <Button
         color='primary'
         variant='outlined'

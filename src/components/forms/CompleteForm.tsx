@@ -63,7 +63,7 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
     <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
       {data ? (
         selected < 0 ? (
-          <div className='view'>
+          <div className='form-view'>
             <div key='main' className='new-course'>
               <div>
                 <img src={data.logoImage} style={{ height: '120px', width: '120px', objectFit: 'cover' }} />
@@ -76,7 +76,10 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
               ) : (
                 <Typography className='main-text'>Please complete your menu choices for these events:</Typography>
               )}
-              <div className='newCourse' style={{ display: 'flex', alignItems: 'flex-start' }}>
+              <div
+                className='new-course'
+                style={{ display: 'flex', alignItems: 'flex-start', margin: '15px 0 0 0', padding: 0 }}
+              >
                 {data.itineraries ? (
                   data.itineraries.map((m, i) => (
                     <Card className='card-select' key={i}>
@@ -96,14 +99,16 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
             </div>
           </div>
         ) : (
-          <div className='view' key='select'>
-            <MenuSelector
-              itinerary={data.itineraries[selected]}
-              done={completed}
-              form_id={form_id}
-              logoImage={data.logoImage}
-              onBack={handleReset}
-            />
+          <div className='form-view' key='select'>
+            <div className='scroll'>
+              <MenuSelector
+                itinerary={data.itineraries[selected]}
+                done={completed}
+                form_id={form_id}
+                logoImage={data.logoImage}
+                onBack={handleReset}
+              />
+            </div>
           </div>
         )
       ) : (

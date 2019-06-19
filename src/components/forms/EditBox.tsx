@@ -1,4 +1,4 @@
-import { IconButton, TextField } from '@material-ui/core'
+import { IconButton, TextField, Typography } from '@material-ui/core'
 import Edit from '@material-ui/icons/Edit'
 import Save from '@material-ui/icons/Save'
 import * as React from 'react'
@@ -25,9 +25,7 @@ const EditBox: React.FunctionComponent<EditBoxProps> = (props) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
       {saved ? (
-        <h2 className='inline' style={{ marginRight: '10px' }}>
-          {value}
-        </h2>
+        <Typography style={{ marginRight: '10px', fontSize: '24pt', fontWeight: 'bold' }}>{value}</Typography>
       ) : (
         <TextField
           variant='outlined'
@@ -35,6 +33,7 @@ const EditBox: React.FunctionComponent<EditBoxProps> = (props) => {
           onChange={handleChange}
           label={props.title}
           style={{ marginRight: '10px' }}
+          margin='normal'
         />
       )}
       <IconButton onClick={saved ? edit : save}>{saved ? <Edit /> : <Save />}</IconButton>
