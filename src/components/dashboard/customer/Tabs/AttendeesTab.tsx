@@ -203,11 +203,10 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
         <div className='event-page-center-paper'>
           <div className='event-page-title-div'>
             <Typography className='attendee-title'>Attendees</Typography>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '30px' }}>
               Sort by
               <TextField
                 select={true}
-                label='Sort By'
                 onChange={handleSortBy}
                 variant='outlined'
                 value={sortBy}
