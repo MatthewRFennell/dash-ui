@@ -24,7 +24,13 @@ const EventCard: React.FunctionComponent<EventCardProps> = (props: EventCardProp
         <img src={props.image} className='card-header' />
         <CardContent className='card-content'>
           <Typography className='card-date'>
-            {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
+            {props.date.toLocaleDateString()}
+            {', '}
+            {props.date.toLocaleTimeString('default', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: undefined,
+            })}
           </Typography>
           <Typography className='card-title'>{props.name}</Typography>
           <Typography className='card-body'>{props.blurb}</Typography>

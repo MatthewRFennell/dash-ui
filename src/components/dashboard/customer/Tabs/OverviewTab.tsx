@@ -19,7 +19,13 @@ const OverviewTab: React.FunctionComponent<Event> = (props) => {
         <div className='event-page-detail'>
           <Typography className='event-page-block-title'>Event Date</Typography>
           <Typography className='event-page-body'>
-            {props.date.getDay()}/{props.date.getMonth()}/{props.date.getFullYear()}
+            {props.date.toLocaleDateString()}
+            {', '}
+            {props.date.toLocaleTimeString('default', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: undefined,
+            })}
           </Typography>
         </div>
         <div className='event-page-detail'>
