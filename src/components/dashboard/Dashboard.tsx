@@ -163,9 +163,11 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   return (
     <div
       className={
-        (props.vaporwave ?
-          (open && openEvent.open ? 'dashboard-vaporwave-backdrop ' : 'dashboard-view-vaporwave ') : '') +
-        'dashboard-view'
+        (props.vaporwave
+          ? open && openEvent.open
+            ? 'dashboard-vaporwave-backdrop '
+            : 'dashboard-view-vaporwave '
+          : '') + 'dashboard-view'
       }
     >
       <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={500} transitionLeaveTimeout={500}>
