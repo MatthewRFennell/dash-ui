@@ -27,6 +27,7 @@
     text-transform: capitalize;
   }
   .event-list {
+    overflow-x: hidden;
     li {
       padding: 0;
     }
