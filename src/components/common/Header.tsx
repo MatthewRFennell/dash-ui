@@ -17,6 +17,8 @@ const logo = require('../../../assets/png/DashLogo-Black@4x.png')
 // tslint:disable-next-line:no-var-requires
 const w95 = require('../../../assets/png/w95.png')
 // tslint:disable-next-line:no-var-requires
+const ss = require('../../../assets/png/ss-events.png')
+// tslint:disable-next-line:no-var-requires
 const startup = require('../../../assets/mp3/w95.mp3')
 
 /**
@@ -41,11 +43,27 @@ const Header: React.FunctionComponent<HeaderProps> = (props) => {
   }
   return (
     <div className={'header' + (props.vaporwave ? ' header-vaporwave' : '')}>
-      <div className='header-title' style={{ cursor: 'pointer' }}>
+      <div className='header-title' style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
         <img src={props.vaporwave ? w95 : logo} className='logo' onClick={handleVaporify} />
-        <span onClick={props.onHome}>
+        <span onClick={props.onHome} style={{ display: 'flex', alignItems: 'center' }}>
           Dash{props.vaporwave && '95'}
-          {props.admin && <span style={{ fontWeight: 300 }}> Admin</span>}
+          {props.admin && <span style={{ fontWeight: 300, marginLeft: '0.5rem' }}> Admin</span>}
+          {!props.admin && (
+            <span style={{ fontWeight: 300, display: 'flex', alignItems: 'center', marginLeft: '0.5rem' }}>
+              {' '}
+              for{' '}
+              <img
+                src={ss}
+                style={{
+                  height: '40px',
+                  objectFit: 'cover',
+                  padding: '10px',
+                  marginLeft: '0.5rem',
+                  filter: 'invert(100%) brightness(50%)',
+                }}
+              />
+            </span>
+          )}
         </span>
       </div>
       {props.onTabChange && (

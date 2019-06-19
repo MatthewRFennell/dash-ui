@@ -1,8 +1,14 @@
 import { Card, CardActionArea, CardContent } from '@material-ui/core'
 import * as React from 'react'
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
+import Divider from '@material-ui/core/Divider'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
 import { Itinerary } from '../../typings/BackendTypes'
 import { Attendee } from '../../typings/BackendTypes'
+import Loader from '../misc/Loader'
 import './Form.scss'
 import MenuSelector from './MenuSelector'
 
@@ -19,14 +25,17 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
     fetch(DASH_API + '/getMenus?form_id=' + form_id)
       .then((res) => res.json())
       .then((res) => {
-        if (res.success) {
-          setData({
-            attendee: res.attendee,
-            itineraries: res.itineraries,
-          })
-        } else {
-          setInvalid(true)
-        }
+        setTimeout(() => {
+          if (res.success) {
+            setData({
+              attendee: res.attendee,
+              itineraries: res.itineraries,
+              logoImage: res.logo_image,
+            })
+          } else {
+            setInvalid(true)
+          }
+        }, 750)
       })
   }, [])
 
@@ -38,50 +47,83 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
     setData((oldData) => ({
       attendee: oldData.attendee,
       itineraries: oldData.itineraries.filter((m, i) => i !== selected),
+      logoImage: oldData.logoImage,
     }))
     setSelected(-1)
   }
 
-  if (selected >= 0) {
-    return <MenuSelector itinerary={data.itineraries[selected]} done={completed} form_id={form_id} />
+  const handleReset = () => {
+    setSelected(-1)
   }
 
   if (invalid) {
     return <h1>Sorry that is not a recognised link</h1>
   }
-
-  if (!data) {
-    return <h1>Loading data</h1>
-  }
-
   return (
-    <div className='newCourse'>
-      <h1>
-        Welcome {data.attendee.fname} {data.attendee.sname}
-      </h1>
-      {data.itineraries.length === 0 ? (
-        <h2>You have completed all of your menu choices</h2>
-      ) : (
-        <h2>Please complete your menu choices for these events</h2>
-      )}
-
-      <div className='newCourse'>
-        {data.itineraries ? (
-          data.itineraries.map((m, i) => (
-            <Card className='actionCard' key={i}>
-              <CardActionArea onClick={selectMenu(i)}>
-                <CardContent>
-                  <h1>{m.name}</h1>
-                  <p>{m.description}</p>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))
+    <ReactCSSTransitionGroup transitionName='fade' transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+      {data ? (
+        selected < 0 ? (
+          <div className='view'>
+            <div key='main' className='new-course'>
+              <div>
+                <img src={data.logoImage} style={{ height: '120px', width: '120px', objectFit: 'cover' }} />
+                <Typography className='header-text'>
+                  Welcome, {data.attendee.fname} {data.attendee.sname}!
+                </Typography>
+              </div>
+              {data.itineraries.length === 0 ? (
+                <Typography className='main-text'>You have completed all of your available menu choices.</Typography>
+              ) : (
+                <Typography className='main-text'>Please complete your menu choices for these events:</Typography>
+              )}
+              <div className='newCourse' style={{ display: 'flex', alignItems: 'flex-start' }}>
+                {data.itineraries ? (
+                  data.itineraries.map((m, i) => (
+                    <Card className='card-select' key={i}>
+                      <CardActionArea onClick={selectMenu(i)}>
+                        <CardContent>
+                          <Typography className='card-header-text'>{m.name}</Typography>
+                          <Divider />
+                          <Typography className='card-body-text'>{m.description}</Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  ))
+                ) : (
+                  <h3>No menus to be completed</h3>
+                )}
+              </div>
+            </div>
+          </div>
         ) : (
-          <h3>No menus to be completed</h3>
-        )}
-      </div>
-    </div>
+          <div className='view' key='select'>
+            <MenuSelector
+              itinerary={data.itineraries[selected]}
+              done={completed}
+              form_id={form_id}
+              logoImage={data.logoImage}
+              onBack={handleReset}
+            />
+          </div>
+        )
+      ) : (
+        <Loader
+          style={{
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000000,
+            position: 'fixed',
+            backgroundColor: 'white',
+            top: 0,
+            left: 0,
+          }}
+          key='loader'
+        />
+      )}
+    </ReactCSSTransitionGroup>
   )
 }
 
@@ -96,6 +138,7 @@ interface CompleFormProps {
 interface GetMenusData {
   itineraries: Itinerary[]
   attendee: Attendee
+  logoImage: string
 }
 
 interface Match {
