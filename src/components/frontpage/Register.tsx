@@ -114,7 +114,7 @@ const Register: React.FunctionComponent<RegisterProps> = (props) => {
           <h3 className='form-title'>Create Account</h3>
 
           <InputField label='First Name' change={setFname} errMsg={errors.fname} />
-          <InputField label='Second Name' change={setSname} errMsg={errors.sname} />
+          <InputField label='Surname' change={setSname} errMsg={errors.sname} />
           <InputField label='Email' req={true} change={setEmail} type='email' errMsg={errors.email} />
           <InputField label='Password' change={setPassword} req={true} type='password' errMsg={errors.password} />
 

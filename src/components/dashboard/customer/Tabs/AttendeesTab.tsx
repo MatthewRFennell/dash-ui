@@ -4,16 +4,20 @@ import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
+import MenuItem from '@material-ui/core/MenuItem'
 import Snackbar from '@material-ui/core/Snackbar'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import AddIcon from '@material-ui/icons/Add'
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import CheckIcon from '@material-ui/icons/Check'
 import CloseIcon from '@material-ui/icons/Close'
 import LinkIcon from '@material-ui/icons/Link'
@@ -38,7 +42,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [confirmedAttendees, setConfirmedAttendees] = React.useState<number[]>([])
   const [snackbarOpen, setSnackbarOpen] = React.useState<string>(undefined)
   const [detailOpen, setDetailOpen] = React.useState<boolean>(false)
-  console.log(attendees)
+  const [sortBy, setSortBy] = React.useState<'fname' | 'sname'>('fname')
+  const [sortDir, setSortDir] = React.useState<'up' | 'down'>('up')
+  const handleToggleDir = () => setSortDir((val) => (val === 'up' ? 'down' : 'up'))
   React.useEffect(() => {
     setAttendees(props.attendees)
   }, [props.attendees])
@@ -84,8 +90,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     })
   }
   const handleAddConfirmedAttendee = (id) => setConfirmedAttendees((old) => old.concat([id]))
-
-  const sortedAttendees = attendees.sort((a, b) => a.sname.localeCompare(b.sname))
+  const handleSortBy = (event) => setSortBy(event.target.value)
 
   const attendeeTable =
     attendees.length !== 0 ? (
@@ -102,64 +107,72 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedAttendees.map((attendee, index) => (
-            <TableRow key={attendee.attendee_id}>
-              <TableCell className='table-cell'>{attendee.fname}</TableCell>
-              <TableCell className='table-cell'>{attendee.sname} </TableCell>
-              <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
-              <TableCell className='table-cell'>
-                <IconButton
-                  onClick={setAttendee(attendee)}
-                  color={
-                    (detailActive || { attendee_id: -1 }).attendee_id === attendee.attendee_id && detailOpen
-                      ? 'primary'
-                      : 'default'
-                  }
-                >
-                  {attendee.transport !== null && attendee.transport !== undefined ? (
-                    <AirplanemodeActiveIcon />
-                  ) : (
-                    <AddIcon />
-                  )}
-                </IconButton>
-              </TableCell>
-              <TableCell>
-                <Tooltip title={`Get attendee's unique link`}>
-                  <CopyToClipboard text={'http://dash-web-19.herokuapp.com/completeform/' + attendee.form_id}>
-                    <IconButton
-                      onClick={handleSnackbarOpen(`Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`)}
-                    >
-                      <LinkIcon />
-                    </IconButton>
-                  </CopyToClipboard>
-                </Tooltip>
-              </TableCell>
-              <TableCell>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {attendee.confirmed || confirmedAttendees.includes(attendee.attendee_id) ? (
-                    <Tooltip title='Attendee is confirmed!'>
-                      <CheckIcon color='primary' style={{ padding: '12px' }} />
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title='Attendee is not confirmed'>
-                      <span>
-                        <IconButton onClick={handleConfirmModal(true, attendee)} disabled={!props.admin}>
-                          <CloseIcon />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <Tooltip title='Delete attendee'>
-                  <IconButton onClick={handleDeleteModal(true, attendee)}>
-                    <RemoveCircleIcon />
+          {attendees
+            .sort((a, b) =>
+              sortBy === 'fname'
+                ? a.fname.localeCompare(b.fname) * (sortDir === 'up' ? 1 : -1)
+                : a.sname.localeCompare(b.sname) * (sortDir === 'up' ? 1 : -1),
+            )
+            .map((attendee, index) => (
+              <TableRow key={attendee.attendee_id}>
+                <TableCell className='table-cell'>{attendee.fname}</TableCell>
+                <TableCell className='table-cell'>{attendee.sname} </TableCell>
+                <TableCell className='table-cell'>{attendee.diet || 'N/A'}</TableCell>
+                <TableCell className='table-cell'>
+                  <IconButton
+                    onClick={setAttendee(attendee)}
+                    color={
+                      (detailActive || { attendee_id: -1 }).attendee_id === attendee.attendee_id && detailOpen
+                        ? 'primary'
+                        : 'default'
+                    }
+                  >
+                    {attendee.transport !== null && attendee.transport !== undefined ? (
+                      <AirplanemodeActiveIcon />
+                    ) : (
+                      <AddIcon />
+                    )}
                   </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell>
+                  <Tooltip title={`Get attendee's unique link`}>
+                    <CopyToClipboard text={'http://dash-web-19.herokuapp.com/completeform/' + attendee.form_id}>
+                      <IconButton
+                        onClick={handleSnackbarOpen(
+                          `Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`,
+                        )}
+                      >
+                        <LinkIcon />
+                      </IconButton>
+                    </CopyToClipboard>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {attendee.confirmed || confirmedAttendees.includes(attendee.attendee_id) ? (
+                      <Tooltip title='Attendee is confirmed!'>
+                        <CheckIcon color='primary' style={{ padding: '12px' }} />
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title='Attendee is not confirmed'>
+                        <span>
+                          <IconButton onClick={handleConfirmModal(true, attendee)} disabled={!props.admin}>
+                            <CloseIcon />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Tooltip title='Delete attendee'>
+                    <IconButton onClick={handleDeleteModal(true, attendee)}>
+                      <RemoveCircleIcon />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     ) : (
@@ -169,7 +182,26 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
     <div className='event-page-view' style={{ justifyContent: 'center', overflowY: 'auto' }}>
       <div>
         <div className='event-page-center-paper'>
-          <Typography className='attendee-title'>Attendees</Typography>
+          <div className='event-page-title-div'>
+            <Typography className='attendee-title'>Attendees</Typography>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              Sort by
+              <TextField
+                select={true}
+                label='Sort By'
+                onChange={handleSortBy}
+                variant='outlined'
+                value={sortBy}
+                style={{ margin: '15px' }}
+              >
+                <MenuItem value='fname'>First Name</MenuItem>
+                <MenuItem value='sname'>Surname</MenuItem>
+              </TextField>
+              <IconButton onClick={handleToggleDir}>
+                {sortDir === 'up' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+              </IconButton>
+            </div>
+          </div>
           {attendeeTable}
           <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
             <PersonAddIcon className='add-icon' />
