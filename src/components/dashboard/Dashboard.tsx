@@ -123,7 +123,10 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           date: new Date(res.event.date),
         }
         console.log('Updating event from request')
-        if (!_.isMatch(openEvent.event, newEvent)) {
+        if (
+          !_.isMatch(openEvent.event, newEvent) ||
+          !(_.differenceWith(openEvent.event.attendees, newEvent.attendees, _.isEqual).length === 0)
+        ) {
           console.log('not equal!', openEvent.event, newEvent)
           setOpenEvent({
             event: newEvent,

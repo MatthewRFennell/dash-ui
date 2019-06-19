@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
-import Divider from '@material-ui/core/Divider'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -45,7 +44,6 @@ const DetailCard: React.FunctionComponent<DetailCardProps> = (props) => {
     return (
       <ListItem key={index}>
         <div>
-          <Divider />
           <div>
             <img src={event.image} className='image' />
           </div>

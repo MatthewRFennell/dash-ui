@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
@@ -190,15 +191,15 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
         <div className='event-page-table'>
           <Typography className='event-page-title'>Itinerary</Typography>
           {itineraryTable}
-          <Button
-            variant='outlined'
+          <Fab
+            variant='extended'
             color='primary'
-            style={{ marginTop: '15px', fontWeight: 'bold' }}
+            style={{ position: 'fixed', bottom: '30px', right: 'calc(30px - 150vw)', fontWeight: 'bold' }}
             onClick={handleAddItineraryOpen(true)}
           >
             <AddIcon className='add-icon' style={{ marginRight: '10px' }} />
             Add Itinerary Event
-          </Button>
+          </Fab>
         </div>
       </div>
       <div className='event-page-mock-panel' />

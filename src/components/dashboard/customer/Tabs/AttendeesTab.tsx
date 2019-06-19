@@ -3,6 +3,8 @@ import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
+import Fab from '@material-ui/core/Fab'
+import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -151,13 +153,15 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                   ) : (
                     <Tooltip title={`Get attendee's unique link`}>
                       <CopyToClipboard text={'http://dash-web-19.herokuapp.com/completeform/' + attendee.form_id}>
-                        <IconButton
-                          onClick={handleSnackbarOpen(
-                            `Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`,
-                          )}
-                        >
-                          <LinkIcon />
-                        </IconButton>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <IconButton
+                            onClick={handleSnackbarOpen(
+                              `Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`,
+                            )}
+                          >
+                            <LinkIcon />
+                          </IconButton>
+                        </div>
                       </CopyToClipboard>
                     </Tooltip>
                   )}
@@ -218,11 +222,13 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
             </div>
           </div>
           {attendeeTable}
-          <Button variant='outlined' color='primary' className='attendee-button' onClick={handleModalOpen}>
+        </div>
+        <Fade in={!detailOpen}>
+          <Fab variant='extended' color='primary' className='attendee-fab' onClick={handleModalOpen}>
             <PersonAddIcon className='add-icon' />
             Add Attendee
-          </Button>
-        </div>
+          </Fab>
+        </Fade>
       </div>
       <AddAttendee open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
       <ReactCSSTransitionGroup
