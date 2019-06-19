@@ -31,6 +31,8 @@ export interface Attendee {
   confirmed: boolean
   form_id: string
   transport?: Transport
+  menuscompleted: boolean
+  menuchoices: any[]
 }
 
 export interface Itinerary {

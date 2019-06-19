@@ -33,6 +33,7 @@ import ConfirmDialog from '../../modal/ConfirmDialog'
 import DetailsPanel from './DetailsPanel'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
+  console.log(props)
   const [attendees, setAttendees] = React.useState<Attendee[]>(props.attendees)
   const [attendeeModalOpen, setAttendeeModalOpen] = React.useState<boolean>(false)
   const [confirmModalOpen, setConfirmModalOpen] = React.useState<boolean>(false)
@@ -135,17 +136,31 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <Tooltip title={`Get attendee's unique link`}>
-                    <CopyToClipboard text={'http://dash-web-19.herokuapp.com/completeform/' + attendee.form_id}>
-                      <IconButton
-                        onClick={handleSnackbarOpen(
-                          `Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`,
-                        )}
-                      >
-                        <LinkIcon />
-                      </IconButton>
-                    </CopyToClipboard>
-                  </Tooltip>
+                  {attendee.menuscompleted ? (
+                    <Tooltip
+                      title={
+                        attendee.menuchoices.length === 0
+                          ? `There are no menus to fill in`
+                          : `Attendee has completed their menu choices!`
+                      }
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <CheckIcon color='primary' />
+                      </div>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title={`Get attendee's unique link`}>
+                      <CopyToClipboard text={'http://dash-web-19.herokuapp.com/completeform/' + attendee.form_id}>
+                        <IconButton
+                          onClick={handleSnackbarOpen(
+                            `Link for ${attendee.fname} ${attendee.sname} copied to clipboard!`,
+                          )}
+                        >
+                          <LinkIcon />
+                        </IconButton>
+                      </CopyToClipboard>
+                    </Tooltip>
+                  )}
                 </TableCell>
                 <TableCell>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
