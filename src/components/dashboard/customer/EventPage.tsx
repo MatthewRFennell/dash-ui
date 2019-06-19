@@ -17,7 +17,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
           attendees={props.event.attendees}
           event_id={props.event.event_id}
           deleteAttendee={props.deleteAttendee}
-          addAttendee={props.addAttendee}
           key='attendees'
           onPropsUpdate={props.onPropsUpdate}
         />
@@ -35,7 +34,6 @@ const EventPage: React.FunctionComponent<EventPageProps> = (props) => {
 
 interface EventPageProps {
   deleteAttendee: (x: number, callback: () => void) => void
-  addAttendee: (x: Attendee) => void
   event: Event
   history: History
   currentTab: number

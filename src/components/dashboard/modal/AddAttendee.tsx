@@ -61,7 +61,6 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
         setFname('')
         setSname('')
         setDietr('')
-        props.add(res.attendee)
       }
     })
   }
@@ -136,7 +135,6 @@ const AddAttendee: React.FunctionComponent<AddAttendeeProps> = (props) => {
 interface AddAttendeeProps {
   open: boolean
   onClose: () => void
-  add: (x: Attendee) => void
   vaporwave: boolean
   id: number
 }

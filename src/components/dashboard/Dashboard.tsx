@@ -29,24 +29,13 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     open: false,
     id: -1,
   })
+  const [open, setOpen] = React.useState<boolean>(false)
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [currentTab, setCurrentTab] = React.useState<number>(0)
   const [currentAdminTab, setCurrentAdminTab] = React.useState<number>(0)
 
   const handleTabChange = (_, newValue) => setCurrentTab(newValue)
   const handleAdminTabChange = (_, newValue) => setCurrentAdminTab(newValue)
-
-  const addAttendee = (attendee) => {
-    const newAttendees = openEvent.event.attendees
-    newAttendees.push(attendee)
-    setOpenEvent({
-      ...openEvent,
-      event: {
-        ...openEvent.event,
-        attendees: newAttendees,
-      },
-    })
-  }
 
   const editEvent = (event) => {
     fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event.event_id }, 'PUT', (res) => {
@@ -87,14 +76,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         if (callback) {
           callback()
         }
-        const newAttendees = openEvent.event.attendees.filter((a) => a.attendee_id !== attendeeID)
-        setOpenEvent({
-          ...openEvent,
-          event: {
-            ...openEvent.event,
-            attendees: newAttendees,
-          },
-        })
       }
     })
   }
@@ -116,6 +97,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         }
         console.log('res')
         console.log(newEvent)
+        setOpen(true)
         setOpenEvent({
           event: newEvent,
           open: true,
@@ -123,6 +105,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
         })
       })
     } else {
+      setOpen(false)
       setOpenEvent({
         event: undefined,
         open: false,
@@ -138,6 +121,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           ...res.event,
           date: new Date(res.event.date),
         }
+        console.log('Updating event from request')
         setOpenEvent({
           event: newEvent,
           open: true,
@@ -173,10 +157,14 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
     }
   }, [openEvent])
 
+  console.log(!open && !openEvent.open, '!open && !openEvent.open')
+  console.log('Open event is', openEvent)
+
   return (
     <div
       className={
-        (props.vaporwave ? (openEvent.open ? 'dashboard-vaporwave-backdrop ' : 'dashboard-view-vaporwave ') : '') +
+        (props.vaporwave ?
+          (open && openEvent.open ? 'dashboard-vaporwave-backdrop ' : 'dashboard-view-vaporwave ') : '') +
         'dashboard-view'
       }
     >
@@ -201,15 +189,15 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
             <Header
               admin={props.admin}
               history={props.history}
-              onBack={openEvent.open ? handleSetEvent() : undefined}
-              onHome={openEvent.open ? handleSetEvent() : undefined}
-              onTabChange={openEvent.open ? handleTabChange : undefined}
-              onAdminTabChange={props.admin && !openEvent.open ? handleAdminTabChange : undefined}
+              onBack={openEvent.open && open ? handleSetEvent() : undefined}
+              onHome={openEvent.open && open ? handleSetEvent() : undefined}
+              onTabChange={openEvent.open && open ? handleTabChange : undefined}
+              onAdminTabChange={props.admin && !open ? handleAdminTabChange : undefined}
               currentTab={currentTab}
               currentAdminTab={currentAdminTab}
               key='header'
             />
-            {!openEvent.open ? (
+            {!open || !openEvent.open ? (
               props.admin ? (
                 <div key='admin-view'>
                   <AdminView
@@ -233,7 +221,6 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
               <EventPage
                 event={openEvent.event}
                 deleteAttendee={deleteAttendee}
-                addAttendee={addAttendee}
                 key='event-page'
                 currentTab={currentTab}
                 onTabChange={setCurrentTab}

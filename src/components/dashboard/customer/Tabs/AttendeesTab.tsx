@@ -85,6 +85,8 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   }
   const handleAddConfirmedAttendee = (id) => setConfirmedAttendees((old) => old.concat([id]))
 
+  const sortedAttendees = attendees.sort((a, b) => a.sname.localeCompare(b.sname))
+
   const attendeeTable =
     attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
@@ -100,7 +102,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {attendees.map((attendee, index) => (
+          {sortedAttendees.map((attendee, index) => (
             <TableRow key={attendee.attendee_id}>
               <TableCell className='table-cell'>{attendee.fname}</TableCell>
               <TableCell className='table-cell'>{attendee.sname} </TableCell>
@@ -175,7 +177,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
           </Button>
         </div>
       </div>
-      <AddAttendee add={props.addAttendee} open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
+      <AddAttendee open={attendeeModalOpen} onClose={handleModalClose} id={props.event_id} />
       <ReactCSSTransitionGroup
         transitionName='horizontal-grow'
         transitionEnterTimeout={300}
@@ -283,7 +285,6 @@ interface AttendeesTabProps {
   event_id: number
   attendees: Attendee[]
   deleteAttendee: (id: number, callback: () => void) => void
-  addAttendee: (x: Attendee) => void
   onPropsUpdate: () => void
 }
 
