@@ -83,10 +83,9 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
   })
   const [addItineraryOpen, setAddItineraryOpen] = React.useState<boolean>(false)
 
-  const itinerary = props.itinerary
-    .sort((eventA, eventB) =>
-      eventA.start_date < eventB.start_date ? -1 : eventA.start_date > eventB.start_date ? 1 : 0,
-    )
+  const itinerary = props.itinerary.sort((eventA, eventB) =>
+    eventA.start_date < eventB.start_date ? -1 : eventA.start_date > eventB.start_date ? 1 : 0,
+  )
 
   const handleChangeFocus = (id: number) => {
     if (id !== focus) {
@@ -182,7 +181,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     .filter((entry) => entry)
   return (
     <div className='event-page-view'>
-      <div className='event-page-left-panel'>
+      <div className='event-page-left-panel' style={{ overflowY: 'auto', height: 'calc(100vh - 96px)' }}>
         <div className='event-page-table'>
           <Typography className='event-page-title'>Itinerary</Typography>
           {itineraryTable}
@@ -220,11 +219,7 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
         itinerary_id={selectModalOpen.itinerary_id}
         updateMenu={updateMenu}
       />
-      <AddItinerary
-        open={addItineraryOpen}
-        eventId={props.eventId}
-        onClose={handleAddItineraryOpen(false)}
-      />
+      <AddItinerary open={addItineraryOpen} eventId={props.eventId} onClose={handleAddItineraryOpen(false)} />
     </div>
   )
 }
