@@ -50,10 +50,6 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
     return <h1>Sorry that is not a recognised link</h1>
   }
 
-  if (data.itineraries.length === 0) {
-    return  <h1/>
-  }
-
   if (!data) {
     return <h1>Loading data</h1>
   }
