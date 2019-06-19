@@ -14,6 +14,8 @@ import Loader from '../misc/Loader'
 import AdminView from './admin/AdminView'
 import './Dashboard.scss'
 
+const REFRESH_TIME = 1000
+
 interface OpenEventDetails {
   event: Event
   open: boolean
@@ -165,7 +167,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   }
 
   React.useEffect(() => {
-    const interval = setInterval(fetchOpenEventDetails, 500)
+    const interval = setInterval(fetchOpenEventDetails, REFRESH_TIME)
     return () => {
       clearInterval(interval)
     }

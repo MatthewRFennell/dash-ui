@@ -82,10 +82,8 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     itinerary_id: -1,
   })
   const [addItineraryOpen, setAddItineraryOpen] = React.useState<boolean>(false)
-  const [itineraryAddendum, setItineraryAddendum] = React.useState<Itinerary[]>([])
 
   const itinerary = props.itinerary
-    .concat(itineraryAddendum)
     .sort((eventA, eventB) =>
       eventA.start_date < eventB.start_date ? -1 : eventA.start_date > eventB.start_date ? 1 : 0,
     )
@@ -123,10 +121,6 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
     setModalOpen(true)
     setModalContent(item.menu)
     setModalName(item.name)
-  }
-
-  const handleAddItineraryEvent = (details) => {
-    setItineraryAddendum((prev) => prev.concat([details]))
   }
 
   const itineraryTable = (
@@ -230,7 +224,6 @@ const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
         open={addItineraryOpen}
         eventId={props.eventId}
         onClose={handleAddItineraryOpen(false)}
-        onSuccess={handleAddItineraryEvent}
       />
     </div>
   )

@@ -139,7 +139,6 @@ const AddItinerary: React.FunctionComponent<AddItineraryProps> = (props) => {
         if (res.success) {
           setSubmitting(false)
           props.onClose()
-          props.onSuccess(res.itinerary)
         } else {
           setSubmitting(false)
           setSendError(true)
@@ -293,7 +292,6 @@ interface AddItineraryProps {
   eventId: number
   vaporwave: boolean
   onClose: () => void
-  onSuccess: (deets) => void
 }
 
 const mapStateToProps = ({ meme }) => ({ vaporwave: meme.vaporwave })

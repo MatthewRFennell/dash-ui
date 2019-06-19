@@ -11,12 +11,13 @@ import EventCard from '../Card'
 import './CustomerView.scss'
 
 const NUM_COLS = 2
+const REFRESH_TIME = 1000
 
 const CustomerView: React.FunctionComponent<CustomerViewProps> = (props: CustomerViewProps) => {
   const fetchEvents = () => {
     fetchProtected(DASH_API + '/events', null, null, 'GET', (res) => {
       props.onReceiveEvents(res.events)
-      setTimeout(fetchEvents, 500)
+      setTimeout(fetchEvents, REFRESH_TIME)
     })
   }
 
