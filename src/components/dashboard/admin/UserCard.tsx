@@ -46,7 +46,15 @@ const UserCard: React.FunctionComponent<UserCardProps> = (props) => {
         <CardContent className='user-content'>
           <div className='user-image'>
             <Tooltip title='hmm?' enterDelay={5000} placement='left-start'>
-              <img className='user-placeholder' src={props.image || placeholder} draggable={false} />
+              {props.logo_image ? (
+                <img
+                  src={props.logo_image}
+                  draggable={false}
+                  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                />
+              ) : (
+                <img className='user-placeholder' src={props.logo_image || placeholder} draggable={false} />
+              )}
             </Tooltip>
           </div>
           <CardActionArea className='user-details' onClick={props.onClick}>
@@ -67,7 +75,7 @@ interface UserCardProps {
   fname: string
   sname: string
   email: string
-  image?: string
+  logo_image?: string
   raised: boolean
   vaporwave: boolean
   onClick: () => void

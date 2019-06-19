@@ -32,6 +32,7 @@ import authHeader from '../../../../api/authHeader'
 import { Attendee } from '../../../../typings/BackendTypes'
 import AddAttendee from '../../modal/AddAttendee'
 import ConfirmDialog from '../../modal/ConfirmDialog'
+import ViewMenuChoices from '../../modal/ViewMenuChoices'
 import DetailsPanel from './DetailsPanel'
 
 const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
@@ -47,6 +48,8 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   const [detailOpen, setDetailOpen] = React.useState<boolean>(false)
   const [sortBy, setSortBy] = React.useState<'fname' | 'sname'>('fname')
   const [sortDir, setSortDir] = React.useState<'up' | 'down'>('up')
+  const [viewMenuModal, setViewMenuModal] = React.useState<Attendee>(undefined)
+  const [viewMenuOpen, setViewMenuOpen] = React.useState<boolean>(false)
   const handleToggleDir = () => setSortDir((val) => (val === 'up' ? 'down' : 'up'))
   React.useEffect(() => {
     setAttendees(props.attendees)
@@ -94,7 +97,7 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
   }
   const handleAddConfirmedAttendee = (id) => setConfirmedAttendees((old) => old.concat([id]))
   const handleSortBy = (event) => setSortBy(event.target.value)
-
+  const handleViewMenuModal = (state, val) => () => (setViewMenuOpen(state), val !== undefined && setViewMenuModal(val))
   const attendeeTable =
     attendees.length !== 0 ? (
       <Table size='small' className='attendee-table'>
@@ -143,11 +146,13 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
                       title={
                         attendee.menuchoices.length === 0
                           ? `There are no menus to fill in`
-                          : `Attendee has completed their menu choices!`
+                          : `Attendee has completed their menu choices, click to view.`
                       }
                     >
                       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <CheckIcon color='primary' />
+                        <IconButton color='primary' onClick={handleViewMenuModal(true, attendee)}>
+                          <CheckIcon />
+                        </IconButton>
                       </div>
                     </Tooltip>
                   ) : (
@@ -309,6 +314,9 @@ const AttendeesTab: React.FunctionComponent<AttendeesTabProps> = (props) => {
         }}
         loading={modalLoading}
       />
+      {viewMenuModal !== undefined && (
+        <ViewMenuChoices open={viewMenuOpen} onClose={handleViewMenuModal(false, undefined)} attendee={viewMenuModal} />
+      )}
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
