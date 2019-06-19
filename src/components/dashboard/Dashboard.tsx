@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 import * as React from 'react'
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { connect } from 'react-redux'
@@ -34,8 +35,8 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
   const [currentTab, setCurrentTab] = React.useState<number>(0)
   const [currentAdminTab, setCurrentAdminTab] = React.useState<number>(0)
 
-  const handleTabChange = (_, newValue) => setCurrentTab(newValue)
-  const handleAdminTabChange = (_, newValue) => setCurrentAdminTab(newValue)
+  const handleTabChange = (event, newValue) => setCurrentTab(newValue)
+  const handleAdminTabChange = (event, newValue) => setCurrentAdminTab(newValue)
 
   const editEvent = (event) => {
     fetchProtected(DASH_API + '/editEvent', null, { ...event, event_id: openEvent.event.event_id }, 'PUT', (res) => {
@@ -122,11 +123,14 @@ const Dashboard: React.FunctionComponent<DashboardProps> = (props: DashboardProp
           date: new Date(res.event.date),
         }
         console.log('Updating event from request')
-        setOpenEvent({
-          event: newEvent,
-          open: true,
-          id: newEvent.event_id,
-        })
+        if (!_.isMatch(openEvent.event, newEvent)) {
+          console.log('not equal!', openEvent.event, newEvent)
+          setOpenEvent({
+            event: newEvent,
+            open: true,
+            id: newEvent.event_id,
+          })
+        }
       })
     }
   }

@@ -26,6 +26,9 @@ import MenuModal from './MenuModal'
 const url = `https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
 const MapPanel = withGoogleMap((props: any) => {
+  const [bounds, setBounds] = React.useState<google.maps.LatLngBounds>(
+    (console.log('new call'), new google.maps.LatLngBounds()),
+  )
   const centerFocus = props.markers.filter(({ id }) => id === props.focus)[0]
   const markers = props.markers.map(({ lat, long, name, id, description, index }) => (
     <Marker position={{ lat, lng: long }} key={index} label={{ color: 'white', text: String(index + 1) }}>
@@ -48,10 +51,12 @@ const MapPanel = withGoogleMap((props: any) => {
     lat: 0,
     long: 0,
   })
-  const bounds = new google.maps.LatLngBounds()
-  props.markers.forEach(({ lat, long }) => {
-    bounds.extend({ lat, lng: long })
-  })
+  React.useEffect(() => {
+    console.log('effect call')
+    props.markers.forEach(({ lat, long }) => {
+      bounds.extend({ lat, lng: long })
+    })
+  }, [])
   const center = { lat: markerSum.lat / markers.length, long: markerSum.long / markers.length }
   return (
     <GoogleMap
@@ -73,7 +78,7 @@ const MapPanel = withGoogleMap((props: any) => {
 })
 
 const ItineraryTab: React.FunctionComponent<ItineraryTabProps> = (props) => {
-  const [focus, setFocus] = React.useState<number>(-1)
+  const [focus, setFocus] = React.useState<number>((console.log('new itinerary'), -1))
   const [modalOpen, setModalOpen] = React.useState<boolean>(false)
   const [modalContent, setModalContent] = React.useState<Menu>(undefined)
   const [modalName, setModalName] = React.useState<string>('')
