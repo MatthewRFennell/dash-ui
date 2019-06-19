@@ -50,6 +50,10 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
     return <h1>Sorry that is not a recognised link</h1>
   }
 
+  if (data.itineraries.length === 0) {
+    return  <h1/>
+  }
+
   if (!data) {
     return <h1>Loading data</h1>
   }
@@ -59,7 +63,13 @@ const CompleteForm: React.FunctionComponent<CompleFormProps> = (props) => {
       <h1>
         Welcome {data.attendee.fname} {data.attendee.sname}
       </h1>
-      <h2>Please complete your menu choices for these events</h2>
+      {
+        data.itineraries.length === 0 ?
+          <h2>You have completed all of your menu choices</h2>
+        :
+          <h2>Please complete your menu choices for these events</h2>
+      }
+
       <div className='newCourse'>
         {data.itineraries ? (
           data.itineraries.map((m, i) => (
